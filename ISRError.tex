@@ -101,7 +101,11 @@ Boston University, Boston, Massachusetts, USA.}
 % >> the body of the abstract.
 
 \begin{abstract}
-As with any sensing modality incoherent scatter radar has inherent errors and uncertainty in its measurements.  
+As with any sensing modality incoherent scatter radar (ISR) has inherent errors and uncertainty in its measurements. A number of theoretical aspects behind these errors have been documented in the literature, which leads to a trade off between spatial and temporal resolution and statistical accuracy. 
+
+The recent application of phased array antennas with pulse to pulse steering allow for greater flexibility in processing along with making it is now possible to create full volumetric reconstructions of plasma parameters. These phased array systems are used heavily in the high latitude region of the ionosphere, which can have plasma phenomena that is highly variable in space and time. With the new hardware and methods to create volumetric imaging it is becoming more and more necessary to create simulations of radar systems to understand the impact of the instrumentation function and added errors. 
+
+This publication will show a simulator that can take a field of plasma parameters and create ISR data at the IQ level and then process it to show a possible reconstruction of the parameters field. This simulator can be used to create ISR data to test new algorithms to better reconstruct the plasma parameter field. It can also give researchers a new tool that can assist them in the set up their experiments. This simulation will overall give a full forward model description of the ISR reconstruction.
 \end{abstract}
 
 %% ------------------------------------------------------------------------ %%
@@ -118,13 +122,17 @@ As with any sensing modality incoherent scatter radar has inherent errors and un
 \begin{article}
 
 \section{Introduction}
-Incoherent scatter radar is an important diagnostic for the ionosphere in that it can give direct measurements of the intrinsic plasma parameters. As with all diagnostic tools it has associated with it sources of errors which include time and spatial ambiguities. One unique aspect of ISR is the fact that to get a measurement of parameters such as temperatures these systems have to estimate a second order statistic of the scattered signal. 
+Incoherent scatter radar is an important diagnostic for the ionosphere in that it can give direct measurements of the intrinsic plasma parameters. As with all diagnostic tools it has associated with it sources of errors which include time and spatial ambiguities. One unique aspect of ISR is that inherent random fluctuations of the plasma are used to create these measurements. These fluctuations are used by creating second order statistics from a scattered signal.  
 
-This aspect
-
+T
 \section{Space-Time Errors}
-\section{s}
+The statistical nature of the target and the variability of the plasma parameters create a trade off between resolution of the target and statistical certainty. 
 
+\section{Simulator}
+
+\section{Simulation Examples}
+
+\section{Conclusion}
 
 \begin{acknowledgments}
 This work was supported by the National Science Foundation, through Aeronomy Program Grant AGS-1339500 to Boston University and Cooperative Agreement AGS-1242204 between the NSF and the Massachusetts Institute of Technology, and by the Air Force Office of Scientific Research under contract FA9550-12-1-018.   The authors are grateful to the International Space Science Institute (ISSI, Bern, Switzerland) for sponsoring a series of workshops from which the idea for this work emerged. 
