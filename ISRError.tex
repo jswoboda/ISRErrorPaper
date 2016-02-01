@@ -144,8 +144,31 @@ To measure the plasma parameters ISR takes advantage of the random fluctuations 
 
 The two main sources of statistical error will covered here are the random fluctuations from the electron density and noise from within the sensor itself. There are other sources of statistical error including sky noise and coherent scatter from other targets. 
 
-The raw incoherent scatter signal is itself
+The raw incoherent scatter signal is itself is a random process. As such it is necessary to average samples of an estimator for autocorrelation or spectrum \citep{Diaz:2008co}.
 \subsection{Space-Time Errors}
+
+
+
+ \begin{align}
+  \label{eqn:volume}
+\rho(\tau_s,\mathbf{r}_s) &= \int F(\theta_s,\phi_s,\theta,\phi)W(\tau_s,r_s,\tau,r) R(\tau,\mathbf{r}) dV d\tau ,\\
+	&= \int K(\tau_s,\mathbf{r}_s,\tau,\mathbf{r}) R(\tau,\mathbf{r})  dVd\tau.
+\end{align}
+
+\noindent where $J$ counts the number of pulses used over a NCPI, $T_{REV}$ is the amount of time it takes the radar to revisit the specific beam and $\alpha_j$ represent the weights that the radar assigns to the pulses. For systems using pulse-to-pulse steering, one strategy revisits each beam sequentially, in this case making $T_{REV}=N_{beam}T_{PRI}$, where $N_{beam}$ is the number of beams and $T_{PRI}$ is the PRI time period. For the case where weights are set to $1/J$, this operation simply averages the pulses. With Equation \ref{eqn:Gexp} incorporated into the overall ambiguity we obtain the full integral equation,
+
+\begin{equation}
+\label{eqn:sptamb}
+	\rho(\tau_s,\mathbf{r}_s,t_s) =\int L(\tau_s,\mathbf{r}_s,t_s,\tau,\mathbf{r},t)R(\tau,\mathbf{r},t)dVdtd\tau.
+\end{equation}
+
+\noindent The final kernel, $L(\tau_s,\mathbf{r}_s,t_s,\tau,\mathbf{r},t) = G(t_s,t)K(\tau_s,\mathbf{r}_s,\tau,\mathbf{r})$, encompasses the full space-time ambiguity.
+function $G(t_s,t)$ to the kernel. This function $G(t_s,t)$ can be thought of as a sampling and blurring kernel for the ACF if the plasma parameters change within an NCPI. Since the amount of time that the radar pulse is illuminating the plasma in a point of space is very short compared to the PRI, $G(t_s,t)$ can take the form of a summation of Dirac delta functions 
+
+\begin{equation}
+\label{eqn:Gexp}
+G(t_s,t) = \displaystyle \sum_{j=0}^{J-1}\alpha_j \delta(t-t_s-jT_{REV}),
+\end{equation}
 
 \section{Simulator}
 
