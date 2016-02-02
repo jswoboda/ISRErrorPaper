@@ -136,7 +136,7 @@ With these new capabilities for the ISR community a discussion of the possible s
 
 \section{ISR Errors}
 
-In this section the main sources of ISR errors will be discussed. The first part of this discussion will cover the statistical errors that arise from the ISR process. After that the errors from the spatial and temporal ambiguity of ISR systems will be shown. This in the end will lead trade offs that the experiment designer will have to face.
+In this section the main sources of ISR errors will be discussed. The first part of this discussion will cover the statistical errors that arise from the ISR process. After that the errors from the spatial and temporal ambiguity of ISR systems will be shown. This in the end will lead to trade offs that the experiment designer will have to face.
 
 \subsection{Statistical Errors}
 
@@ -144,43 +144,51 @@ To measure the plasma parameters ISR takes advantage of the random fluctuations 
 
 The two main sources of statistical error will covered here are the random fluctuations from the electron density and noise from within the sensor itself. There are other sources of statistical error including sky noise and coherent scatter from other targets. 
 
-The raw incoherent scatter signal is itself is a random process. As such it is necessary to average samples of an estimator for autocorrelation or spectrum \citep{Diaz:2008co}.
+The raw incoherent scatter signal is itself is a random process. As such it is necessary to average samples of an estimator for autocorrelation or spectrum \citep{Diaz:2008co}. An easy rule of thumb to understand how the error will reduce can be seen in \citet{farley1969},
+
+\begin{equation}
+\label{eqn:basicerror}
+\left\langle \left| \hat{R}(\tau) -R(\tau) \right|^2 \right\rangle \propto \frac{1}{\sqrt{J}},
+\end{equation}
+\noindent where $R(\tau)$ is the ACF as a function of lag $\tau$, $\hat{R}(\tau)$ is its estimate and $J$ is the number of samples or pulses averaged together to create the estimate.
+
+The variance of this signal is further degraded once noise is added. 
+
+As one adds more and more pulses we can assume that the signal is Gaussian like due to the central limit theorem. 
+
 \subsection{Space-Time Errors}
 
+The errors created through the ambiguity function lead to a blurring or averaging of ACFs from different points in time and space. This is similar to a blurring operator one might see in a camera or numerous other types of sensors. With ISR this can be more problematic due to the non-linear fitting step.
 
+The space-time ambiguity, $L(\tau_s,\mathbf{r}_s,t_s,\tau,\mathbf{r},t)$, is the kernel of Fredholm integral equation of the first kind operating on the ACF, $R(\tau,\mathbf{r},t)$, which can change over space, $\mathbf{r}$, and time $t$. which can be represented as follows,
 
- \begin{align}
-  \label{eqn:volume}
-\rho(\tau_s,\mathbf{r}_s) &= \int F(\theta_s,\phi_s,\theta,\phi)W(\tau_s,r_s,\tau,r) R(\tau,\mathbf{r}) dV d\tau ,\\
-	&= \int K(\tau_s,\mathbf{r}_s,\tau,\mathbf{r}) R(\tau,\mathbf{r})  dVd\tau.
-\end{align}
-
-\noindent where $J$ counts the number of pulses used over a NCPI, $T_{REV}$ is the amount of time it takes the radar to revisit the specific beam and $\alpha_j$ represent the weights that the radar assigns to the pulses. For systems using pulse-to-pulse steering, one strategy revisits each beam sequentially, in this case making $T_{REV}=N_{beam}T_{PRI}$, where $N_{beam}$ is the number of beams and $T_{PRI}$ is the PRI time period. For the case where weights are set to $1/J$, this operation simply averages the pulses. With Equation \ref{eqn:Gexp} incorporated into the overall ambiguity we obtain the full integral equation,
-
-\begin{equation}
-\label{eqn:sptamb}
-	\rho(\tau_s,\mathbf{r}_s,t_s) =\int L(\tau_s,\mathbf{r}_s,t_s,\tau,\mathbf{r},t)R(\tau,\mathbf{r},t)dVdtd\tau.
+ \begin{equation}
+  \label{eqn:staf}
+  \rho(\tau_s,\mathbf{r}_s,t_s) =\int L(\tau_s,\mathbf{r}_s,t_s,\tau,\mathbf{r},t)R(\tau,\mathbf{r},t)dVdtd\tau,
 \end{equation}
 
-\noindent The final kernel, $L(\tau_s,\mathbf{r}_s,t_s,\tau,\mathbf{r},t) = G(t_s,t)K(\tau_s,\mathbf{r}_s,\tau,\mathbf{r})$, encompasses the full space-time ambiguity.
-function $G(t_s,t)$ to the kernel. This function $G(t_s,t)$ can be thought of as a sampling and blurring kernel for the ACF if the plasma parameters change within an NCPI. Since the amount of time that the radar pulse is illuminating the plasma in a point of space is very short compared to the PRI, $G(t_s,t)$ can take the form of a summation of Dirac delta functions 
+\noindent where the subscript $s$ represents the same variable but now discretely sampled by the radar. 
+
+The kernel is a separable function when the spatial coordinates are spherical, where ($r,\theta,\phi)$ represent, range, azimuth and elevation respectively. This the changes Equation \ref{eqn:staf} as follows,
 
 \begin{equation}
-\label{eqn:Gexp}
-G(t_s,t) = \displaystyle \sum_{j=0}^{J-1}\alpha_j \delta(t-t_s-jT_{REV}),
+\label{eqn:stafbrok}
+\rho(\tau_s,\mathbf{r}_s,t_s)= \int G(t_s,t)F(\theta_s,\phi_s,\theta,\phi)W(\tau_s,r_s,\tau,r) R(\tau,\mathbf{r},t) dVdt d\tau,
 \end{equation}
 
+\noindent where $G(t_s,t)$ is the kernel for the time dimension, $F(\theta_s,\phi_s,\theta,\phi)$ is radar beam shape which acts as a kernel in azimuth and elevation, and $W(\tau_s,r_s,\tau,r) $ which is the range ambiguity function which acts as a kernel along range $r$ and lag $\tau$. The derivation of this operator can be seen in \citet{RDS:RDS20236}.
+
+These two sources of error create a significant trade off between fidelity of the signal and spatial and temporal resolution of the signal. In order to reduce the statical fluctuations in the signal pulses need to be averaged together. This is necessary even for the case where there is no noise, in a sense the infinite signal to noise ratio (SNR) case
 \section{Simulator}
 
-The goal of incoherent scatter radar is to measure plasma parameters by first estimating a power spectrum from the random fluctuations of the electron density in the ionosphere. In order to model the the return signal from an ISR a complex gaussian process with a correlation properties dictated by the plasma parameters is created. 
-In this chapter the methods used to create the ISR data are detailed. The First the inputs will be covered, after which the signal processing procedures to make the base band IQ data will be shown.
+The following section will detail the processing steps in the ISR simulator. The first part will detail the creation of the inphase and quadrature data (IQ data). The next will detail the processing used to create the estimates of the ACFs, which will also be refered to as lag products.
 
 \subsection{Inputs}
 The simulator takes as input a discretized set of ionosphere parameters in Cartesian coordinates and which can change with time. Each point in time and space has a set of parameters that allow it to make an ISR spectrum using the methods detailed in the previous chapter. The spectrums are then created so every point in space and time will have its own intrinsic ISR spectrum. The radar will then act on these spectrums as a linear operator and average them together in time and space using the beam patterns and pulse pattern. 
 
 Using the fact that any spatial correlations between the electron density fluctuations will be on the order of the Debye length \cite{farley1969}, the intrinsic ISR spectrums will be first averaged over a resolution cell for the radar. 
 
-\subsection{Signal Processing}
+\subsection{ IQ Data Creation}
 The IQ data is created by taking a complex white Gaussian noise process and shaping the spectrum using a filter. Each point in space and time will have a separate noise plant and filter which is derived from the plasma and radar parameters parameters, like that seen in Figure \ref{fig:IQdiagram}. 
 %The 3-D ISR simulator creates data by deriving a time filter from the autocorrelation functions and applying them to complex white Gaussian noise generators. Stating this in another way, every point in time and space has a noise plant and filter structure as in Figure \ref{fig:IQdiagram}. 
 \begin{figure}[h!]
@@ -261,7 +269,7 @@ x_f(n) = x(n) +\sqrt{\frac{k_bT_{sys}B}{2}} w(n), \quad w(n)\sim CN(0,1)
 A full diagram of the model can be seen in Figure \ref{fig:isrdiag}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Chapter 3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{ISR Processing}
+\subsection{ACF Estimation}
 
 After the IQ data has been created it is processed to create estimates of the ACF at desired points of space. This type of processing has been detailed and analyzed in \citep{farley1969} and in other publications. This processing follows a flow chart seen in Figure \ref{fig:chain}.
 
@@ -273,8 +281,6 @@ After the IQ data has been created it is processed to create estimates of the AC
 \end{figure}
 
 
-
-\subsection{Lag Product Formation}
 The lag product formation is an initial estimate of the autocorrelation function. The sampled I/Q can be represented as $x(n) \in\mathbb{C}^N$ where $N$ is the number of samples in an inter pulse period. For each range gate $m\in 0,1,...M-1$ an autocorrelation is estimated for each lag of $l \in 0,1...,L-1$.  To get better statistics this operation is performed for each pulse $j\in 0,1,...J-1$ and then summed over the $J$ pulses. The entire operation to form the initial estimate of $\hat{R}(m,l)$ can be seen in Equation \ref{lagpro}:
 
 \begin{equation}
@@ -293,7 +299,6 @@ This specific type of lag product formation is detailed in \citep{farley1969} an
 
 \noindent With out the $\frac{1}{L-l}$ term the estimator will be windowed with a triangular function thus impacting the estimate of the ISR spectrum as this will act as a convolution in the frequency domain. This bias is taken into account in \citep{farley1969} but it is simply wrapped up into the ambiguity function. 
 
-\subsection{Summation Rules}
 Applying a summation rule is usually the next step in creating an estimate of the autocorrelation function.  This is done to get a constant range ambiguity across all of the lags for long pulse experiment\citep{nygren1996}. It also equalizes the statistics for each lag as the higher lags have greater variance. 
 
 An example summation rule for a forward product is shown in Figure \ref{fig:sumrule}. In the figure the image on the left is a basic representation of an ambiguity function of a long pulse.  Its mirrored on the right with red bars which would show the integration area under it so the ambiguity function will be of equal size in range.  
@@ -318,7 +323,6 @@ Lastly an estimate of the noise correlation is subtracted out of $\hat{R}(m,l)$,
 \label{fig:sumrule}
 \end{figure}
 
-\subsection{Nonlinear Least-Squares Fitting}
 After the final estimation of the spectrum is complete the nonlinear least squares fitting takes place to determine the parameters.  The basic class of nonlinear least-squares problems as seen in \citep{kayvol1}, are shown in Equation \ref{nlls},
 
 \begin{equation}
