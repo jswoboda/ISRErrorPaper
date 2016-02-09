@@ -150,12 +150,9 @@ The raw incoherent scatter signal is itself is a random process. As such it is n
 \label{eqn:basicerror}
 \left\langle \left| \hat{R}(\tau) -R(\tau) \right|^2 \right\rangle \propto \frac{1}{\sqrt{J}},
 \end{equation}
-\noindent where $R(\tau)$ is the ACF as a function of lag $\tau$, $\hat{R}(\tau)$ is its estimate and $J$ is the number of samples or pulses averaged together to create the estimate.
+\noindent where $R(\tau)$ is the ACF as a function of lag $\tau$, $\hat{R}(\tau)$ is its estimate and $J$ is the number of samples or pulses averaged together to create the estimate. 
 
-The variance of this signal is further degraded once noise is added. 
-
-As one adds more and more pulses we can assume that the signal is Gaussian like due to the central limit theorem. 
-
+The variance of this signal is further degraded once noise from the sensor is added. The noise from the sensor is assumed to be uncorrelated to the signal. Thus the error from the noise can simply be added to the error from the inherent fluctuations in the signal. 
 \subsection{Space-Time Errors}
 
 The errors created through the ambiguity function lead to a blurring or averaging of ACFs from different points in time and space. This is similar to a blurring operator one might see in a camera or numerous other types of sensors. With ISR this can be more problematic due to the non-linear fitting step.
@@ -182,16 +179,14 @@ These two sources of error create a significant trade off between statistical va
  
 \section{Simulator}
 
-The following section will detail the processing steps in the ISR simulator. The first part will detail the creation of the inphase and quadrature data (IQ data). The next will detail the processing used to create the estimates of the ACFs, which will also be refered to as lag products.
+The following section will detail the processing steps in the ISR simulator. The first part will detail the creation of the inphase and quadrature data (IQ data). The next will detail the processing used to create the estimates of the ACFs, which will also be referred to as lag products.
 
 \subsection{Inputs}
-The simulator takes as input a discretized set of ionosphere parameters in Cartesian coordinates and which can change with time. Each point in time and space has a set of parameters that allow it to make an ISR spectrum using the methods detailed in the previous chapter. The spectrums are then created so every point in space and time will have its own intrinsic ISR spectrum. The radar will then act on these spectrums as a linear operator and average them together in time and space using the beam patterns and pulse pattern. 
-
-Using the fact that any spatial correlations between the electron density fluctuations will be on the order of the Debye length \cite{farley1969}, the intrinsic ISR spectrums will be first averaged over a resolution cell for the radar. 
+The simulator takes as input a discretized set of ionosphere parameters in Cartesian coordinates and which can change with time. Each point in time and space has a set of parameters that allow it to make an ISR spectrum. For details on creating these spectra see \citep{kudeki:milla:1} and \citep{kudeki:milla:2}. The spectra are then created so every point in space and time will have its own intrinsic ISR spectrum. The radar will then act on these spectrums as a linear operator and average them together in time and space using the beam patterns and pulse pattern. This is an acceptable because spatial correlations between the electron density fluctuations will be on the order of the Debye length \cite{farley1969},
 
 \subsection{ IQ Data Creation}
 The IQ data is created by taking a complex white Gaussian noise process and shaping the spectrum using a filter. Each point in space and time will have a separate noise plant and filter which is derived from the plasma and radar parameters parameters, like that seen in Figure \ref{fig:IQdiagram}. 
-%The 3-D ISR simulator creates data by deriving a time filter from the autocorrelation functions and applying them to complex white Gaussian noise generators. Stating this in another way, every point in time and space has a noise plant and filter structure as in Figure \ref{fig:IQdiagram}. 
+
 \begin{figure}[h!]
 \centering
 \includegraphics[width=4in]{diagrampart}
@@ -205,9 +200,7 @@ The radar samples the space in a spherical coordinate system with discrete range
 \begin{figure}[!t]
 \centering
 \includegraphics[width=2in]{beamsampling}
-% where an .eps filename suffix will be assumed under latex, 
-% and a .pdf suffix will be assumed for pdflatex; or what has been declared
-% via \DeclareGraphicsExtensions.
+
 \caption{Beam Sampling Diagram}
 \label{fig:beamdia}
 \end{figure}
