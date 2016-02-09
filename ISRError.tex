@@ -133,7 +133,7 @@ Application of electronically steerable array (ESA) technology to ISR has been a
 One benefit of ESA based ISR is that volumetric reconstructions of plasma parameters can be created \citep{Semeter2009738, Nicolls:2007ie, dahlgren2012di}. These systems also have ben used to reconstuct full vector parameters using estimates of the ion velocity which can be determined using the Doppler shift of spectra \citep{butler:imagingfregiondrifts,RDS:RDS20195}. Still it has been shown that the volumetric reconstructions can yield measurements with a high degree of ambiguity \citep{Dahlgren:2012dq}. Similar type of ambiguities have been seen when using systems with a dish antenna as well. In \citet{Semeter:2005fo} the authors to show an undersampling in the horizontal dimension, but are able to compensate by changing processing parameters.
 
 With these new capabilities for the ISR community a discussion of the possible sources of uncertainty and error is needed. These sources of error and ambiguity though are difficult understand in the context of experiment design. With that in mind it may be useful to simulate the ISR measurement process before an experiment is attempted. With that in mind this paper will show how one could simulate an experiment, the outline of this is a follows. After listing the possible sources of error and ambiguity in ISR our simulation method will be detailed. After which  a number of examples of the simulator will be shown. These example range from a stationary column of enhanced electron density to the output of a self-consistent multi-fluid ionosphereic model \citep{semeter:plasmatransport2012}. These examples will illustrate how one could develop their experiments in a systematic way in order make measurements that best reflect the physics present in the ionosphere.
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ISR Errors}
 
 In this section the main sources of ISR errors will be discussed. The first part of this discussion will cover the statistical errors that arise from the ISR process. After that the errors from the spatial and temporal ambiguity of ISR systems will be shown. This in the end will lead to trade offs that the experiment designer will have to face.
@@ -153,6 +153,7 @@ The raw incoherent scatter signal is itself is a random process. As such it is n
 \noindent where $R(\tau)$ is the ACF as a function of lag $\tau$, $\hat{R}(\tau)$ is its estimate and $J$ is the number of samples or pulses averaged together to create the estimate. 
 
 The variance of this signal is further degraded once noise from the sensor is added. The noise from the sensor is assumed to be uncorrelated to the signal. Thus the error from the noise can simply be added to the error from the inherent fluctuations in the signal. 
+
 \subsection{Space-Time Errors}
 
 The errors created through the ambiguity function lead to a blurring or averaging of ACFs from different points in time and space. This is similar to a blurring operator one might see in a camera or numerous other types of sensors. With ISR this can be more problematic due to the non-linear fitting step.
@@ -176,16 +177,27 @@ The kernel is a separable function when the spatial coordinates are spherical, w
 \noindent where $G(t_s,t)$ is the kernel for the time dimension, $F(\theta_s,\phi_s,\theta,\phi)$ is radar beam shape which acts as a kernel in azimuth and elevation, and $W(\tau_s,r_s,\tau,r) $ which is the range ambiguity function which acts as a kernel along range $r$ and lag $\tau$. The derivation of this operator can be seen in \citet{RDS:RDS20236}.
 
 These two sources of error create a significant trade off between statistical variation of the signal and spatial and temporal resolution of the signal. In order to reduce the statical fluctuations in the signal pulses need to be averaged together. This is necessary even for the case where there is no noise, in a sense the infinite signal to noise ratio (SNR) case. This integration is mainly done over time but can be done over space as well. For phased array systems this mixture of spatial and temporal averaging can be done by averaging together beams. This though will reduce cross range resolution but could possibly improve temporal resolution. It is for this reason these types of trade offs can best be explored through simulation, which will be covered in the following sections.
- 
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Simulator}
 
-The following section will detail the processing steps in the ISR simulator. The first part will detail the creation of the inphase and quadrature data (IQ data). The next will detail the processing used to create the estimates of the ACFs, which will also be referred to as lag products.
+The following section will detail the processing steps in the ISR simulator. The simulator allows one to analyze different experiment scenarios by implementing the ISR measurement process with the error from both from both space-time ambiguity and the statistical error. The space-time ambiguity is modelled using a coordinate transform and the the pulse as a windo and the statiscal error is taken into account by creating complex shaped Gaussian noise. The first part will detail the how filters are created to make the noise. The next one will cover creation of the in-phase and quadrature data (IQ data). The last portion will detail the processing used to create the estimates of the ACFs, which will also be referred to as lag products.
 
-\subsection{Inputs}
-The simulator takes as input a discretized set of ionosphere parameters in Cartesian coordinates and which can change with time. Each point in time and space has a set of parameters that allow it to make an ISR spectrum. For details on creating these spectra see \citep{kudeki:milla:1} and \citep{kudeki:milla:2}. The spectra are then created so every point in space and time will have its own intrinsic ISR spectrum. The radar will then act on these spectrums as a linear operator and average them together in time and space using the beam patterns and pulse pattern. This is an acceptable because spatial correlations between the electron density fluctuations will be on the order of the Debye length \cite{farley1969},
+\subsection{Creating Filters}
+The simulator takes as input a discretized set of ionosphere parameters in Cartesian coordinates, which change with time. The first step in the simulator will be from each set of parameters an ISR spectrum is calculated, Thus for each point in time in space for the simulator there will be an intrinsic ISR spectrum. For details on creating these spectra see \citet{kudeki:milla:1} and \citet{kudeki:milla:2}. 
+
+Once the spectra have been created the simulator changes to a spherical coordinate system. This coordinate change acts as a linear operator in the spatial dimensions as the spectra are weighted and averaged. The weighting in azimuth and elevation is determined by the antenna beam pattern while the weighting in range is simply just a test of whether the spectra are with in the range gate. If there are no spectra within the range gate the spectra with the closest location is selected. This method to create the spectra for each point is an acceptable approximation because spatial correlations between the electron density fluctuations will be on the order of the Debye length \citep{farley1969}, which is significantly smaller than the beam width or range gate size. The entire process of the spatial sampling is shown in the simplified diagram in Figure \ref{fig:beamdia}.
+ 
+Once the spectrum at the specific point in range and angle space has been determined, the filter $H_m(\omega)$, is created by simply taking the square root of the spectrum, $S_m(\omega | \: \bm{\theta})$,
+
+\begin{equation}
+\label{eq1}
+H_m(\omega) = \sqrt{S_m(\omega | \: \bm{\theta})}.
+\end{equation}
+
+\noindent The term $ \bm{\theta}$ refers to the different plasma and system parameters needed to make the spectrum.
 
 \subsection{ IQ Data Creation}
-The IQ data is created by taking a complex white Gaussian noise process and shaping the spectrum using a filter. Each point in space and time will have a separate noise plant and filter which is derived from the plasma and radar parameters parameters, like that seen in Figure \ref{fig:IQdiagram}. 
+The IQ data is created by taking a complex white Gaussian noise process and shaping it using a filter. As seen in the previous subsection, each point in space and time will have a separate noise plant and filter which is derived from the plasma and radar parameters parameters, like that seen in Figure \ref{fig:IQdiagram}. 
 
 \begin{figure}[h!]
 \centering
@@ -194,25 +206,15 @@ The IQ data is created by taking a complex white Gaussian noise process and shap
 \label{fig:IQdiagram}
 \end{figure}
 
-The radar samples the space in a spherical coordinate system with discrete range and beam positions. For each range gate and beam the different spectrums are averaged together together. In range this is simply a window the length of a range gate. Across the azimuth and elevation space the beam pattern for the system is used. In order to calculate the beam pattern for the AMISR system the method detailed in the appendix of \citep{RDS:RDS20236}. The entire process of the spatial sample is shown in the simplified diagram in Figure \ref{fig:beamdia}.
-
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=2in]{beamsampling}
-
 \caption{Beam Sampling Diagram}
 \label{fig:beamdia}
 \end{figure}
 
-Once the spectrum has been created the filter, $H_m(\omega)$, is created by simply taking the square root of the spectrum, $S_m(\omega | \: \bm{\theta})$
-
-\begin{equation}
-\label{eq1}
-H_m(\omega) = \sqrt{S_m(\omega | \: \bm{\theta})}.
-\end{equation}
-
-\noindent The term $ \bm{\theta}$ refers to the different plasma and system parameters needed to make the spectrum. Complex white Gaussian noise, CWGN, ($w(k)\sim CN(0,\mathbf{I})$) is then pushed though each of the filters and then windowed by the pulse creating the following:   
+Complex white Gaussian noise, CWGN, ($w(k)\sim CN(0,\mathbf{I})$) is then pushed though each of the filters and then windowed by the pulse creating the following:   
 
 \begin{equation}
 \label{eq2}
@@ -262,7 +264,7 @@ x_f(n) = x(n) +\sqrt{\frac{k_bT_{sys}B}{2}} w(n), \quad w(n)\sim CN(0,1)
 \noindent where $k_b$ is Boltzmann's constant, $T_{sys}$ is the system temperature and $B$ is the system bandwidth.
 A full diagram of the model can be seen in Figure \ref{fig:isrdiag}.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%Chapter 3%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{ACF Estimation}
 
 After the IQ data has been created it is processed to create estimates of the ACF at desired points of space. This type of processing has been detailed and analyzed in \citep{farley1969} and in other publications. This processing follows a flow chart seen in Figure \ref{fig:chain}.
@@ -363,11 +365,15 @@ Using the scipy optimize tool box the fitted parameters can determined using the
 
 \noindent where $N_{\mathbf{p}}$ is the number of parameters being fit. The variances of the parameters are then taken as the diagonals of the matrix. Often though the Hessian matrix is undefined so it can not be inverted so the error term is then set as a NaN.
 
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Simulation Examples}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{acknowledgments}
 This work was supported by the National Science Foundation, through Aeronomy Program Grant AGS-1339500 to Boston University and Cooperative Agreement AGS-1242204 between the NSF and the Massachusetts Institute of Technology, and by the Air Force Office of Scientific Research under contract FA9550-12-1-018.   The authors are grateful to the International Space Science Institute (ISSI, Bern, Switzerland) for sponsoring a series of workshops from which the idea for this work emerged. 
 
