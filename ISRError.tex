@@ -101,13 +101,14 @@ Boston University, Boston, Massachusetts, USA.}
 % >> the body of the abstract.
 
 \begin{abstract}
-As with any sensing modality incoherent scatter radar (ISR) has inherent errors and uncertainty in its measurements. A number of theoretical aspects behind these errors have been documented in the literature, which leads to a trade off between spatial and temporal resolution and statistical accuracy. 
+As with any sensing modality, incoherent scatter radar (ISR) has inherent errors and uncertainty in its measurements. A number of theoretical aspects behind these errors have been documented in the literature. The main sources of this error comes from spatiotemporal ambiguities and statistical errors that arise from the inherent fluctuation of the medium. 
 
-Resource allocation and experiment design. Understand degrees of freedom in design.
+From the point of view from an experiment designer these sources of error can lead to a trade off between spatial and temporal resolution and statistical accuracy. The designer then has to work with questions dealing with resource allocation, such as how long to dwell in a specific direction. These questions can be rather hard to solve because there are a large number of degrees of freedom when designing an experiment.
 
-The recent application of phased array antennas with pulse to pulse steering allow for greater flexibility in processing along with making it is now possible to create full volumetric reconstructions of plasma parameters. These phased array systems are used heavily in the high latitude region of the ionosphere, which can have plasma phenomena that is highly variable in space and time. In order to develop an experiment to observe the plasma phenomena researchers have to wade through a large number of degrees of freedom. In order to properly allocate resources in some cases researchers may need to simulate the experiment.
+With the recent application of phased array antennas with pulse to pulse steering, the number of degrees of freedom in experiment design have exploded. These types of systems allow for greater flexibility in processing along with making it is now possible to create full volumetric reconstructions of plasma parameters. These phased array systems are used heavily in the high latitude region of the ionosphere, which can have plasma phenomena that is highly variable in space and time. In order to develop an experiment to observe the plasma phenomena researchers have to wade through a large number of degrees of freedom. In order to properly allocate resources in some cases researchers may need to simulate the experiment.
 
-This publication will show a simulator that can take a field of plasma parameters and create ISR data at the IQ level and then process it to show a possible reconstruction of the parameters field. This simulator can be used to create ISR data to test new algorithms to better reconstruct the plasma parameter field. It can also give researchers a new tool that can assist them in the set up their experiments. This simulation will overall give a full forward model description of the ISR reconstruction.
+This publication will show a simulator that can take a field of plasma parameters and create ISR data at the IQ level and then process it to show a possible reconstruction of the parameters field. It can give researchers a new tool that can assist them in the set up their experiments. To show the utility of the simulator for experiment design for one of the examples we will data from a self-consistent multi-ionic fluid transport model. This will demonstrate the impact the forward model of the ISR and give an example of how to iterate through different simulation set ups. 
+
 \end{abstract}
 
 %% ------------------------------------------------------------------------ %%
@@ -185,7 +186,14 @@ The following section will detail the processing steps in the ISR simulator. The
 \subsection{Creating Filters}
 The simulator takes as input a discretized set of ionosphere parameters in Cartesian coordinates, which change with time. The first step in the simulator will be from each set of parameters an ISR spectrum is calculated, Thus for each point in time in space for the simulator there will be an intrinsic ISR spectrum. For details on creating these spectra see \citet{kudeki:milla:1} and \citet{kudeki:milla:2}. 
 
-Once the spectra have been created the simulator changes to a spherical coordinate system. This coordinate change acts as a linear operator in the spatial dimensions as the spectra are weighted and averaged. The weighting in azimuth and elevation is determined by the antenna beam pattern while the weighting in range is simply just a test of whether the spectra are with in the range gate. If there are no spectra within the range gate the spectra with the closest location is selected. This method to create the spectra for each point is an acceptable approximation because spatial correlations between the electron density fluctuations will be on the order of the Debye length \citep{farley1969}, which is significantly smaller than the beam width or range gate size. The entire process of the spatial sampling is shown in the simplified diagram in Figure \ref{fig:beamdia}.
+Once the spectra have been created the simulator changes to a spherical coordinate system. This coordinate change acts as a linear operator in the spatial dimensions as the spectra are weighted and averaged. The weighting in azimuth and elevation is determined by the antenna beam pattern while the weighting in range is simply just a test of whether the spectra are with in the range gate. If there are no spectra within the range gate a nearest neighbor rule is used which selects the closest point in Cartesian space. This method to create the spectra for each point is an acceptable approximation because spatial correlations between the electron density fluctuations will be on the order of the Debye length \citep{farley1969}, which is significantly smaller than the beam width or range gate size. The entire process of the spatial sampling is shown in the simplified diagram in Figure \ref{fig:beamdia}.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=2in]{beamsampling}
+\caption{Beam Sampling Diagram}
+\label{fig:beamdia}
+\end{figure}
  
 Once the spectrum at the specific point in range and angle space has been determined, the filter $H_m(\omega)$, is created by simply taking the square root of the spectrum, $S_m(\omega | \: \bm{\theta})$,
 
@@ -194,10 +202,10 @@ Once the spectrum at the specific point in range and angle space has been determ
 H_m(\omega) = \sqrt{S_m(\omega | \: \bm{\theta})}.
 \end{equation}
 
-\noindent The term $ \bm{\theta}$ refers to the different plasma and system parameters needed to make the spectrum.
+\noindent The term $ \bm{\theta}$ refers to the plasma parameters needed to make the spectrum. This filter then is used to create the synthetic IQ data.
 
 \subsection{ IQ Data Creation}
-The IQ data is created by taking a complex white Gaussian noise process and shaping it using a filter. As seen in the previous subsection, each point in space and time will have a separate noise plant and filter which is derived from the plasma and radar parameters parameters, like that seen in Figure \ref{fig:IQdiagram}. 
+The basic idea behind creating the IQ data is to take a complex white Gaussian noise process and shape the spectrum of its output using a filter. As seen in the previous subsection, each point in space and time will have a separate noise plant and filter which is derived from the plasma and radar parameters parameters, like that seen in Figure \ref{fig:IQdiagram}. 
 
 \begin{figure}[h!]
 \centering
@@ -206,22 +214,14 @@ The IQ data is created by taking a complex white Gaussian noise process and shap
 \label{fig:IQdiagram}
 \end{figure}
 
-
-\begin{figure}[!t]
-\centering
-\includegraphics[width=2in]{beamsampling}
-\caption{Beam Sampling Diagram}
-\label{fig:beamdia}
-\end{figure}
-
-Complex white Gaussian noise, CWGN, ($w(k)\sim CN(0,\mathbf{I})$) is then pushed though each of the filters and then windowed by the pulse creating the following:   
+The creation of one set of IQ data using a CWGN, ($w(k)\sim CN(0,\mathbf{I})$) can be represented as the following:   
 
 \begin{equation}
 \label{eq2}
 y_m (k)= s(k)\left[h_m(k)*w(k)\right],
 \end{equation}
  
-\noindent where $s(k)$ is the pulse shape. The application of this filter is actually done in the frequency domain. This is possible because the Discrete Fourier Transform (DFT) of a vector of CWGN is also CWGN. The only difference is that there is a change in the variance, which is tied to the number of points used in the DFT \citep{kayvol1}. With this in mind Equation \ref{eq2} can be implemented as the following,
+\noindent where $s(k)$ is the pulse shape. The pulse shape acts as a window, as the plasma will only reflect energy during the time it is illuminated. The application of this filter is actually done in the frequency domain. This is possible because the Discrete Fourier Transform (DFT) of a vector of CWGN is also CWGN. The only difference is that there is a change in the variance, which is tied to the number of points used in the DFT \citep{kayvol1}. With this in mind Equation \ref{eq2} can be implemented as the following,
 
 \begin{equation}
 \label{eq:fftfilt}
@@ -326,14 +326,16 @@ After the final estimation of the spectrum is complete the nonlinear least squar
 \label{nlls}
 \end{equation}
 
-In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final estimate of the autocorrelation function $\hat{R}_f(m,l)$ at a specific range or its spectrum $\hat{S}_f(m,\omega)$.  The parameter vector $\mathbf{P}$ would be the plasma parameters $N_e$, $T_e$, $T_i$ and various other parameters including ion velocities. The fit function $\bm{\theta}$ is the IS spectrum calculated from models, such as once seen in \citep{kudeki:milla:1}, smeared by the ambiguity function.  In the case of the long pulse the ambiguity can be simply applied by multiplying it with the autocorrelation function $R(l)$, if the summation rule is properly applied. The correlation matrix $\bm{\Sigma}$ is often realized as a diagonal matrix for many ISR systems the variance of the lags or each point of the spectrum being the values. The variance of the ACF estimator can be estimated using the following,
+In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final estimate of the autocorrelation function $\hat{R}_f(m,l)$ at a specific range or its spectrum $\hat{S}_f(m,\omega)$.  The parameter vector $\mathbf{P}$ would be the plasma parameters $N_e$, $T_e$, $T_i$ and various other parameters including ion velocities. The fit function $\bm{\theta}$ is the IS spectrum calculated from models, such as once seen in \citep{kudeki:milla:1}, smeared by the ambiguity function.  In the case of the long pulse the ambiguity can be simply applied by multiplying it with the autocorrelation function $R(l)$, if the summation rule is properly applied. 
 
-\begin{equation}
-\label{eqn:acfvar}
-\sigma_{\hat{R}(l)}^2=\frac{1}{JL}\displaystyle \sum_{m=-(L-l-1)}^{L-l-1}\left(\frac{L-|m|+1}{L}\right)\left(|\hat{R}(m)|^2 +|\hat{R}(m+l)\hat{R}(m-l)|\right) + \hat{N}^2
-\end{equation}
-
-\noindent where $N$ is the estimated noise power. To estimate the spectrum variance the matrix $\bm{\Sigma}$ is transformed in to the Fourier domain using FFTs (FFT on the columns and IFFT on the rows) so as to model the $\mathbf{F}\bm{\Sigma} \mathbf{F}^*$ matrix operation. 
+%The correlation matrix $\bm{\Sigma}$ is often realized as a diagonal matrix for many ISR systems the variance of the lags or each point of the spectrum being the values. The variance of the ACF estimator can be estimated using the following,
+%
+%\begin{equation}
+%\label{eqn:acfvar}
+%\sigma_{\hat{R}(l)}^2=\frac{1}{JL}\displaystyle \sum_{m=-(L-l-1)}^{L-l-1}\left(\frac{L-|m|+1}{L}\right)\left(|\hat{R}(m)|^2 +|\hat{R}(m+l)\hat{R}(m-l)|\right) + \hat{N}^2
+%\end{equation}
+%
+%\noindent where $N$ is the estimated noise power. To estimate the spectrum variance the matrix $\bm{\Sigma}$ is transformed in to the Fourier domain using FFTs (FFT on the columns and IFFT on the rows) so as to model the $\mathbf{F}\bm{\Sigma} \mathbf{F}^*$ matrix operation. 
 
 
 
