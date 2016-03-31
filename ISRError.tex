@@ -85,11 +85,12 @@
 \title{Observability of Ionospheric Space-Time Structure with ISR:   A simulation study }
 %%%%%%%%%%%%%% Author Info %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \authors{John Swoboda,\altaffilmark{1}
-Joshua Semeter,\altaffilmark{1} Philip Erickson \altaffilmark{2}}
+Joshua Semeter,\altaffilmark{1} Matthew Zettergren,  \altaffilmark{2} Philip Erickson, \altaffilmark{3}}
 
 \altaffiltext{1}{Department of Electrical \& Computer Engineering,
 Boston University, Boston, Massachusetts, USA.}
-\altaffiltext{2}{Haystack Observatory, Massachusetts Institute of Technology, Westford, Massachusetts, USA.}
+\altaffiltext{2}{Physical Sciences Department, Embry-Riddle Aeronautical University, Daytona Beach, Florida, USA.}
+\altaffiltext{3}{Haystack Observatory, Massachusetts Institute of Technology, Westford, Massachusetts, USA.}
 %%%%%%%%%%%%%% Abstract %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% ------------------------------------------------------------------------ %%
 %
@@ -358,7 +359,7 @@ In the past ISR researchers have used the Levenberg-Marquart algorithm to fit da
 
 \noindent where $\mathbf{J}$ is the Jacobian matrix $\partial \bm{\theta}/\partial \mathbf{p}$ \citep{levenberg1944,marquardt:1963}. 
 
-Using the scipy optimize tool box the fitted parameters can determined using the leastsquares function. This function outputs the fitted parameters along with a covariance matrix. This matrix is calculated using a numerical approximation to the Jacobian matrix that the function uses to determine the solution. The Hessian, $\mathbf{H}$ is then calculated by using the Jacobian and then inverted to get the covariance matrix. Due to the way the numerical routines solve the problem this matrix must be multiplied by the error between the estimated parameters and the data,
+Using the covariance matrix from the fitted parameters an overall error estimate can be achieved. This matrix is calculated using a numerical approximation to the Jacobian matrix that the function uses to determine the solution. The Hessian, $\mathbf{H}$ is then calculated by using the Jacobian and then inverted to get the covariance matrix. Due to the way the numerical routines solve the problem this matrix must be multiplied by the error between the estimated parameters and the data,
 
 \begin{equation}
 \label{eqn:jacinv}
@@ -369,7 +370,7 @@ Using the scipy optimize tool box the fitted parameters can determined using the
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Simulation Examples}
-
+To show the impact of the ambiguity function and statistical errors on the measurement the ISR simulator is run with a realistic example. Using the output of a multifluid model \citep{semeter:plasmatransport2012}. The specific example used comes from \cite{Perry:2015jf}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
