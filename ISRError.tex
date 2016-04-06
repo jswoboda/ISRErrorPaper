@@ -258,7 +258,7 @@ x(n) = \displaystyle\sum\limits_{m =0}^{M-1} \alpha(m)y_m(n-m),
 \noindent where $\alpha(m) = \sqrt{P_r(m)}/\hat{\sigma_y}$ and $\hat{\sigma_y}$ is the estimate of the standard deviation of $y_m(k)$. Lastly, to model the inherent noise in the radar and environment more complex Gaussian noise is added
 
 \begin{equation}
-\label{eq4}
+\label{eq:addnoise}
 x_f(n) = x(n) +\sqrt{\frac{k_bT_{sys}B}{2}} w(n), \quad w(n)\sim CN(0,1)
 \end{equation}
 
@@ -278,14 +278,14 @@ After the IQ data has been created it is processed to create estimates of the AC
 \end{figure}
 
 
-The lag product formation is an initial estimate of the autocorrelation function. The sampled I/Q can be represented as $x(n) \in\mathbb{C}^N$ where $N$ is the number of samples in an inter pulse period. For each range gate $m\in 0,1,...M-1$ an autocorrelation is estimated for each lag of $l \in 0,1...,L-1$.  To get better statistics this operation is performed for each pulse $j\in 0,1,...J-1$ and then summed over the $J$ pulses. The entire operation to form the initial estimate of $\hat{R}(m,l)$ can be seen in Equation \ref{lagpro}:
+The lag product formation is an initial estimate of the autocorrelation function. The sampled I/Q can be represented as $x(n) \in\mathbb{C}^N$ where $N$ is the number of samples in an inter pulse period. For each range gate $m\in 0,1,...M-1$ an autocorrelation is estimated for each lag of $l \in 0,1...,L-1$.  To get better statistics this operation is performed for each pulse $j\in 0,1,...J-1$ and then summed over the $J$ pulses. The entire operation to form the initial estimate of $\hat{R}(m,l)$ can be seen in Equation \ref{eq:lagpro}:
 
 \begin{equation}
-\label{lagpro}
+\label{eq:lagpro}
 \hat{R}(m,l) = \displaystyle\sum\limits_{j=0}^{J-1} x(m-\lfloor l/2\rfloor,j)x^*(m+\lceil l/2 \rceil,j).
 \end{equation}
 
-The case shown in Equation \ref{lagpro} is a centered lag product, other types of lag products calculations are available but generally a centered product is used. In the centered lag product case range gate index $m$ and sample index $n$ can be related by $m=n-\lfloor L/2\rfloor$ and the maximum lag and sample relation is $M=N-\lceil L/2 \rceil$.  This lag product formation is the first step in taking a discrete Wigner Distribution \citep{TFAcohen}.
+The case shown in Equation \ref{eq:lagpro} is a centered lag product, other types of lag products calculations are available but generally a centered product is used. In the centered lag product case range gate index $m$ and sample index $n$ can be related by $m=n-\lfloor L/2\rfloor$ and the maximum lag and sample relation is $M=N-\lceil L/2 \rceil$.  This lag product formation is the first step in taking a discrete Wigner Distribution \citep{TFAcohen}.
 
 This specific type of lag product formation is detailed in \citep{farley1969} and had been referred to as unbiased. This terminology does differ from what is used in statistic signal processing literature such as \citep{randomsigshanmugan} where the unbiased autocorrelation function estimate is carried out as so,
 
@@ -305,7 +305,7 @@ In the processing this is basically a summing of lags from different ranges.  Th
 Lastly an estimate of the noise correlation is subtracted out of $\hat{R}(m,l)$, which is defined as $\hat{R}_w(m,l)$:
 
 \begin{equation}
-\label{lagpro}
+\label{eq:lagpronoise}
 \hat{R}_w(m,l) = \displaystyle\sum\limits_{j=0}^{J-1} w(m_w-\lfloor l/2\rfloor,j)w^*(m_w+\lceil l/2 \rceil,j),
 \end{equation}
 
@@ -370,7 +370,7 @@ Using the covariance matrix from the fitted parameters an overall error estimate
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Simulation Examples}
-To show the impact of the ambiguity function and statistical errors on the measurement the ISR simulator is run with a realistic example. Using the output of a multifluid model \citep{semeter:plasmatransport2012}. The specific example used comes from \cite{Perry:2015jf}.
+To demonstrate the impact of the ambiguity function and statistical errors on measurements from ISR, our simulator is run with a realistic example. Using the output of a multifluid model \citep{semeter:plasmatransport2012}. The specific example used comes from \cite{Perry:2015jf}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
