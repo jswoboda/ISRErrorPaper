@@ -106,7 +106,7 @@ As with any sensing modality, incoherent scatter radar (ISR) has inherent errors
 
 From the point of view from an experiment designer these sources of error can lead to a trade off between spatial and temporal resolution and statistical accuracy. The designer then has to work with questions dealing with resource allocation, such as how long to dwell in a specific direction. These questions can be rather hard to solve because there are a large number of degrees of freedom when designing an experiment.
 
-With the recent application of phased array antennas with pulse to pulse steering, the number of degrees of freedom in experiment design have exploded. These types of systems allow for greater flexibility in processing along with making it is now possible to create full volumetric reconstructions of plasma parameters. These phased array systems are used heavily in the high latitude region of the ionosphere, which can have plasma phenomena that is highly variable in space and time. In order to develop an experiment to observe the plasma phenomena researchers have to wade through a large number of degrees of freedom. In order to properly allocate resources in some cases researchers may need to simulate the experiment.
+With the recent application of phased array antennas with pulse to pulse steering, the number of degrees of freedom in experiment design have exploded. These types of systems, like AMISR and EISCAT-3D, allow for greater flexibility in processing along with making it is now possible to create full volumetric reconstructions of plasma parameters. These phased array systems are used heavily in the high latitude region of the ionosphere, which can have plasma phenomena that is highly variable in space and time. In order to develop an experiment to observe the plasma phenomena researchers have to wade through a number of different trade offs. To understand all of these trade offs may need to simulate the experiment.
 
 This publication will show a simulator that can take a field of plasma parameters and create ISR data at the IQ level and then process it to show a possible reconstruction of the parameters field. It can give researchers a new tool that can assist them in the set up their experiments. To show the utility of the simulator for experiment design for one of the examples we will data from a self-consistent multi-ionic fluid transport model. This will demonstrate the impact the forward model of the ISR and give an example of how to iterate through different simulation set ups. 
 
@@ -182,9 +182,10 @@ These two sources of error create a significant trade off between statistical va
  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Simulator}
 
-The following section will detail the processing steps in the ISR simulator. The simulator allows one to analyze different experiment scenarios by implementing the ISR measurement process with the error from both from both space-time ambiguity and the statistical error. The space-time ambiguity is modelled using a coordinate transform and the the pulse as a windo and the statiscal error is taken into account by creating complex shaped Gaussian noise. The first part will detail the how filters are created to make the noise. The next one will cover creation of the in-phase and quadrature data (IQ data). The last portion will detail the processing used to create the estimates of the ACFs, which will also be referred to as lag products.
+The following section will detail the processing steps in the ISR simulator. The simulator allows one to analyze different experiment scenarios by implementing the ISR measurement process with the error from both from both space-time ambiguity and the statistical error. The space-time ambiguity is modeled using a coordinate transform and the the pulse as a windowed and the statistical error is taken into account by creating complex shaped Gaussian noise. The first part will detail the how filters are created to make the noise. The next one will cover creation of the in-phase and quadrature data (IQ data). The last portion will detail the processing used to create the estimates of the ACFs, which will also be referred to as lag products.
 
 \subsection{Creating Filters}
+
 The simulator takes as input a discretized set of ionosphere parameters in Cartesian coordinates, which change with time. The first step in the simulator will be from each set of parameters an ISR spectrum is calculated, Thus for each point in time in space for the simulator there will be an intrinsic ISR spectrum. For details on creating these spectra see \citet{kudeki:milla:1} and \citet{kudeki:milla:2}. 
 
 Once the spectra have been created the simulator changes to a spherical coordinate system. This coordinate change acts as a linear operator in the spatial dimensions as the spectra are weighted and averaged. The weighting in azimuth and elevation is determined by the antenna beam pattern while the weighting in range is simply just a test of whether the spectra are with in the range gate. If there are no spectra within the range gate a nearest neighbor rule is used which selects the closest point in Cartesian space. This method to create the spectra for each point is an acceptable approximation because spatial correlations between the electron density fluctuations will be on the order of the Debye length \citep{farley1969}, which is significantly smaller than the beam width or range gate size. The entire process of the spatial sampling is shown in the simplified diagram in Figure \ref{fig:beamdia}.
@@ -196,14 +197,35 @@ Once the spectra have been created the simulator changes to a spherical coordina
 \label{fig:beamdia}
 \end{figure}
  
-Once the spectrum at the specific point in range and angle space has been determined, the filter $H_m(\omega)$, is created by simply taking the square root of the spectrum, $S_m(\omega | \: \bm{\theta})$,
+% Once the spectrum at the specific point in range and angle space has been determined, the filter $H_m(\omega)$, is created by simply taking the square root of the spectrum, $S_m(\omega | \: \bm{\theta})$,
+
+% \begin{equation}
+% \label{eq1}
+% H_m(\omega) = \sqrt{S_m(\omega | \: \bm{\theta})}.
+% \end{equation}
+
+Once the spectrum at the specific point in range and angle space has been determined, the filter is created. The method to create the filter given a desired spectrum or ACF can be done in a number of ways \cite{Kasdin:1995wi}. The current implementation in the simulator creates an infinite impulse filter. The coefficients are determined using the ACF by solving the following set of equations,
 
 \begin{equation}
-\label{eq1}
-H_m(\omega) = \sqrt{S_m(\omega | \: \bm{\theta})}.
+\label{eq:filtereq}
+\begin{bmatrix} R_m(0) & R_m(1)& \cdots & R_m(L-1) \\ R_m(L-1) & R_m(0)& \cdots & R_m(L-2)\\ \vdots & &\ddots  & \vdots \\  R_m(1) & R_m(2) & \cdots & R_m(0) \end{bmatrix} \left[ \begin{array}{c} a_1\\ a_2\\\vdots \\ a_L \end{array} \right]=\left[ \begin{array}{c} R_m(1) \\ R_m(2)\\ \vdots \\R_m(L) \end{array} \right]
 \end{equation}
 
-\noindent The term $ \bm{\theta}$ refers to the plasma parameters needed to make the spectrum. This filter then is used to create the synthetic IQ data.
+\noindent where $R_m(l)$ are the ACF values, $L$ is the desired length of the filter, and $ a_i$ are the set of filter coefficients. The filter then takes the form in the frequency domain as the following,
+
+\begin{equation}
+\label{eq:filtz}
+H_m(z) = \frac{G}{1-\displaystyle \sum_{l=1}^{L} a_l z^{-l}}.
+\end{equation}
+\noindent The gain term $G$ is used to make sure the noise is the correct variance. This can be calculated as 
+
+\begin{equation}
+\label{eq:gainterm}
+G=\sqrt{\displaystyle \sum_{l=0}^L -a_l R_m(l)},
+\end{equation}
+
+\noindent where $a_0=-1$. 
+%\noindent The term $ \bm{\theta}$ refers to the plasma parameters needed to make the spectrum. This filter then is used to create the synthetic IQ data.
 
 \subsection{ IQ Data Creation}
 The basic idea behind creating the IQ data is to take a complex white Gaussian noise process and shape the spectrum of its output using a filter. As seen in the previous subsection, each point in space and time will have a separate noise plant and filter which is derived from the plasma and radar parameters parameters, like that seen in Figure \ref{fig:IQdiagram}. 
@@ -296,11 +318,9 @@ This specific type of lag product formation is detailed in \citep{farley1969} an
 
 \noindent With out the $\frac{1}{L-l}$ term the estimator will be windowed with a triangular function thus impacting the estimate of the ISR spectrum as this will act as a convolution in the frequency domain. This bias is taken into account in \citep{farley1969} but it is simply wrapped up into the ambiguity function. 
 
-Applying a summation rule is usually the next step in creating an estimate of the autocorrelation function.  This is done to get a constant range ambiguity across all of the lags for long pulse experiment\citep{nygren1996}. It also equalizes the statistics for each lag as the higher lags have greater variance. 
+Applying a summation rule is generally the next step in creating an estimate of the autocorrelation function.  This is done to get a constant range ambiguity across all of the lags for long pulse experiment\citep{nygren1996}. It also equalizes the statistics for each lag, as the number of samples for each lag in Equation \ref{eq:lagproub} decreases.  An example summation rule for a central product is shown in Figure \ref{fig:sumrule}. In the figure the image on the left is a basic representation of an ambiguity function of a long pulse.  Its mirrored on the right with red bars which would show the integration area under it so the ambiguity function for each lag will be of equal size in range. There are a number of different summing rule each with their own trade offs \citep{nygren1996}.
 
-An example summation rule for a forward product is shown in Figure \ref{fig:sumrule}. In the figure the image on the left is a basic representation of an ambiguity function of a long pulse.  Its mirrored on the right with red bars which would show the integration area under it so the ambiguity function will be of equal size in range.  
-
-In the processing this is basically a summing of lags from different ranges.  The amount of summing is similar to what is shown in Figure \ref{fig:sumrule}.  There are a number of different summing rule each with their own trade offs \citep{nygren1996}.  
+%In the processing this is basically a summing of lags from different ranges. The amount of summing is similar to what is shown in Figure \ref{fig:sumrule}.   
 
 Lastly an estimate of the noise correlation is subtracted out of $\hat{R}(m,l)$, which is defined as $\hat{R}_w(m,l)$:
 
@@ -370,6 +390,9 @@ Using the covariance matrix from the fitted parameters an overall error estimate
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Simulation Examples}
+The true utility of the simulator is that a number of aspects of ISR processing can be explored. This simulator can be used to determine optimal experiment set ups, to perform trade offs between statistical certainty and space-time resolution. 
+
+Large statistical studies can also be done to determine raw statistics coming out of different types of fitting methods. One set of experiments used 
 To demonstrate the impact of the ambiguity function and statistical errors on measurements from ISR, our simulator is run with a realistic example. The input to our simulator are plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012}. The specific example was originally used in \cite{Perry:2015jf} to compare to measurements from RISR-N.
 
 
