@@ -392,16 +392,32 @@ Using the covariance matrix from the fitted parameters an overall error estimate
 \section{Simulation Examples}
 The true utility of the simulator is that a number of aspects of ISR processing can be explored. This will be shown in the upcoming examples. The first example will show how the simulator can be used for larger statistical studies. Next the we will use data from PFISR as This simulator can be used to determine optimal experiment set ups, to perform trade offs between statistical certainty and space-time resolution. Lastly, using the output of a fully consistent multi-fluid ionosphere model we drive the ISR simulator to show how one can plan possible experiments.
 
-It is necessary to understand the statistics from the sensors used in scientific studies. In order to do this a large number of measurements must be taken with the sensor. There are issues with this approach in that the inputs can not be controlled so along with any random variation that may be found in the sensor the random variation of the measured process must be included. This issue is especially present within ISR because the measurement of the plasma parameters comes from the inherent variation of the plasma density. Basically we can look at the statistical fluctuations from only the measurement mechanism. 
+It is necessary to understand the statistics from the sensors used in scientific studies. In order to do this a large number of measurements must be taken with the sensor. There are issues with this approach in that the inputs can not be controlled so along with any random variation that may be found in the sensor the random variation of the measured process must be included. This issue is especially present within ISR because the measurement of the plasma parameters comes from the inherent variation of the plasma density. With the simulator the statistical fluctuations from only the measurement mechanism only can be studied.
+
+To perform a statistical analysis a field of constant plasma parameters is created. The plasma parameter values are listed in Table \ref{tb:param1}. A large number of statistics can be built up to create distributions of parameter values like that which can be seen in Figure \ref{fig:statsdata}. These statistics can show the added uncertainty from the measurement mechanism. This can also be used as a form of boot strapping to determine errors on measurements in a high fidelity fashion.
+
+
+\begin{table}[!t]
+\centering
+\caption{Simulation parameters.}
+\label{tb:param1}
+\begin{tabular}{ll}
+Species & O+ e-\\
+$N_e$    & $1e11$ \\
+$T_e$      & $2500^o$ K   \\
+$T_i$      & $2500^o$ K \\
+$V_i$      & $0$ m/s
+\end{tabular}
+\end{table}
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=5in]{Data01000pulses}
-\caption{Distribution of plasma measurements}
+\caption{Distribution of fitted plasma measurements from cases with 1000 pulses integrated. The bars are histograms and the blue lines Gaussian Kernel Density estimate of the distribution.}
 \label{fig:statsdata}
 \end{figure}
 
-To demonstrate the impact of the ambiguity function and statistical errors on measurements from ISR, our simulator is run with a realistic example. The input to our simulator are plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012}. The specific example was originally used in \cite{Perry:2015jf} to compare to measurements from RISR-N.
+One can study the observability  of different plasma phenomena with the simulator as well. This can also be done to determine the best experiment set up. In order to show plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012} are used to drive the simulator. The specific example was originally used in \cite{Perry:2015jf} to compare to measurements from RISR-N. Images of the plasma parameters can be seen in Figures \ref{fig:plparamst0}, \ref{fig:plparamst60} and \ref{fig:plparamst120}.
 
 
 \begin{figure}[!t]
@@ -426,11 +442,35 @@ To demonstrate the impact of the ambiguity function and statistical errors on me
 \label{fig:plparamst120}
 \end{figure}
 
+The output of the ISR simulator from the parameters can be see in Figures \ref{fig:fplparamst0}, \ref{fig:fplparamst60} and \ref{fig:fplparamst120}. This simulation shows a 60 second integration time, which for the 27 beam experiment set up gives 255 pulses per position. The depletion in electron density can still be observed in some of the figures.
+
+%% Fitted Data
+\begin{figure}[!t]
+\centering
+\includegraphics[width=5in]{000_fitteddata}
+\caption{Fitted Plasma Parameters at $t=18000$ s}
+\label{fig:fplparamst0}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=5in]{015_fitteddata}
+\caption{Fitted Plasma Parameters at $t=18900$ s}
+\label{fig:fplparamst60}
+\end{figure}
+
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=5in]{029_fitteddata}
+\caption{Fitted Plasma Parameters at $t=19740$ s}
+\label{fig:fplparamst120}
+\end{figure}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
-
+Sources of error in the ISR measurement process have be discussed along with the description of a full simulation of the measurement process. Possible uses for the simulator in research community have also been discussed and examples have been show. The simulator can help researchers plan their experiments and help understand the statistical errors that may arise from their experiments. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{acknowledgments}
