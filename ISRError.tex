@@ -390,7 +390,7 @@ Using the covariance matrix from the fitted parameters an overall error estimate
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Simulation Examples}
-The true utility of the simulator is that a number of aspects of ISR processing can be explored. This will be shown in the upcoming examples. The first example will show how the simulator can be used for larger statistical studies. Next the we will use data from PFISR as This simulator can be used to determine optimal experiment set ups, to perform trade offs between statistical certainty and space-time resolution. Lastly, using the output of a fully consistent multi-fluid ionosphere model we drive the ISR simulator to show how one can plan possible experiments.
+The true utility of the simulator is that a number of aspects of ISR processing can be explored. This will be shown in the upcoming examples. The first example will show how the simulator can be used for larger statistical studies. Lastly, using the output of a fully consistent multi-fluid ionosphere model we drive the ISR simulator to show how one can plan possible experiments.
 
 It is necessary to understand the statistics from the sensors used in scientific studies. In order to do this a large number of measurements must be taken with the sensor. There are issues with this approach in that the inputs can not be controlled so along with any random variation that may be found in the sensor the random variation of the measured process must be included. This issue is especially present within ISR because the measurement of the plasma parameters comes from the inherent variation of the plasma density. With the simulator the statistical fluctuations from only the measurement mechanism only can be studied.
 
@@ -468,6 +468,8 @@ The output of the ISR simulator from the parameters can be see in Figures \ref{f
 \end{figure}
 
 
+Also added to show the trade offs between statistical errors and errors cause by a larger time ambiguity Figures \ref{fig:f240plparamst0}, \ref{fig:f240plparamst60} and \ref{fig:f240plparamst120} show the fitted parameters after 240 seconds of integration time or 1021 pulses per position. The last set of images; Figures \ref{fig:f15plparamst0}, \ref{fig:f15plparamst60} and \ref{fig:f15plparamst120}, show the fitted parameters after 15 seconds of integration or 64 pulses per position.
+
 %% Fitted Data 240 second int
 \begin{figure}[!t]
 \centering
@@ -480,15 +482,15 @@ The output of the ISR simulator from the parameters can be see in Figures \ref{f
 \centering
 \includegraphics[width=5in]{0960_240_int}
 \caption{Fitted Plasma Parameters at $t=18900$ s with 240 second integration.}
-\label{fig:fplparamst60}
+\label{fig:f240plparamst60}
 \end{figure}
 
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=5in]{1740_240_int}
-\caption{Fitted Plasma Parameters at $t=19740$ s with 240 second integration.}
-\label{fig:fplparamst120}
+\includegraphics[width=5in]{1680_240_int}
+\caption{Fitted Plasma Parameters at $t=19680$ s with 240 second integration.}
+\label{fig:f240plparamst120}
 \end{figure}
 
 %% Fitted Data 15 second int
@@ -496,22 +498,22 @@ The output of the ISR simulator from the parameters can be see in Figures \ref{f
 \centering
 \includegraphics[width=5in]{0000_15_int}
 \caption{Fitted Plasma Parameters at $t=18000$ s with 15 second integration.}
-\label{fig:fplparamst0}
+\label{fig:f15plparamst0}
 \end{figure}
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=5in]{015_fitteddata_keep}
+\includegraphics[width=5in]{0900_15_int}
 \caption{Fitted Plasma Parameters at $t=18900$ s with 15 second integration}
-\label{fig:fplparamst60}
+\label{fig:f15plparamst60}
 \end{figure}
 
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=5in]{029_fitteddata_keep}
-\caption{Fitted Plasma Parameters at $t=19740$ swith 15 second integration}
-\label{fig:fplparamst120}
+\includegraphics[width=5in]{1740_15_int}
+\caption{Fitted Plasma Parameters at $t=19740$ s with 15 second integration}
+\label{fig:f15plparamst120}
 \end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
