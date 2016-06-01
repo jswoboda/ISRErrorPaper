@@ -390,7 +390,7 @@ Using the covariance matrix from the fitted parameters an overall error estimate
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Simulation Examples}
-The true utility of the simulator is that a number of aspects of ISR processing can be explored. This will be shown in the upcoming examples. The first example will show how the simulator can be used for larger statistical studies. Lastly, using the output of a fully consistent multi-fluid ionosphere model we drive the ISR simulator to show how one can plan possible experiments.
+The true utility of the simulator is that a number of aspects of ISR processing can be explored. This will be shown in the upcoming examples. The first example will show how the simulator can be used for larger statistical studies. The next example will use a simple distribution of the ionosphere to show the impact of the forward model of the ISR. Lastly, using the output of a fully consistent multi-fluid ionosphere model we drive the ISR simulator to show how one can plan possible experiments.
 
 It is necessary to understand the statistics from the sensors used in scientific studies. In order to do this a large number of measurements must be taken with the sensor. There are issues with this approach in that the inputs can not be controlled so along with any random variation that may be found in the sensor the random variation of the measured process must be included. This issue is especially present within ISR because the measurement of the plasma parameters comes from the inherent variation of the plasma density. With the simulator the statistical fluctuations from only the measurement mechanism only can be studied.
 
@@ -417,7 +417,11 @@ $V_i$      & $0$ m/s
 \label{fig:statsdata}
 \end{figure}
 
-One can study the observability  of different plasma phenomena with the simulator as well. This can also be done to determine the best experiment set up. In order to show plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012} are used to drive the simulator. The specific example was originally used in \cite{Perry:2015jf} to compare to measurements from RISR-N. Images of the plasma parameters can be seen in Figures \ref{fig:plparamst0} and \ref{fig:plparamst60}.
+One can study the observability  of different plasma phenomena with the simulator as well. This can also be done to determine the best experiment set up. With this in mind we 
+
+
+
+This sort of experiment is continued further by using plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012} to drive the simulator. The specific example was originally used in \cite{Perry:2015jf} to compare to measurements from RISR-N. Images of the plasma parameters can be seen in Figures \ref{fig:plparamst0} and \ref{fig:plparamst60}.
 
 \begin{figure}[!t]
 \centering
