@@ -417,9 +417,38 @@ $V_i$      & $0$ m/s
 \label{fig:statsdata}
 \end{figure}
 
-One can study the observability  of different plasma phenomena with the simulator as well. This can also be done to determine the best experiment set up. With this in mind we 
+An important aspect of experiment design is determining the observability of plasma phenomena with ISR. The simulator can be used to determine the best experiment set up. With this in mind a simple two dimensional field of ionospheric parameters is constructed to demonstrate this. This O$^+$ ionosphere is created with a background electron density that follows a Chapman function with 1e$^11$ m$^{-3}$ as the peak value and a constant electron and ion temperature. The background electron density can be seen in Figure \ref{fig:background1}. 
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=1.5in]{background}
+\caption{Contour of background $N_e$ simulations.}
+\label{fig:background1}
+\end{figure}
+
+First we look at 
+\begin{figure}[!t]
+\centering
+\includegraphics[width=5in]{stationary}
+\caption{Results of stationary enhancement simulation. a. Input $N_e$; b. Output of simulator with 15 second integration;  Output of simulator with 60 second integration.}
+\label{fig:stationaryall}
+\end{figure}
 
 
+\begin{figure}[!t]
+\centering
+\includegraphics[width=5in]{moving6mins}
+\caption{Results of moving enhancement simulation at 600 seconds. a. Input $N_e$; b. Output of simulator with 60 second integration}
+\label{fig:moving10mins}
+\end{figure}
+
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=5in]{moving14mins}
+\caption{Results of moving enhancement simulation at 840 seconds. a. Input $N_e$; b. Output of simulator with 60 second integration}
+\label{fig:moving14mins}
+\end{figure}
 
 This sort of experiment is continued further by using plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012} to drive the simulator. The specific example was originally used in \cite{Perry:2015jf} to compare to measurements from RISR-N. Images of the plasma parameters can be seen in Figures \ref{fig:plparamst0} and \ref{fig:plparamst60}.
 
@@ -438,41 +467,24 @@ This sort of experiment is continued further by using plasma parameters derived 
 \end{figure}
 
 
-The output of the ISR simulator from the parameters can be see in Figures \ref{fig:fplparamst0}, \ref{fig:fplparamst60} and \ref{fig:fplparamst120}. This simulation shows a 60 second integration time, which for the 27 beam experiment set up gives 255 pulses per position. The depletion in electron density can still be observed in some of the figures.
+The output of the ISR simulator from the parameters can be see in Figure  \ref{fig:fplparamst60}. This simulation shows a 60 second integration time, which for the 27 beam experiment set up gives 255 pulses per position. The depletion in electron density can still be observed in some of the figures.
 
 %% Fitted Data
-\begin{figure}[!t]
-\centering
-\includegraphics[width=5in]{000_fitteddata_keep}
-\caption{Fitted Plasma Parameters at $t=18000$ s}
-\label{fig:fplparamst0}
-\end{figure}
+
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=5in]{015_fitteddata_keep}
-\caption{Fitted Plasma Parameters at $t=900$ s}
+\includegraphics[width=5in]{0480_60_int}
+\caption{Fitted Plasma Parameters at $t=840$ s with 60 seconds integration}
 \label{fig:fplparamst60}
 \end{figure}
 
 
-\begin{figure}[!t]
-\centering
-\includegraphics[width=5in]{029_fitteddata_keep}
-\caption{Fitted Plasma Parameters at $t=19740$ s}
-\label{fig:fplparamst120}
-\end{figure}
 
 
 Also added to show the trade offs between statistical errors and errors cause by a larger time ambiguity Figures \ref{fig:f240plparamst0}, \ref{fig:f240plparamst60} and \ref{fig:f240plparamst120} show the fitted parameters after 240 seconds of integration time or 1021 pulses per position. The last set of images; Figures \ref{fig:f15plparamst0}, \ref{fig:f15plparamst60} and \ref{fig:f15plparamst120}, show the fitted parameters after 15 seconds of integration or 64 pulses per position.
 
 %% Fitted Data 240 second int
-\begin{figure}[!t]
-\centering
-\includegraphics[width=5in]{0000_240_int}
-\caption{Fitted Plasma Parameters at $t=18000$ s with 240 second integration.}
-\label{fig:f240plparamst0}
-\end{figure}
 
 \begin{figure}[!t]
 \centering
@@ -482,12 +494,7 @@ Also added to show the trade offs between statistical errors and errors cause by
 \end{figure}
 
 
-\begin{figure}[!t]
-\centering
-\includegraphics[width=5in]{1680_240_int}
-\caption{Fitted Plasma Parameters at $t=19680$ s with 240 second integration.}
-\label{fig:f240plparamst120}
-\end{figure}
+
 
 %% Fitted Data 15 second int
 \begin{figure}[!t]
