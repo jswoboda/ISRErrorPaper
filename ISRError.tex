@@ -417,7 +417,7 @@ $V_i$      & $0$ m/s
 \label{fig:statsdata}
 \end{figure}
 
-An important aspect of experiment design is determining the observability of plasma phenomena with ISR. The simulator can be used to determine the best experiment set up. With this in mind a simple two dimensional field of ionospheric parameters is constructed to demonstrate this. This O$^+$ ionosphere is created with a background electron density that follows a Chapman function with 1e$^11$ m$^{-3}$ as the peak value and a constant electron and ion temperature. The background electron density can be seen in Figure \ref{fig:background1}. 
+An important aspect of experiment design is determining the observability of plasma phenomena with ISR. The simulator can be used to determine the best experiment set up. With this in mind a simple two dimensional field of ionospheric parameters is constructed to demonstrate this. This O$^+$ ionosphere is created with a background electron density that follows a Chapman function with 1e$^11$ m$^{-3}$ as the peak value and a constant electron and ion temperature. The background electron density can be seen in Figure \ref{fig:background1}. The spatial sampling pattern can be seen in Figure \ref{fig:samp1}, where each dot is a range gate in one of the 25 beams used. 
 
 \begin{figure}[!t]
 \centering
@@ -429,11 +429,12 @@ An important aspect of experiment design is determining the observability of pla
 \begin{figure}[!t]
 \centering
 \includegraphics[width=1.5in]{statbeams}
-\caption{Spatal sampling pattern for ISR.}
+\caption{Spatial sampling pattern for ISR.}
 \label{fig:samp1}
 \end{figure}
 
-First we look at 
+The first set of simulations shows an enhancement moving through the field of view of the radar. This thin enhancement is 2 km in width and enhances the density by 5 times. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction. This can give an idea to how the ISR will blur the enhancement. This blurring is seen in Figure \ref{fig:stationaryall} where the result of the ISR simulation is shown for runs with a 15 second and 60 second integration time, 60 and 240 pulses per position respectively. The different integration times show that the variance of the measurement can impact the quality of the reconstruction because of the inherent noise quality of the signal.
+
 \begin{figure}[!t]
 \centering
 \includegraphics[width=5in]{stationary}
@@ -441,6 +442,7 @@ First we look at
 \label{fig:stationaryall}
 \end{figure}
 
+The blurring effect is not constant throughout the space due to the way the radar samples the space. This is illustrated in Figures \ref{fig:moving10mins} and \ref{fig:moving14mins}, where as the enhancement moves through the scene its apparent size is affected by the orientation of the radar beams. As the enhancement becomes parallel to the radar beams then the shape in the reconstruction becomes smaller along the x-axis. This is because the range ambiguity is much larger than the cross range ambiguity from the beam pattern.
 
 \begin{figure}[!t]
 \centering
@@ -494,7 +496,7 @@ The output of the ISR simulator from the parameters can be see in Figure  \ref{f
 \end{figure}
 
 
-Also added to show the trade offs between statistical errors and errors cause by a larger time ambiguity Figure \ref{fig:f240plparamst60}  show the fitted parameters after 240 seconds of integration time or 1021 pulses per position. The last set of images in Figure \ref{fig:f15plparamst0}, show the fitted parameters after 15 seconds of integration or 64 pulses per position.
+Also added to show the trade offs between statistical errors and errors cause by a larger time ambiguity Figure \ref{fig:f240plparamst60} show the fitted parameters after 240 seconds of integration time or 1021 pulses per position. The last set of images in Figure \ref{fig:f15plparamst0}, show the fitted parameters after 15 seconds of integration or 64 pulses per position.
 
 %% Fitted Data 240 second int
 
@@ -514,7 +516,7 @@ Also added to show the trade offs between statistical errors and errors cause by
 \label{fig:f15plparamst0}
 \end{figure}
 
-
+In all cases the depletion is visible. Still as the variance of the measurement is reduced, i.e. more pulses are integrated the feature is easier to pick out. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
 Sources of error in the ISR measurement process have be discussed along with the description of a full simulation of the measurement process. Possible uses for the simulator in research community have also been discussed and examples have been show. The simulator can help researchers plan their experiments and help understand the statistical errors that may arise from their experiments. 
