@@ -82,7 +82,7 @@
 
 
 %\title{Trade-Offs Between Statistical Accuracy and Space-Time Resolution in ISR}
-\title{Observability of Ionospheric Space-Time Structure with ISR:   A simulation study }
+\title{Observability of Ionospheric Space-Time Structure with ISR:   A Simulation Study }
 %%%%%%%%%%%%%% Author Info %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \authors{John Swoboda,\altaffilmark{1}
 Joshua Semeter,\altaffilmark{1} Matthew Zettergren,  \altaffilmark{2} Philip Erickson, \altaffilmark{3}}
@@ -146,13 +146,19 @@ To measure the plasma parameters ISR takes advantage of the random fluctuations 
 
 The two main sources of statistical error will covered here are the random fluctuations from the electron density and noise from within the sensor itself. There are other sources of statistical error including sky noise and coherent scatter from other targets. 
 
-The raw incoherent scatter signal is itself is a random process. As such it is necessary to average samples of an estimator for autocorrelation or spectrum \citep{Diaz:2008co}. An easy rule of thumb to understand how the error will reduce can be seen in \citet{farley1969},
+The raw incoherent scatter signal is itself is a random process. As such it is necessary to average samples of an estimator for autocorrelation or spectrum \citep{Diaz:2008co}. A covariance matrix between each lag estimate can be determined using the formulation in \citep{hysell2008} 
 
 \begin{equation}
-\label{eqn:basicerror}
-\left\langle \left| \hat{R}(\tau) -R(\tau) \right|^2 \right\rangle \propto \frac{1}{\sqrt{J}},
+\label{eqn:covcalc}
+C_{\tau_1,\tau_2} = \frac{1}{J} \left( \ R(0)  R^*(\tau_1-\tau_2) +  R(\tau_1) R^*(\tau_2) \right),
 \end{equation}
-\noindent where $R(\tau)$ is the ACF as a function of lag $\tau$, $\hat{R}(\tau)$ is its estimate and $J$ is the number of samples or pulses averaged together to create the estimate. 
+
+\noindent where $R(\tau)$ is the ACF as a function of lags $\tau$, and $J$ is the number of samples or pulses averaged together to create the estimate. The diagonals of this matrix, which can be thought of as the variances of each of the lags, thus \ref{eqn:covcalc} simplifies to
+
+\begin{equation}
+\label{eqn:covdiag}
+C_{\tau,\tau} = \frac{1}{J} \left(  |R(0)|^2 +|R(\tau)|^2\right).
+\end{equation}
 
 The variance of this signal is further degraded once noise from the sensor is added. The noise from the sensor is assumed to be uncorrelated to the signal. Thus the error from the noise can simply be added to the error from the inherent fluctuations in the signal. 
 
@@ -421,19 +427,14 @@ An important aspect of experiment design is determining the observability of pla
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=1.5in]{background}
-\caption{Contour of background $N_e$ simulations.}
+\includegraphics[width=5in]{backgroundandsamp}
+\caption{Contour of background $N_e$ simulations and the spatial sampling pattern}
 \label{fig:background1}
 \end{figure}
 
-\begin{figure}[!t]
-\centering
-\includegraphics[width=1.5in]{statbeams}
-\caption{Spatial sampling pattern for ISR.}
-\label{fig:samp1}
-\end{figure}
 
-The first set of simulations shows an enhancement moving through the field of view of the radar. This thin enhancement is 2 km in width and enhances the density by 5 times. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction. This can give an idea to how the ISR will blur the enhancement. This blurring is seen in Figure \ref{fig:stationaryall} where the result of the ISR simulation is shown for runs with a 15 second and 60 second integration time, 60 and 240 pulses per position respectively. The different integration times show that the variance of the measurement can impact the quality of the reconstruction because of the inherent noise quality of the signal.
+
+The first set of simulations shows an enhancement moving through the field of view of the radar. This thin enhancement is 2 km in width and enhances the density by 5 times. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction. This can give an idea to how the ISR will blur the enhancement. This blurring is seen in Figure \ref{fig:stationaryall} where the result of the ISR simulation is shown for runs with a 1	5 second and 60 second integration time, 60 and 240 pulses per position respectively. The different integration times show that the variance of the measurement can impact the quality of the reconstruction because of the inherent noise quality of the signal.
 
 \begin{figure}[!t]
 \centering
