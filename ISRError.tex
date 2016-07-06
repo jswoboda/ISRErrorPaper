@@ -434,7 +434,7 @@ An important aspect of experiment design is determining the observability of pla
 
 
 
-The first set of simulations shows an enhancement moving through the field of view of the radar. This thin enhancement is 2 km in width and enhances the density by 5 times. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction. This can give an idea to how the ISR will blur the enhancement. This blurring is seen in Figure \ref{fig:stationaryall} where the result of the ISR simulation is shown for runs with a 1	5 second and 60 second integration time, 60 and 240 pulses per position respectively. The different integration times show that the variance of the measurement can impact the quality of the reconstruction because of the inherent noise quality of the signal.
+The first set of simulations shows an enhancement moving through the field of view of the radar. This thin enhancement is 2 km in width and enhances the density by 5 times. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction. This can give an idea to how the ISR will blur the enhancement. This blurring is seen in Figure \ref{fig:stationaryall} where the result of the ISR simulation is shown for runs with a 15 second and 60 second integration time, 60 and 240 pulses per position respectively. The different integration times show that the variance of the measurement can impact the quality of the reconstruction because of the inherent noise quality of the signal.
 
 \begin{figure}[!t]
 \centering
@@ -497,7 +497,7 @@ The output of the ISR simulator from the parameters can be see in Figure  \ref{f
 \end{figure}
 
 
-Also added to show the trade offs between statistical errors and errors cause by a larger time ambiguity Figure \ref{fig:f240plparamst60} show the fitted parameters after 240 seconds of integration time or 1021 pulses per position. The last set of images in Figure \ref{fig:f15plparamst0}, show the fitted parameters after 15 seconds of integration or 64 pulses per position.
+Also added to show the trade offs between statistical errors and errors cause by a larger time ambiguity Figure \ref{fig:f240plparamst60} show the fitted parameters after 240 seconds of integration time or 1021 pulses per position. 
 
 %% Fitted Data 240 second int
 
@@ -508,14 +508,6 @@ Also added to show the trade offs between statistical errors and errors cause by
 \label{fig:f240plparamst60}
 \end{figure}
 
-
-%% Fitted Data 15 second int
-\begin{figure}[!t]
-\centering
-\includegraphics[width=5in]{0480_15_int}
-\caption{Fitted Plasma Parameters at $t=480$ s with 15 second integration.}
-\label{fig:f15plparamst0}
-\end{figure}
 
 In all cases the depletion is visible. Still as the variance of the measurement is reduced, i.e. more pulses are integrated the feature is easier to pick out. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
