@@ -460,7 +460,7 @@ The blurring effect is not constant throughout the space due to the way the rada
 \label{fig:moving14mins}
 \end{figure}
 
-This sort of experiment is continued further by using plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012} to drive the simulator. The specific example was originally used in \cite{Perry:2015jf} to compare to measurements from RISR-N. Images of the plasma parameters can be seen in Figures \ref{fig:plparamst0} and \ref{fig:plparamst60}.
+This sort of experiment is continued further by using plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012} to drive the simulator. The specific example was originally used in \cite{Perry:2015jf} to compare to measurements from RISR-N. Images of the plasma parameters can be seen in Figures \ref{fig:plparamst0} and \ref{fig:plparamst60}. The perturbations 
 
 \begin{figure}[!t]
 \centering
@@ -484,7 +484,7 @@ This sort of experiment is continued further by using plasma parameters derived 
 %\label{fig:samp2}
 %\end{figure}
 
-The output of the ISR simulator from the parameters can be see in Figure  \ref{fig:fplparamst60}. This simulation shows a 60 second integration time, which for the 27 beam experiment set up gives 255 pulses per position. The low altitude enhancement in electron density can be seen in the reconstruction. The enhancement of the electron density
+The output of the ISR simulator from the parameters can be see in Figure \ref{fig:fplparamst60}. The integration is started at $t=480$ s into the simulation, as seen in Figure \ref{fig:plparamst60}. For this case a 60 second integration time, which for the 27 beam experiment set up gives 255 pulses per position. The low altitude enhancement in electron density can be seen in the reconstruction. The enhancement of the electron temperature can also be seen although the enhancement in the ion temperature is not visible.
 
 %% Fitted Data
 
@@ -497,8 +497,7 @@ The output of the ISR simulator from the parameters can be see in Figure  \ref{f
 \end{figure}
 
 
-Also added to show the trade offs between statistical errors and errors cause by a larger time ambiguity Figure \ref{fig:f240plparamst60} show the fitted parameters after 240 seconds of integration time or 1021 pulses per position. 
-
+Lastly, a case with 240 seconds of integration time or 1021 pulses per position is shown in Figure \ref{fig:f240plparamst60}. Again the enhancements in electron density and temperature are visible but so is enhancement in ion temperature. The columns though are no longer simply straight up and down and have somewhat of a curvature to them. The electron temperature enhancement has also shifted and is slightly wider along the X direction. 
 %% Fitted Data 240 second int
 
 \begin{figure}[!t]
@@ -507,9 +506,7 @@ Also added to show the trade offs between statistical errors and errors cause by
 \caption{Fitted Plasma Parameters at $t=480$ s with 240 second integration.}
 \label{fig:f240plparamst60}
 \end{figure}
-
-
-In all cases the depletion is visible. Still as the variance of the measurement is reduced, i.e. more pulses are integrated the feature is easier to pick out. 
+These sorts of distortions demonstrate the trade off one faces when designing these experiments. As one increases the integration time we can expect the error created by the inherent measurement variance to go down but unfortunately if the parameter field is changing with time distortions from the plasma motion or change in the morphology can affect the reconstruction. because there are a long list of trade offs in designing an experiment the utility of this sort of simulation are clear. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
 Sources of error in the ISR measurement process have be discussed along with the description of a full simulation of the measurement process. Possible uses for the simulator in research community have also been discussed and examples have been show. The simulator can help researchers plan their experiments and help understand the statistical errors that may arise from their experiments. 
