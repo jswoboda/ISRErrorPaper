@@ -398,12 +398,12 @@ Using the covariance matrix from the fitted parameters an overall error estimate
 \section{Simulation Examples}
 The true utility of the simulator is that a number of aspects of ISR processing can be explored. This is a very large subject area so for the sake of brevity with this publication our examples will focus on three areas.  
 
-The first example will show how the simulator can be used for larger statistical studies. In this case we will hold all of the plasma parameters constant and show how the distribution of the measured parameters evolve. The next example will use a simple distribution of the ionosphere to show the impact of the forward model of the ISR on the basic measurement of electron density. This will drive home the point that the basic ambiguity of the system can give the appearance of a change in morphology of the plasma phenomena when there is none. Lastly, using the output of a fully consistent multi-fluid ionosphere model we drive the ISR simulator to show how one can plan possible experiments. The main aspect with planning experiments being is the trade off between reducing statistical fluctuations in the measurement or increasing distortion in the final reconstruction.
+The first example will show how the simulator can be used for Monte Carlo simulations. In this case we will hold all of the plasma parameters constant and show how the distribution of the measured parameters evolve. The next example will use a simple distribution of the ionosphere to show the impact of the forward model of the ISR on the basic measurement of electron density. This will drive home the point that the basic ambiguity of the system can give the appearance of a change in morphology of the plasma phenomena when there is none. Lastly, using the output of a fully consistent multi-fluid ionosphere model we drive the ISR simulator to show how one can plan possible experiments. The main aspect with planning experiments being is the trade off between reducing statistical fluctuations in the measurement or increasing distortion in the final reconstruction.
 
 \subsection{Monte Carlo Example}
-It is necessary to understand the statistics from the sensors used in scientific studies. In order to do this a large number of measurements must be taken with the sensor. There are issues with this approach in that the inputs can not be controlled so along with any random variation that may be found in the sensor the random variation of the measured process must be included. This issue is especially present within ISR because the measurement of the plasma parameters comes from the inherent variation of the plasma density. With the simulator the statistical fluctuations from only the measurement mechanism only can be studied.
+It is necessary to understand the statistics from the sensors used in scientific studies. In order to do this a large number of measurements must be taken with the sensor. There are issues with this approach in that the inputs can not be controlled so along with any random variation that may be found in the sensor the random variation of the measured process will be included and must be taken into account during the analysis of the data. With the simulator the statistical fluctuations from only the measurement mechanism only can be studied and thus reducing the uncertainty of the measurements.
 
-To perform a statistical analysis a field of constant plasma parameters is created. The plasma parameter values are listed in Table \ref{tb:param1}. A large number of statistics can be built up to create distributions of parameter values like that which can be seen in Figure \ref{fig:statsdata}. These statistics can show the added uncertainty from the measurement mechanism. This can also be used as a form of boot strapping to determine errors on measurements in a high fidelity fashion.
+In order to perform a statistical analysis, a field of constant plasma parameters is created. The plasma parameter values are listed in Table \ref{tb:param1}. A large number of statistics can be built up to create distributions of parameter values like that which can be seen in Figure \ref{fig:statsdata}. These statistics can show the added uncertainty from the measurement mechanism. 
 
 
 \begin{table}[!t]
@@ -413,8 +413,8 @@ To perform a statistical analysis a field of constant plasma parameters is creat
 \begin{tabular}{ll}
 Species & O+ e-\\
 $N_e$    & $1e11$ \\
-$T_e$      & $2500^o$ K   \\
-$T_i$      & $2500^o$ K \\
+$T_e$      & $2100^o$ K   \\
+$T_i$      & $1100^o$ K \\
 $V_i$      & $0$ m/s
 \end{tabular}
 \end{table}
@@ -425,6 +425,8 @@ $V_i$      & $0$ m/s
 \caption{Distribution of fitted plasma measurements from cases with 1000 pulses integrated. The bars are histograms and the blue lines Gaussian Kernel Density estimate of the distribution.}
 \label{fig:statsdata}
 \end{figure}
+
+Another aspect of importance is that this sort of statistical testing can lead to methods of identifying improper situations where the assumptions in the fitter break down. A number of studies have explored the case where ISR parameter distributions show evidence of non-maxwellian behavior of the plasma.
 
 \subsection{Electron Density Measurement}
 An important aspect of experiment design is determining the observability of plasma phenomena with ISR. The simulator can be used to determine the best experiment set up. With this in mind a simple two dimensional field of ionospheric parameters is constructed to demonstrate this. This O$^+$ ionosphere is created with a background electron density that follows a Chapman function with 1e$^11$ m$^{-3}$ as the peak value and a constant electron and ion temperature. The background electron density can be seen in Figure \ref{fig:background1} along with the spatial sampling pattern, where each dot is a range gate in one of the 25 beams used.
