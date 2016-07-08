@@ -398,13 +398,12 @@ Using the covariance matrix from the fitted parameters an overall error estimate
 \section{Simulation Examples}
 The true utility of the simulator is that a number of aspects of ISR processing can be explored. This is a very large subject area so for the sake of brevity with this publication our examples will focus on three areas.  
 
-The first example will show how the simulator can be used for Monte Carlo simulations. In this case we will hold all of the plasma parameters constant and show how the distribution of the measured parameters evolve. The next example will use a simple distribution of the ionosphere to show the impact of the forward model of the ISR on the basic measurement of electron density. This will drive home the point that the basic ambiguity of the system can give the appearance of a change in morphology of the plasma phenomena when there is none. Lastly, using the output of a fully consistent multi-fluid ionosphere model we drive the ISR simulator to show how one can plan possible experiments. The main aspect with planning experiments being is the trade off between reducing statistical fluctuations in the measurement or increasing distortion in the final reconstruction.
+The first example will show how the simulator can be used for Monte Carlo simulations. In this case we will hold all of the plasma parameters constant and show how the distribution of the measured parameters evolve. The next example will use a simple distribution of the ionosphere to show the impact of the forward model of the ISR on the basic measurement of electron density. This will drive home the point that the basic ambiguity of the system can give the appearance of a change in morphology of the plasma phenomena when there is none. Lastly, using the output of a fully consistent multi-fluid ionosphere model we drive the ISR simulator to show how one can plan possible experiments. This will help demonstrate and important aspect of planning experiments, the trade off between reducing statistical fluctuations in the measurement or increasing distortion in the final reconstruction.
 
 \subsection{Monte Carlo Example}
 It is necessary to understand the statistics from the sensors used in scientific studies. In order to do this a large number of measurements must be taken with the sensor. There are issues with this approach in that the inputs can not be controlled so along with any random variation that may be found in the sensor the random variation of the measured process will be included and must be taken into account during the analysis of the data. With the simulator the statistical fluctuations from only the measurement mechanism only can be studied and thus reducing the uncertainty of the measurements.
 
-In order to perform a statistical analysis, a field of constant plasma parameters is created. The plasma parameter values are listed in Table \ref{tb:param1}. A large number of statistics can be built up to create distributions of parameter values like that which can be seen in Figure \ref{fig:statsdata}. These statistics can show the added uncertainty from the measurement mechanism. 
-
+In order to perform a statistical analysis, a field of constant plasma parameters is created. The plasma parameter values are listed in Table \ref{tb:param1}. A large number of statistics can be built up to create distributions of parameter values like that which can be seen in Figure \ref{fig:statsdata}. These statistics can show the added uncertainty from the measurement mechanism itself.
 
 \begin{table}[!t]
 \centering
@@ -426,10 +425,10 @@ $V_i$      & $0$ m/s
 \label{fig:statsdata}
 \end{figure}
 
-Another aspect of importance is that this sort of statistical testing can lead to methods of identifying improper situations where the assumptions in the fitter break down. A number of studies have explored the case where ISR parameter distributions show evidence of non-maxwellian behavior of the plasma.
+Another aspect of importance is that this sort of statistical testing can lead to methods of identifying improper situations where the assumptions in the fitter break down. A number of studies have explored the case where ISR parameter measurements and spectra show evidence of non-Maxwellian behavior of the plasma \citet{Akbari:2012dz,Akbari:2015fv}. Future studies using the simulator could help create a training set that can be used with a pattern recognition algorithm to identify cases where the fitting may be incorrect and be reprocessed with a different algorithm.
 
 \subsection{Electron Density Measurement}
-An important aspect of experiment design is determining the observability of plasma phenomena with ISR. The simulator can be used to determine the best experiment set up. With this in mind a simple two dimensional field of ionospheric parameters is constructed to demonstrate this. This O$^+$ ionosphere is created with a background electron density that follows a Chapman function with 1e$^11$ m$^{-3}$ as the peak value and a constant electron and ion temperature. The background electron density can be seen in Figure \ref{fig:background1} along with the spatial sampling pattern, where each dot is a range gate in one of the 25 beams used.
+An important aspect of experiment design is determining the observability of plasma phenomena with ISR. The simulator can be used to help understand the trade space that is afforded with each experiment. With this in mind a simple two dimensional field of ionospheric parameters is constructed to demonstrate this. This O$^+$ ionosphere is created with a background electron density that follows a Chapman function with 1e$^11$ m$^{-3}$ as the peak value and a constant electron and ion temperature. The background electron density can be seen in Figure \ref{fig:background1} along with the spatial sampling pattern, where each dot is a range gate in one of the 25 beams used.
 
 \begin{figure}[!t]
 \centering
@@ -438,7 +437,7 @@ An important aspect of experiment design is determining the observability of pla
 \label{fig:background1}
 \end{figure}
 
-The first set of simulations shows an enhancement moving through the field of view of the radar. This thin enhancement is 2 km in width and enhances the density by 5 times. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction. This can give an idea to how the ISR will blur the enhancement. This blurring is seen in Figure \ref{fig:stationaryall} where the result of the ISR simulation is shown for runs with a 15 second and 60 second integration time, 60 and 240 pulses per position respectively. The different integration times show that the variance of the measurement can impact the quality of the reconstruction because of the inherent noise quality of the signal.
+For these simulations we will explore how a thin enhancement will be resolved with beam pattern shown in Figure \ref{fig:background1}. This thin enhancement is 2 km in width and enhances the density by 5 times the background at its altitude. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction. The results of our simulations are seen in Figure \ref{fig:stationaryall} using a 15 second and 60 second integration time, 60 and 240 pulses per position respectively. The different integration times show that, although the enhancement is blurred, the variance of the measurement can impact the quality of the reconstruction because of the inherent noise quality of the signal.
 
 \begin{figure}[!t]
 \centering
@@ -463,6 +462,8 @@ The blurring effect is not constant throughout the space due to the way the rada
 \caption{Results of moving enhancement simulation at 840 seconds. a. Input $N_e$; b. Output of simulator with 60 second integration.}
 \label{fig:moving14mins}
 \end{figure}
+
+This change in the shape of the enhancement can give the impression that its morphology has developed as it was moving through the field of view of the radar. This could lead to an incorrect interpretation of the physical process taking place. Thus one must be careful when analyzing these sorts of reconstructions.
 
 \subsection{Full Parameter Experiment}
 Lastly, plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012} to drive the simulator. The specific example was originally used in \cite{Perry:2015jf} to compare to measurements from RISR-N. Images of the plasma parameters can be seen in Figures \ref{fig:plparamst0} and \ref{fig:plparamst60}. These enhancements in electron density, temperature and ion temperature are caused by an auroral arc created from a current system of .875 $\mu$A/m$^2$. It is moving through the field of view at 200 m/s.
