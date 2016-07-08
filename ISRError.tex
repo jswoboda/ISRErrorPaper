@@ -420,7 +420,7 @@ $V_i$      & $0$ m/s
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=5in]{Data01000pulses}
+\includegraphics[width=5in]{Data01000Pulses}
 \caption{Distribution of fitted plasma measurements from cases with 1000 pulses integrated. The bars are histograms and the blue lines Gaussian Kernel Density estimate of the distribution.}
 \label{fig:statsdata}
 \end{figure}
@@ -466,7 +466,7 @@ The blurring effect is not constant throughout the space due to the way the rada
 This change in the shape of the enhancement can give the impression that its morphology has developed as it was moving through the field of view of the radar. This could lead to an incorrect interpretation of the physical process taking place. Thus one must be careful when analyzing these sorts of reconstructions.
 
 \subsection{Full Parameter Experiment}
-Lastly, plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012} to drive the simulator. The specific example was originally used in \cite{Perry:2015jf} to compare to measurements from RISR-N. Images of the plasma parameters can be seen in Figures \ref{fig:plparamst0} and \ref{fig:plparamst60}. These enhancements in electron density, temperature and ion temperature are caused by an auroral arc created from a current system of .875 $\mu$A/m$^2$. It is moving through the field of view at 200 m/s.
+Lastly, plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012} are used to drive the simulator. The specific example was originally used in \cite{Perry:2015jf} to compare to measurements from RISR-N. Images of the plasma parameters can be seen in Figures \ref{fig:plparamst0} and \ref{fig:plparamst60}. These enhancements in electron density, temperature and ion temperature are caused by an auroral arc created from a current system of .875 $\mu$A/m$^2$. It is moving through the field of view at 200 m/s.
 
 \begin{figure}[!t]
 \centering
@@ -484,7 +484,7 @@ Lastly, plasma parameters derived from a multi-fluid model developed in \cite{se
 
 Using a beam pattern similar to the one seen in \ref{fig:background1} b the ISR simulator will be used to understand how an electronically scanned ISR may reconstruct the seen. This a best case set up as we know the plane that arc is traveling and have set up the beam pattern for the experiment in such a way that takes advantage of it. This reduces the number of beams and required integration time to gain the desired statistics. 
 
-It is also assumed that the ratios between ion species are known. This is a common practice in ISR fitting as allowing the ratios to be free parameters allows for non-unique solutions. Still, if the ratios between the different ion species are incorrect this can lead to errors in the parameter estimate. Generally this usually leads to errors between 150-250 km where the ionosphere changes from NO$^+$ dominated to O$^+$ dominated. This issue does come into play in this case chemical recombination is used in \cite{Perry:2015jf}
+It is also assumed that the ratios between ion species are known. This is a common practice in ISR fitting as allowing the ratios to be free parameters allows for non-unique solutions. Still, if the ratios between the different ion species are incorrect this can lead to errors in the parameter estimate. Generally this usually leads to errors between 150-250 km where the ionosphere changes from NO$^+$ dominated to O$^+$ dominated. This issue does come into play in this case chemical recombination is cited as an effect in \cite{Perry:2015jf}
 
 %\begin{figure}[!t]
 %\centering
@@ -505,8 +505,7 @@ The output of the ISR simulator from the parameters can be see in Figure \ref{fi
 \label{fig:fplparamst60}
 \end{figure}
 
-
-Lastly, a case with 240 seconds of integration time or 1021 pulses per position is shown in Figure \ref{fig:f240plparamst60}. Again the enhancements in electron density and temperature are visible but so is enhancement in ion temperature. The columns though are no longer simply straight up and down and have somewhat of a curvature to them. The electron temperature enhancement has also shifted and is slightly wider along the X direction. 
+Lastly, a case with 240 seconds of integration time or 1021 pulses per position is shown in Figure \ref{fig:f240plparamst60}. Again, the enhancements in electron density and temperature are visible but so is enhancement in ion temperature. The columns though are no longer simply straight up and down and have somewhat of a curvature to them. The electron temperature enhancement has also shifted and is slightly wider along the X direction. 
 %% Fitted Data 240 second int
 
 \begin{figure}[!t]
@@ -515,6 +514,7 @@ Lastly, a case with 240 seconds of integration time or 1021 pulses per position 
 \caption{Fitted Plasma Parameters at $t=480$ s with 240 second integration.}
 \label{fig:f240plparamst60}
 \end{figure}
+
 These sorts of distortions demonstrate the trade off one faces when designing these experiments. As one increases the integration time we can expect the error created by the inherent measurement variance to go down but unfortunately if the parameter field is changing with time distortions from the plasma motion or change in the morphology can affect the reconstruction. because there are a long list of trade offs in designing an experiment the utility of this sort of simulation are clear. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
