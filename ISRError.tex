@@ -403,7 +403,7 @@ The first example will show how the simulator can be used for Monte Carlo simula
 \subsection{Monte Carlo Example}
 It is necessary to understand the statistics from the sensors used in scientific studies. In order to do this a large number of measurements must be taken with the sensor. There are issues with this approach in that the inputs can not be controlled so along with any random variation that may be found in the sensor the random variation of the measured process will be included and must be taken into account during the analysis of the data. With the simulator the statistical fluctuations from only the measurement mechanism only can be studied and thus reducing the uncertainty of the measurements.
 
-In order to perform a statistical analysis, a field of constant plasma parameters is created. The plasma parameter values are listed in Table \ref{tb:param1}. A large number of statistics can be built up to create distributions of parameter values like that which can be seen in Figure \ref{fig:statsdata}. These statistics can show the added uncertainty from the measurement mechanism itself.
+In order to perform a statistical analysis, a field of constant plasma parameters is created. The plasma parameter values are listed in Table \ref{tb:param1}. A large number of statistics can be built up to create distributions of parameter values. The change in these distributions can be seen in Figures \ref{fig:statsdata200} \ref{fig:statsdata500} and \ref{fig:statsdata1000} which show distributions where 200, 500 and 1000 pulses are used respectively. These statistics can show the added uncertainty from the measurement mechanism itself.
 
 \begin{table}[!t]
 \centering
@@ -420,9 +420,23 @@ $V_i$      & $0$ m/s
 
 \begin{figure}[!t]
 \centering
+\includegraphics[width=5in]{Data00200Pulses}
+\caption{Distribution of fitted plasma measurements from cases with 200 pulses integrated. The bars are histograms and the blue lines Gaussian Kernel Density estimate of the distribution.}
+\label{fig:statsdata200}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=5in]{Data00500Pulses}
+\caption{Distribution of fitted plasma measurements from cases with 500 pulses integrated. The bars are histograms and the blue lines Gaussian Kernel Density estimate of the distribution.}
+\label{fig:statsdata500}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
 \includegraphics[width=5in]{Data01000Pulses}
 \caption{Distribution of fitted plasma measurements from cases with 1000 pulses integrated. The bars are histograms and the blue lines Gaussian Kernel Density estimate of the distribution.}
-\label{fig:statsdata}
+\label{fig:statsdata1000}
 \end{figure}
 
 Another aspect of importance is that this sort of statistical testing can lead to methods of identifying improper situations where the assumptions in the fitter break down. A number of studies have explored the case where ISR parameter measurements and spectra show evidence of non-Maxwellian behavior of the plasma \citet{Akbari:2012dz,Akbari:2015fv}. Future studies using the simulator could help create a training set that can be used with a pattern recognition algorithm to identify cases where the fitting may be incorrect and be reprocessed with a different algorithm.
