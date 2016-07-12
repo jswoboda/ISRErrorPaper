@@ -315,8 +315,12 @@ The lag product formation is an initial estimate of the autocorrelation function
 \hat{R}(m,l) = \displaystyle\sum\limits_{j=0}^{J-1} x(m-\lfloor l/2\rfloor,j)x^*(m+\lceil l/2 \rceil,j).
 \end{equation}
 
-The case shown in Equation \ref{eq:lagpro} is a centered lag product, other types of lag products calculations are available but generally a centered product is used. In the centered lag product case range gate index $m$ and sample index $n$ can be related by $m=n-\lfloor L/2\rfloor$ and the maximum lag and sample relation is $M=N-\lceil L/2 \rceil$.  This lag product formation is the first step in taking a discrete Wigner Distribution \citep{TFAcohen}.
+The case shown in Equation \ref{eq:lagpro} is a centered lag product, other types of lag products calculations are available but generally a centered product is used. In the centered lag product case range gate index $m$ and sample index $n$ can be related by $m=n-\lfloor L/2\rfloor$ and the maximum lag and sample relation is $M=N-\lceil L/2 \rceil$.  This lag product formation is the first step in taking a discrete Wigner Distribution \citep{TFAcohen}. This first step adds a bias to the estimates of the ACF which acts as a weighting on the higher lags $\mathcal{W}(l)$, which is a weighting that comes from the pulse shape. The expected value for the estimator, assuming the use of a long pulse, is the following,
 
+\begin{equation}
+\label{eq:lagprobias}
+\left\langle\hat{R}(m,l) \right\rangle = \mathcal{W}(l)R(m,l) =\frac{L-l}{L}R(m,l).
+\end{equation}
 %This specific type of lag product formation is detailed in \citep{farley1969} and had been referred to as unbiased. This terminology does differ from what is used in statistic signal processing literature such as \citep{randomsigshanmugan} where the unbiased autocorrelation function estimate is carried out as so,
 %
 %\begin{equation}
@@ -326,14 +330,22 @@ The case shown in Equation \ref{eq:lagpro} is a centered lag product, other type
 %
 %\noindent With out the $\frac{1}{L-l}$ term the estimator will be windowed with a triangular function thus impacting the estimate of the ISR spectrum as this will act as a convolution in the frequency domain. This bias is taken into account in \citep{farley1969} but it is simply wrapped up into the ambiguity function. 
 
-Applying a summation rule is generally the next step in creating an estimate of the autocorrelation function.  This is done to get a constant range ambiguity across all of the lags for long pulse experiments and improve the statistics of the higher lags \citep{nygren1996}. The trapezoidal summation rule used in our simulation can be represented as follows
+Applying a summation rule is generally the next step in creating an estimate of the autocorrelation function. This is done to improve the statistics of estimate, but if the right rule is chosen then the range ambiguity can be made constant across the lags \citep{nygren1996}. The trapezoidal summation rule used in our simulation can be represented as follows
 
 \begin{equation}
 \label{eq:sumrule}
-\hat{R}_s(m,l) = \displaystyle\sum\limits_{i=-\lceil l/2 \rceil}^{\lfloor l/2\rfloor} \hat{R}(m+i,l),
+\hat{R}_s(m,l) = \displaystyle\sum\limits_{i=-((v-1)/2+\lceil l/2 \rceil)}^{((v-1)/2+\lfloor l/2\rfloor)} \hat{R}(m+i,l),
 \end{equation}
 
-\noindent where $\hat{R}_s(m,l)$ is the ACF estimate after the summation rule. %An example summation rule for a central product is shown in Figure \ref{fig:sumrule}. In the figure the image on the left is a basic representation of an ambiguity function of a long pulse.  Its mirrored on the right with red bars which would show the integration area under it so the ambiguity function for each lag will be of equal size in range. There are a number of different summing rule each with their own trade offs \citep{nygren1996}.
+\noindent where $v$ is the 'volume' index or the number of gates integrated at zero lag which must be an odd integer and $\hat{R}_s(m,l)$ is the ACF estimate after the summation rule \citep{nygren1996}. 
+
+The final result of the this summation rule will still lead to a biased ACF. For the long pulse case this summation rule, according to \citet{nygren1996}, will lead to the following expected value for the estimator,
+
+\begin{equation}
+\label{eq:sumruleest}
+\left\langle\hat{R}_s(m,l) \right\rangle  =\frac{v+l}{v\mathcal{W}(0)}\mathcal{W}(l)R(m,l) =\left(-\frac{1}{vL}l^2+\frac{L-v}{Lv}l+1\right)   R(m,l).
+\end{equation}
+%An example summation rule for a central product is shown in Figure \ref{fig:sumrule}. In the figure the image on the left is a basic representation of an ambiguity function of a long pulse.  Its mirrored on the right with red bars which would show the integration area under it so the ambiguity function for each lag will be of equal size in range. There are a number of different summing rule each with their own trade offs \citep{nygren1996}.
 
 %In the processing this is basically a summing of lags from different ranges. The amount of summing is similar to what is shown in Figure \ref{fig:sumrule}.   
 
