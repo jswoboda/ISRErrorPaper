@@ -106,7 +106,7 @@ As with any sensing modality, incoherent scatter radar (ISR) has inherent errors
 
 From the point of view from an experiment designer these sources of error can lead to a trade off between spatial and temporal resolution and statistical accuracy. The designer then has to work with questions dealing with resource allocation, such as how long to dwell in a specific direction. These questions can be rather hard to solve because there are a large number of degrees of freedom when designing an experiment.
 
-With the recent application of phased array antennas with pulse to pulse steering, the number of degrees of freedom in experiment design have exploded. These types of systems, like AMISR and EISCAT-3D, allow for greater flexibility in processing along with making it is now possible to create full volumetric reconstructions of plasma parameters. These phased array systems are used heavily in the high latitude region of the ionosphere, which can have plasma phenomena that is highly variable in space and time. In order to develop an experiment to observe the plasma phenomena researchers have to wade through a number of different trade offs. To understand all of these trade offs may need to simulate the experiment.
+With the recent application of electronically scannable arrays (ESAs) to ISR, the number of degrees of freedom in experiment design have exploded. These types of systems, like AMISR and EISCAT-3D, allow for greater flexibility in processing along with making it is now possible to create full volumetric reconstructions of plasma parameters. These ESA systems are used heavily in the high latitude region of the ionosphere, which can have plasma phenomena that is highly variable in space and time. In order to develop an experiment to observe the plasma phenomena researchers have to wade through a number of different trade offs. To understand all of these trade offs may need to simulate the experiment.
 
 This publication will show a simulator that can take a field of plasma parameters and create ISR data at the IQ level and then process it to show a possible reconstruction of the parameters field. It can give researchers a new tool that can assist them in the set up their experiments. To show the utility of the simulator for experiment design for one of the examples we will data from a self-consistent multi-ionic fluid transport model. This will demonstrate the impact the forward model of the ISR on the parameter measurements and thus the need for a simulator to iterate through different experiment set ups. 
 
@@ -130,7 +130,7 @@ Incoherent scatter radar is an important diagnostic for the ionosphere in that i
 
 One unique aspect of ISR is that inherent random fluctuations of the plasma are used to create these measurements. These fluctuations are used by creating second order statistics from a scattered signal, specifically an autocorrelation function (ACF) \citep{farley1969}. The statistical nature of the target itself yields the requirement of averaging numerous realizations of the ACF to reduce the variance of the estimate. This forces the assumption of stationarity for a space-time cell, which may not be true. In the end this creates a trade-off between space-time resolution and the variance of the measurements.
 
-Application of electronically steerable array (ESA) technology to ISR has been a recent advancement for the community. ISRs such as these, like the Advanced Modular Incoherent Scatter (AMISR) systems, have already been deployed in Poker Flat Alaska and Resolute Bay Canada \citep{Nicolls:2007ie, dahlgren2012di}. These ESA based systems are seen as the future of the ISR sensor modality due to the flexibility in beam steering, processing and other aspects over dish based systems. The next step in the evolution of these systems is expected to be the EISCAT-3D project, which will have a number of enhancements such as multi-static processing capability and be able to receive and process data from each phased array element by default.
+Application of electronically steerable array (ESA) technology to ISR has been a recent advancement for the community. ISRs such as these, like the Advanced Modular Incoherent Scatter (AMISR) systems, have already been deployed in Poker Flat Alaska and Resolute Bay Canada \citep{Nicolls:2007ie, dahlgren2012di}. These ESA based systems are seen as the future of the ISR sensor modality due to the flexibility in beam steering, processing and other aspects over dish based systems. The next step in the evolution of these systems is expected to be the EISCAT-3D project, which will have a number of enhancements such as multi-static processing capability and be able to receive and process data from each array element by default.
 
 One benefit of ESA based ISR is that volumetric reconstructions of plasma parameters can be created \citep{Semeter2009738, Nicolls:2007ie, dahlgren2012di}. These systems also have been used to reconstruct full vector parameters using estimates of the ion velocity which can be determined using the Doppler shift of spectra \citep{butler:imagingfregiondrifts,RDS:RDS20195}. Still it has been shown that the volumetric reconstructions can yield measurements with a high degree of ambiguity \citep{Dahlgren:2012dq}. Similar type of ambiguities have been seen when using systems with a dish antenna as well. In \citet{Semeter:2005fo} the authors to show an undersampling in the horizontal dimension, but are able to compensate by changing processing parameters.
 
@@ -138,35 +138,35 @@ With these new capabilities for the ISR community a discussion of the possible s
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ISR Errors}
 
-In this section the main sources of ISR errors will be discussed. The first part of this discussion will cover the statistical errors that arise from the ISR process. After that the errors from the spatial and temporal ambiguity of ISR systems will be shown. This in the end will lead to trade offs that the experiment designer will have to face.
+In this section the main sources of ISR errors will be discussed. The first part of this discussion will cover the statistical errors that arise from the ISR process. After that the errors from the spatial and temporal ambiguity of ISR systems will be shown. The goal is to develop a foundation for the trade-offs that must be considered by the experiment designer for a given science application.
 
 \subsection{Statistical Errors}
 
-To measure the plasma parameters ISR takes advantage of the random fluctuations of electron density in the ionosphere. The theory of how the plasma parameters impact the statistics of these fluctuations have been discussed since the first use of this sensor modality \citep{gordon58,dougherty:farley1960, farleydougherty:ISR2, doughteryfarley:ISR3, hagfors1961}, and even as recent as 2011 there have been new formulations of this theory \citep{kudeki:milla:1,kudeki:milla:2}. 
+The fluctuations observed by ISR are associated with two longitudinal wave modes in the plasma:  the ion-acoustic mode and the Langmuir mode.   Most ISR investigations involve the use multiple pulses to create an estimate of the ion acoustic spectrum (i.e., the Fourier Transform of the ACF) which is then fit to a theoretical model in order to estimate ionospheric state parameters (typically plasma density, electron temperature, ion temperature, and bulk line-of-site plasma motion). The theory of how the plasma parameters impact the statistics of these fluctuations have been discussed since the first use of this sensor modality \citep{gordon58,dougherty:farley1960, farleydougherty:ISR2, doughteryfarley:ISR3, hagfors1961}, and even as recent as 2011 there have been new formulations of this theory \citep{kudeki:milla:1,kudeki:milla:2}. 
 
-The two main sources of statistical error will covered here are the random fluctuations from the electron density and noise from within the sensor itself. There are other sources of statistical error including sky noise and coherent scatter from other targets. 
+The two main sources of statistical uncertainty will covered here are the random fluctuations from the electron density and noise from within the sensor itself. There are other sources of statistical error including sky noise and coherent scatter from other targets. 
 
-The raw incoherent scatter signal is itself is a random process. As such it is necessary to average samples of an estimator for autocorrelation or spectrum \citep{Diaz:2008co}. A covariance matrix between each lag estimate can be determined using the formulation in \citep{hysell2008} 
+The raw incoherent scatter signal is itself is a random process. As such it is necessary to average samples of an estimator for autocorrelation or spectrum \citep{Diaz:2008co}. A covariance matrix between each lag estimate can be determined using the formulation by \citet{hysell2008} 
 
 \begin{equation}
 \label{eqn:covcalc}
 C_{\tau_1,\tau_2} = \frac{1}{J} \left( \ R(0)  R^*(\tau_1-\tau_2) +  R(\tau_1) R^*(\tau_2) \right),
 \end{equation}
 
-\noindent where $R(\tau)$ is the ACF as a function of lags $\tau$, and $J$ is the number of samples or pulses averaged together to create the estimate. The diagonals of this matrix, which can be thought of as the variances of each of the lags, thus \ref{eqn:covcalc} simplifies to
+\noindent where $R(\tau)$ is the ACF as a function of lags $\tau$, and $J$ is the number of samples or pulses averaged together to create the estimate. The diagonals of this matrix, which can be thought of as the variances of each of the lags, thus Equation \ref{eqn:covcalc} simplifies to
 
 \begin{equation}
 \label{eqn:covdiag}
 C_{\tau,\tau} = \frac{1}{J} \left(  |R(0)|^2 +|R(\tau)|^2\right).
 \end{equation}
 
-The variance of this signal is further degraded once noise from the sensor is added. The noise from the sensor is assumed to be uncorrelated to the signal. Thus the error from the noise can simply be added to the error from the inherent fluctuations in the signal. 
+The variance of this signal is further increased once noise from the sensor is added. The noise from the sensor is assumed to be uncorrelated to the signal. Thus the error from the noise can simply be added to the error from the inherent fluctuations in the signal. 
 
 \subsection{Space-Time Errors}
 
 The errors created through the ambiguity function lead to a blurring or averaging of ACFs from different points in time and space. This is similar to a blurring operator one might see in a camera or numerous other types of sensors. 
 
-The space-time ambiguity, $L(\tau_s,\mathbf{r}_s,t_s,\tau,\mathbf{r},t)$, is the kernel of Fredholm integral equation of the first kind operating on the ACF, $R(\tau,\mathbf{r},t)$, which can change over space, $\mathbf{r}$, and time $t$. which can be represented as follows,
+The space-time ambiguity, $L(\tau_s,\mathbf{r}_s,t_s,\tau,\mathbf{r},t)$, is the kernel of a Fredholm integral equation of the first kind operating on the ACF, $R(\tau,\mathbf{r},t)$, which can change over space, $\mathbf{r}$, and time $t$. It, can be represented as follows,
 
  \begin{equation}
   \label{eqn:staf}
@@ -182,19 +182,19 @@ The kernel is a separable function when the spatial coordinates are spherical, w
 \rho(\tau_s,\mathbf{r}_s,t_s)= \int G(t_s,t)F(\theta_s,\phi_s,\theta,\phi)W(\tau_s,r_s,\tau,r) R(\tau,\mathbf{r},t) dVdt d\tau,
 \end{equation}
 
-\noindent where $G(t_s,t)$ is the kernel for the time dimension, $F(\theta_s,\phi_s,\theta,\phi)$ is radar beam shape which acts as a kernel in azimuth and elevation, and $W(\tau_s,r_s,\tau,r) $ which is the range ambiguity function which acts as a kernel along range $r$ and lag $\tau$. The derivation of this operator can be seen in \citet{RDS:RDS20236}.
+\noindent where $G(t_s,t)$ is the kernel for the time dimension, $F(\theta_s,\phi_s,\theta,\phi)$ is radar beam shape which acts as a kernel in azimuth and elevation, and $W(\tau_s,r_s,\tau,r) $ which is the range ambiguity function which acts as a kernel along range $r$ and lag $\tau$. The derivation of this operator is given by \citet{RDS:RDS20236}.
 
-These two sources of error create a significant trade off between statistical variation of the signal and spatial and temporal resolution of the signal. In order to reduce the statistical fluctuations in the signal pulses need to be averaged together. This is necessary even for the case where there is no noise, in a sense the infinite signal to noise ratio (SNR) case. This integration is mainly done over time but can be done over space as well. For phased array systems this mixture of spatial and temporal averaging can be done by averaging together beams. This though will reduce cross range resolution but could possibly improve temporal resolution. It is for this reason these types of trade offs can best be explored through simulation.
+These two sources of error create a significant trade off between statistical variation of the signal and spatial and temporal resolution of the signal. In order to reduce the statistical fluctuations in the signal pulses need to be averaged together. This is necessary even for the case where there is no noise, in a sense the infinite signal to noise ratio (SNR) case. This integration is mainly done over time but can be done over space as well. For ESA systems this mixture of spatial and temporal averaging can be done by averaging together beams. In fact, if the ionosphere is drifting with a known vector velocity, then the stationarity assumption for ISR integration will be better met by averaging those beam positions approximately corresponding to the same scattering volume within the moving frame of reference. This though will reduce cross range resolution but could possibly improve temporal resolution. It is for this reason these types of trade offs can best be explored through simulation.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Simulator}
 
-The following section will detail the processing steps in the ISR simulator. The simulator allows one to analyze different experiment scenarios by implementing the ISR measurement process with the error from both from both space-time ambiguity and the statistical error. The space-time ambiguity is modeled using a coordinate transform and the the pulse as a windowed and the statistical error is taken into account by creating complex shaped Gaussian noise. The first part will detail the how filters are created to make the noise. The next one will cover creation of the in-phase and quadrature data (IQ data). The last portion will detail the processing used to create the estimates of the ACFs, which will also be referred to as lag products.
+The following section will detail the processing steps in the ISR simulator. The simulator allows one to analyze different experiment scenarios by implementing the ISR measurement process with the error from both from both space-time ambiguity and the statistical error. The space-time ambiguity is modeled using a coordinate transform and the the pulse as a windowed and the statistical error is taken into account by creating complex shaped Gaussian noise. The first part will detail the how filters are created to make the noise-like signal received by the ISR. The next one will cover creation of the in-phase and in-quadrature (I and Q) data. The last portion will detail the processing used to create the estimates of the ACFs, which will also be referred to as lag products.
 
 \subsection{Creating Filters}
 
-The simulator takes as input a discretized set of ionosphere parameters in Cartesian coordinates, which change with time. The first step in the simulator will be from each set of parameters an ISR spectrum is calculated. Thus for each point in time in space for the simulator there will be an intrinsic ISR spectrum. For details on calculating these spectra from the intrinsic plasma parameters see \citet{kudeki:milla:1} and \citet{kudeki:milla:2}. 
+he simulator takes as input a discretized set of ionosphere state parameters in Cartesian coordinates which may vary in time.  This corresponds to the true field we will seek to reconstruct.   The first step in the simulator is to create theoretical ISR spectra at each point from the prescribed parameters.  For details on calculating these spectra from the intrinsic plasma parameters see \citet{kudeki:milla:1} and \citet{kudeki:milla:2}. 
 
-Once the spectra have been created the simulator changes to a spherical coordinate system. This coordinate change acts as a linear operator in the spatial dimensions as the spectra are weighted and averaged. The weighting in azimuth and elevation is determined by the antenna beam pattern while the weighting in range is simply just a test of whether the spectra are with in the range gate. If there are no spectra within the range gate a nearest neighbor rule is used which selects the closest point in Cartesian space. This method to create the spectra for each point is an acceptable approximation because spatial correlations between the electron density fluctuations will be on the order of the Debye length \citep{farley1969}, which is significantly smaller than the beam width or range gate size. The entire process of the spatial sampling is shown in the simplified diagram in Figure \ref{fig:beamdia}.
+Once the spectra have been created the simulator changes to a radar-centered spherical coordinate system. This coordinate change acts as a linear operator in the spatial dimensions as the spectra are weighted and averaged. The weighting in azimuth and elevation is determined by the antenna beam pattern while the weighting in range is simply just a test of whether the spectra are with in the range gate. If there are no spectra within the range gate a nearest neighbor rule is used which selects the closest point in Cartesian space. This method to create the spectra for each point is an acceptable approximation because spatial correlations between the electron density fluctuations will be on the order of the Debye length \citep{farley1969}, which is significantly smaller than the beam width or range gate size. The entire process of the spatial sampling is shown in the simplified diagram in Figure \ref{fig:beamdia}.
 
 \begin{figure}[!t]
 \centering
@@ -210,7 +210,7 @@ Once the spectra have been created the simulator changes to a spherical coordina
 % H_m(\omega) = \sqrt{S_m(\omega | \: \bm{\theta})}.
 % \end{equation}
 
-Once the spectrum at the specific point in range and angle space has been determined, the filter is created. The method to create the filter given a desired spectrum or ACF can be done in a number of ways \citep{Kasdin:1995wi}. The current implementation in the simulator creates an infinite impulse response filter. The coefficients are determined using the ACF by solving the following set of equations,
+Once the spectrum for a given radar scattering volume has been determined, the filter is created. The method to create the filter given a desired spectrum or ACF can be done in a number of ways \citep{Kasdin:1995wi}. The current implementation in the simulator creates an infinite impulse response filter. The coefficients are determined using the ACF by solving the following set of equations,
 
 \begin{equation}
 \label{eq:filtereq}
@@ -278,18 +278,18 @@ P_r = \frac{cG \lambda^2}{2(4\pi)^2}\frac{P_t }{R^2}\frac{\sigma_e N_e}{(1+k^2\l
  
  \noindent where $P_r$ is the power received, $c$ is the speed of light, $G$ is the gain of the antenna, $P_t$ is the power of the transmitter, $\sigma_e$ is the electron radar cross section, $k$ is the wavenumber of the radar, $\lambda_D$ is the Debye length, $N_e$ is the electron density and $T_r$ is the electron to ion temperature ratio.
   
-The desired return power for each range gate is then applied to the data data. It is delayed and summed together so as to model the arrival of the radar return at the receive,
+The desired return power for each range gate is then applied to the data. It is delayed and summed together so as to model the arrival of the radar return at the receive,
  
 \begin{equation}
 \label{eq4}
 x(n) = \displaystyle\sum\limits_{m =0}^{M-1} \alpha(m)y_m(n-m),
 \end{equation}
 
-\noindent where $\alpha(m) = \sqrt{P_r(m)}/\hat{\sigma_y}$ and $\hat{\sigma_y}$ is the estimate of the standard deviation of $y_m(k)$. Lastly, to model the inherent noise in the radar and environment more complex Gaussian noise is added
+\noindent where $\alpha(m) = \sqrt{P_r(m)}/\widehat{\sigma_y}$ and $\widehat{\sigma_y}$ is the estimate of the standard deviation of $y_m(k)$. Lastly, to model the inherent noise in the radar and environment, an additive CWGN process is included
 
 \begin{equation}
 \label{eq:addnoise}
-x_f(n) = x(n) +\sqrt{\frac{k_bT_{sys}B}{2}} w(n), \quad w(n)\sim CN(0,1)
+x_f(n) = x(n) +\sqrt{\frac{k_bT_{sys}B}{2}} w(n), \quad w(k)\sim CN(0,\mathbf{I})
 \end{equation}
 
 \noindent where $k_b$ is Boltzmann's constant, $T_{sys}$ is the system temperature and $B$ is the system bandwidth.
@@ -298,7 +298,7 @@ A full diagram of the model can be seen in Figure \ref{fig:isrdiag}.
 
 \subsection{ACF Estimation}
 
-After the IQ data has been created it is processed to create estimates of the ACF at desired points of space. This type of processing has been detailed and analyzed in \citep{farley1969} and in other publications. This processing follows a flow chart seen in Figure \ref{fig:chain}.
+After the IQ data has been created it is processed to create estimates of the ACF at desired points of space. This type of processing has been detailed and analyzed by \citet{farley1969} and in other publications. This processing follows a flow chart seen in Figure \ref{fig:chain}.
 
 \begin{figure}[!t]
 \centering
@@ -339,7 +339,7 @@ Applying a summation rule is generally the next step in creating an estimate of 
 
 \noindent where $v$ is the 'volume' index or the number of gates integrated at zero lag which must be an odd integer and $\hat{R}_s(m,l)$ is the ACF estimate after the summation rule \citep{nygren1996}. 
 
-The final result of the this summation rule will still lead to a biased ACF. For the long pulse case this summation rule, according to \citet{nygren1996}, will lead to the following expected value for the estimator,
+The final result of the this summation rule will still lead to a biased ACF. For the long pulse case this summation rule leads to the  following expected value for the estimator \citep{nygren1996},
 
 \begin{equation}
 \label{eq:sumruleest}
@@ -368,10 +368,10 @@ Lastly an estimate of the noise correlation is subtracted out of $\hat{R}_s(m,l)
 %\label{fig:sumrule}
 %\end{figure}
 
-After the final estimation of the spectrum is complete the nonlinear least squares fitting takes place to determine the parameters.  The basic class of nonlinear least-squares problems as seen in \citep{kayvol1}, are shown in Equation \ref{nlls},
+After the final estimation of the spectrum is complete the nonlinear least squares fitting takes place to determine the parameters.  The class of nonlinear least squares problems relevant to ISR parameter estimation can be represented as the  minimization of a cost function of the form \citep{kayvol1},
 
 \begin{equation}
-	\hat{\mathbf{p}}= \underset{\mathbf{p}}{\text{argmin}} (\mathbf{y}-\bm{\theta}(\mathbf{p}))^*\bm{\Sigma}^{-1}(\mathbf{y}-\bm{\theta}(\mathbf{p})).
+	\mathbf{\hat{p}}= \underset{\mathbf{p}}{\text{argmin}} (\mathbf{y}-\bm{\theta}(\mathbf{p}))^*\bm{\Sigma}^{-1}(\mathbf{y}-\bm{\theta}(\mathbf{p})).
 \label{nlls}
 \end{equation}
 
@@ -398,7 +398,7 @@ In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final 
 
 %\noindent where $S$ is the signal power and $SNR$ is the signal to noise ratio. The noise level can be estimated from the calibration period. 
 
-In the past ISR researchers have used the Levenberg-Marquart algorithm to fit data \citep{nikoukar2008}.  This specific iterative algorithm moves the parameter vector $\mathbf{p}$ by a perturbation $\mathbf{h}$ at each iteration\citep{gavin:2013}.  Specifically Levenberg-Marquart was designed to be a sort of meld between two different methods Gradient Decent, and Gauss-Newton.  The perturbation vector $\mathbf{h}_{lm}$ can be calculated using the following:
+In the past, ISR researchers have used the Levenberg-Marquart algorithm to fit data \citep{nikoukar2008}. This specific iterative algorithm moves the parameter vector $\mathbf{p}$ by a perturbation $\mathbf{h}$ at each iteration\citep{gavin:2013}. Specifically Levenberg-Marquart was designed to be a sort of meld between two different methods Gradient Decent, and Gauss-Newton. The perturbation vector $\mathbf{h}_{lm}$ can be calculated using the following:
 
 \begin{equation}
 \left[ \mathbf{J}^T\bm{\Sigma}^{-1}\mathbf{J}\right]\mathbf{h}_{lm} =\mathbf{J}^T\bm{\Sigma}^{-1}(\mathbf{y}-\bm{\theta}(\mathbf{p}))
@@ -407,14 +407,14 @@ In the past ISR researchers have used the Levenberg-Marquart algorithm to fit da
 
 \noindent where $\mathbf{J}$ is the Jacobian matrix $\partial \bm{\theta}/\partial \mathbf{p}$ \citep{levenberg1944,marquardt:1963}. 
 
-Using the covariance matrix from the fitted parameters an overall error estimate can be achieved. This matrix is calculated using a numerical approximation to the Jacobian matrix that the function uses to determine the solution. The Hessian, $\mathbf{H}$ is then calculated by using the Jacobian and then inverted to get the covariance matrix. Due to the way the numerical routines solve the problem this matrix must be multiplied by the error between the estimated parameters and the data,
+Using the covariance matrix from the fitted parameters, an overall error estimate can be achieved. This matrix is calculated using a numerical approximation to the Jacobian matrix that the function uses to determine the solution. The Hessian, $\mathbf{H}$ is then calculated by using the Jacobian and then inverted to get the covariance matrix. Due to the way the numerical routines solve the problem, this matrix must be multiplied by the error between the estimated parameters and the data,
 
 \begin{equation}
 \label{eqn:jacinv}
 \bm{\Sigma}_{\hat{\mathbf{p}}}=\frac{(\mathbf{J}^T\mathbf{J})^{-1} (\mathbf{y}-\bm{\theta}(\hat{\mathbf{p}}))^*\bm{\Sigma}^{-1}(\mathbf{y}-\bm{\theta}(\hat{\mathbf{p}}))}{L-N_{\mathbf{p}}},
 \end{equation}
 
-\noindent where $N_{\mathbf{p}}$ is the number of parameters being fit. The variances of the parameters are then taken as the diagonals of the matrix. If the Hessian matrix is undefined so it can not be inverted and a proper estimate of the errors is not possible..
+\noindent where $N_{\mathbf{p}}$ is the number of parameters being fit. The variances of the parameters are then taken as the diagonals of the matrix. %If the Hessian matrix is undefined so it can not be inverted and a proper estimate of the errors is not possible.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Simulation Examples}
@@ -450,7 +450,7 @@ $V_i$      & $0$ m/s
 An application of this sort of statistical experiments are methods of identifying situations where the assumptions in the parameter fitting break down, and yield incorrect measurements. A number of studies have explored the case where ISR parameter measurements and spectra show evidence of non-Maxwellian behavior of the plasma \citet{Akbari:2012dz,Akbari:2015fv}. Future studies using the simulator could help create a training set that can be used with a pattern recognition algorithm to identify cases where the fitting may be incorrect and be reprocessed with a different algorithm.
 
 \subsection{Electron Density Measurement}
-An important aspect of experiment design is determining the observability of plasma phenomena with ISR. The simulator can be used to help understand the trade space that is afforded with each experiment. With this in mind a simple two dimensional field of ionospheric parameters is constructed to demonstrate this. This O$^+$ ionosphere is created with a background electron density that follows a Chapman function with 1e$^{11}$ m$^{-3}$ as the peak value and a constant electron and ion temperature. The background electron density can be seen in left panel of  Figure \ref{fig:background1}.
+An important aspect of experiment design is determining the observability of plasma phenomena with ISR. The simulator can be used to help understand the trade space that is afforded with each experiment. With this in mind a simple two dimensional field of ionospheric parameters is constructed to demonstrate this. This O$^+$ ionosphere is created with a background electron density that follows a Chapman function with $1\times10^{11}$ m$^{-3}$ as the peak value and a constant electron and ion temperature. The background electron density can be seen in left panel of  Figure \ref{fig:background1}.
 
 \begin{figure}[!t]
 \centering
@@ -459,11 +459,11 @@ An important aspect of experiment design is determining the observability of pla
 \label{fig:background1}
 \end{figure}
 
-For these simulations we will explore how a thin enhancement will be resolved with beam pattern shown in the right panel of Figure \ref{fig:background1}, where each dot is a range gate in one of the 25 beams used.. This thin enhancement is 2 km in width and enhances the density by 5 times the background at its altitude. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction. The results of our simulations are seen in Figure \ref{fig:stationaryall} using a 15 second and 60 second integration time, 60 and 240 pulses per position respectively. The different integration times show that, although the enhancement is blurred, the variance of the measurement can impact the quality of the reconstruction because of the inherent noise quality of the signal.
+For these simulations we will explore how a thin enhancement will be resolved with beam pattern shown in the right panel of Figure \ref{fig:background1}, where each dot is a range gate in one of the 25 beams used. This thin enhancement is 2 km in width and enhances the density by 5 times the background at its altitude. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction. The results of our simulations are seen in Figure \ref{fig:stationaryall} using a 15 second and 60 second integration time, 60 and 240 pulses per position respectively. The different integration times show that, although the enhancement is blurred, the variance of the measurement can impact the quality of the reconstruction because of the inherent noise quality of the signal.
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=5in]{stationary}
+\includegraphics[width=6in]{stationary}
 \caption{Results of stationary enhancement simulation. a. Input $N_e$; b. Output of simulator with 15 second integration;  Output of simulator with 60 second integration.}
 \label{fig:stationaryall}
 \end{figure}
@@ -492,14 +492,14 @@ Lastly, plasma parameters derived from a multi-fluid model developed in \cite{se
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=5in]{000_inputdata}
+\includegraphics[width=6in]{000_inputdata}
 \caption{Contour of background ionospheric parameters ($N_e$, $T_e$, $T_i$) used for simulations.}
 \label{fig:plparamst0}
 \end{figure}
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=5in]{0480_input}
+\includegraphics[width=6in]{0480_input}
 \caption{Perturbations to Figure \ref{fig:plparamst0} due to an imposed current system of .875 $\mu$A/m$^2$ at $t=480$ s, auroral arc.}
 \label{fig:plparamst60}
 \end{figure}
@@ -522,17 +522,17 @@ The output of the ISR simulator from the parameters can be see in Figure \ref{fi
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=5in]{0480_60_int}
+\includegraphics[width=6in]{0480_60_int}
 \caption{Fitted Plasma Parameters at $t=480$ s with 60 second integration.}
 \label{fig:fplparamst60}
 \end{figure}
 
-Lastly, a case with 240 seconds of integration time or 1021 pulses per position is shown in Figure \ref{fig:f240plparamst60}. Again, the enhancements in electron density and temperature are visible but so is enhancement in ion temperature. The columns though are no longer simply straight up and down and have somewhat of a curvature to them. The electron temperature enhancement has also shifted and is slightly wider along the X direction. 
+Lastly, a case with 240 seconds of integration time or 1021 pulses per position is shown in Figure \ref{fig:f240plparamst60}. Again, the enhancements in electron density and temperature are visible but so is enhancement in ion temperature. The columns though are no longer simply straight up and down and have somewhat of a curvature to them. The electron temperature enhancement has also shifted and is slightly wider along the x-direction. 
 %% Fitted Data 240 second int
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=5in]{0480_240_int}
+\includegraphics[width=6in]{0480_240_int}
 \caption{Fitted Plasma Parameters at $t=480$ s with 240 second integration.}
 \label{fig:f240plparamst60}
 \end{figure}
