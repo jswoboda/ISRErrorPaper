@@ -459,6 +459,7 @@ An important aspect of experiment design is determining the observability of pla
 \label{fig:background1}
 \end{figure}
 
+%For these simulations we want to show how ambiguities could arise when trying to image just simple electron density enhancements with the beam pattern shown in the right panel of Figure \ref{fig:background1},
 For these simulations we will explore how a thin enhancement will be resolved with beam pattern shown in the right panel of Figure \ref{fig:background1}, where each dot is a range gate in one of the 25 beams used. This thin enhancement is 2 km in width and enhances the density by 5 times the background at its altitude. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction. The results of our simulations are seen in Figure \ref{fig:stationaryall} using a 15 second and 60 second integration time, 60 and 240 pulses per position respectively. The different integration times show that, although the enhancement is blurred, the variance of the measurement can impact the quality of the reconstruction because of the inherent noise quality of the signal.
 
 \begin{figure}[!t]
@@ -486,6 +487,13 @@ The blurring effect is not constant throughout the space due to the way the rada
 \end{figure}
 
 This change in the shape of the enhancement can give the impression that its morphology has developed as it was moving through the field of view of the radar. This could lead to an incorrect interpretation of the physical process taking place. Thus one must be careful when analyzing these sorts of reconstructions.
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=6in]{stationary}
+\caption{Results of stationary enhancement simulation. a. Input $N_e$; b. Output of simulator with 15 second integration;  Output of simulator with 60 second integration.}
+\label{fig:stationaryall}
+\end{figure}
 
 \subsection{Full Parameter Experiment}
 Lastly, plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012} are used to drive the simulator. The specific example was originally used in \cite{Perry:2015jf} to compare to measurements from RISR-N. Images of the plasma parameters can be seen in Figures \ref{fig:plparamst0} and \ref{fig:plparamst60}. These enhancements in electron density, temperature and ion temperature are caused by an auroral arc created from a current system of .875 $\mu$A/m$^2$. It is moving through the field of view at 200 m/s.
