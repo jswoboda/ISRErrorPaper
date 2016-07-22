@@ -144,7 +144,7 @@ In this section the main sources of ISR errors will be discussed. The first part
 
 The fluctuations observed by ISR are associated with two longitudinal wave modes in the plasma:  the ion-acoustic mode and the Langmuir mode.   Most ISR investigations involve the use multiple pulses to create an estimate of the ion acoustic spectrum (i.e., the Fourier Transform of the ACF) which is then fit to a theoretical model in order to estimate ionospheric state parameters (typically plasma density, electron temperature, ion temperature, and bulk line-of-site plasma motion). The theory of how the plasma parameters impact the statistics of these fluctuations have been discussed since the first use of this sensor modality \citep{gordon58,dougherty:farley1960, farleydougherty:ISR2, doughteryfarley:ISR3, hagfors1961}, and even as recent as 2011 there have been new formulations of this theory \citep{kudeki:milla:1,kudeki:milla:2}. 
 
-The two main sources of statistical uncertainty will covered here are the random fluctuations from the electron density and noise from within the sensor itself. There are other sources of statistical error including sky noise and coherent scatter from other targets. 
+The two main sources of statistical uncertainty will covered here are the random fluctuations from the electron density and noise from within the sensor itself. There are other sources of increased uncertainty, including sky noise and coherent scatter from other targets. 
 
 The raw incoherent scatter signal is itself is a random process. As such it is necessary to average samples of an estimator for autocorrelation or spectrum \citep{Diaz:2008co}. A covariance matrix between each lag estimate can be determined using the formulation by \citet{hysell2008} 
 
@@ -308,18 +308,18 @@ After the IQ data has been created it is processed to create estimates of the AC
 \end{figure}
 
 
-The lag product formation is an initial estimate of the autocorrelation function. The sampled I/Q can be represented as $x(n) \in\mathbb{C}^N$ where $N$ is the number of samples in an inter pulse period. For each range gate $m\in 0,1,...M-1$ an autocorrelation is estimated for each lag of $l \in 0,1...,L-1$.  To get better statistics this operation is performed for each pulse $j\in 0,1,...J-1$ and then summed over the $J$ pulses. The entire operation to form the initial estimate of $\hat{R}(m,l)$ can be seen in Equation \ref{eq:lagpro}:
+The lag product formation is an initial estimate of the autocorrelation function. The sampled I/Q can be represented as $x(n) \in\mathbb{C}^N$ where $N$ is the number of samples in an inter pulse period. For each range gate $m\in 0,1,...M-1$ an autocorrelation is estimated for each lag of $l \in 0,1...,L-1$.  To get better statistics this operation is performed for each pulse $j\in 0,1,...J-1$ and then summed over the $J$ pulses. The entire operation to form the initial estimate of $\widehat{R}(m,l)$ can be seen in Equation \ref{eq:lagpro}:
 
 \begin{equation}
 \label{eq:lagpro}
-\hat{R}(m,l) = \displaystyle\sum\limits_{j=0}^{J-1} x(m-\lfloor l/2\rfloor,j)x^*(m+\lceil l/2 \rceil,j).
+\widehat{R}(m,l) = \displaystyle\sum\limits_{j=0}^{J-1} x(m-\lfloor l/2\rfloor,j)x^*(m+\lceil l/2 \rceil,j).
 \end{equation}
 
 The case shown in Equation \ref{eq:lagpro} is a centered lag product, other types of lag products calculations are available but generally a centered product is used. In the centered lag product case range gate index $m$ and sample index $n$ can be related by $m=n-\lfloor L/2\rfloor$ and the maximum lag and sample relation is $M=N-\lceil L/2 \rceil$.  This lag product formation is the first step in taking a discrete Wigner Distribution \citep{TFAcohen}. This first step adds a bias to the estimates of the ACF which acts as a weighting on the higher lags $\mathcal{W}(l)$, which is a weighting that comes from the pulse shape. The expected value for the estimator, assuming the use of a long pulse, is the following,
 
 \begin{equation}
 \label{eq:lagprobias}
-\left\langle\hat{R}(m,l) \right\rangle = \mathcal{W}(l)R(m,l) =\frac{L-l}{L}R(m,l).
+\left\langle\widehat{R}(m,l) \right\rangle = \mathcal{W}(l)R(m,l) =\frac{L-l}{L}R(m,l).
 \end{equation}
 %This specific type of lag product formation is detailed in \citep{farley1969} and had been referred to as unbiased. This terminology does differ from what is used in statistic signal processing literature such as \citep{randomsigshanmugan} where the unbiased autocorrelation function estimate is carried out as so,
 %
@@ -334,16 +334,16 @@ Applying a summation rule is generally the next step in creating an estimate of 
 
 \begin{equation}
 \label{eq:sumrule}
-\hat{R}_s(m,l) = \displaystyle\sum\limits_{i=-((v-1)/2+\lceil l/2 \rceil)}^{((v-1)/2+\lfloor l/2\rfloor)} \hat{R}(m+i,l),
+\widehat{R}_s(m,l) = \displaystyle\sum\limits_{i=-((v-1)/2+\lceil l/2 \rceil)}^{((v-1)/2+\lfloor l/2\rfloor)} \widehat{R}(m+i,l),
 \end{equation}
 
-\noindent where $v$ is the 'volume' index or the number of gates integrated at zero lag which must be an odd integer and $\hat{R}_s(m,l)$ is the ACF estimate after the summation rule \citep{nygren1996}. 
+\noindent where $v$ is the 'volume' index or the number of gates integrated at zero lag which must be an odd integer and $\widehat{R}_s(m,l)$ is the ACF estimate after the summation rule \citep{nygren1996}. 
 
 The final result of the this summation rule will still lead to a biased ACF. For the long pulse case this summation rule leads to the  following expected value for the estimator \citep{nygren1996},
 
 \begin{equation}
 \label{eq:sumruleest}
-\left\langle\hat{R}_s(m,l) \right\rangle  =\frac{v+l}{v\mathcal{W}(0)}\mathcal{W}(l)R(m,l) =\left(-\frac{1}{vL}l^2+\frac{L-v}{Lv}l+1\right)   R(m,l).
+\left\langle\widehat{R}_s(m,l) \right\rangle  =\frac{v+l}{v\mathcal{W}(0)}\mathcal{W}(l)R(m,l) =\left(-\frac{1}{vL}l^2+\frac{L-v}{Lv}l+1\right)   R(m,l).
 \end{equation}
 %An example summation rule for a central product is shown in Figure \ref{fig:sumrule}. In the figure the image on the left is a basic representation of an ambiguity function of a long pulse.  Its mirrored on the right with red bars which would show the integration area under it so the ambiguity function for each lag will be of equal size in range. There are a number of different summing rule each with their own trade offs \citep{nygren1996}.
 
@@ -356,7 +356,7 @@ The final result of the this summation rule will still lead to a biased ACF. For
 %\hat{R}_w(m,l) = \displaystyle\sum\limits_{j=0}^{J-1} w(m_w-\lfloor l/2\rfloor,j)w^*(m_w+\lceil l/2 \rceil,j),
 %\end{equation}
 
-Lastly an estimate of the noise correlation is subtracted out of $\hat{R}_s(m,l)$, $\hat{R}_w(m,l)$ which is the ACF estimate of the background noise process of the radar $w(n_w)$ using the steps in Equations \ref{eq:lagpro} and \ref{eq:sumrule}. In a real radar system the noise process is sampled during a calibration period for the radar when nothing is being emitted. For our estimate we simply use a noise process with the desired correlation structure and power. The final estimate of the autocorrelation function after the noise subtraction and summation rule will be represented by $\hat{R}_f(m,l)$.
+Lastly an estimate of the noise correlation is subtracted out of $\widehat{R}_s(m,l)$, $\widehat{R}_w(m,l)$ which is the ACF estimate of the background noise process of the radar $w(n_w)$ using the steps in Equations \ref{eq:lagpro} and \ref{eq:sumrule}. In a real radar system the noise process is sampled during a calibration period for the radar when nothing is being emitted. For our estimate we simply use a noise process with the desired correlation structure and power. The final estimate of the autocorrelation function after the noise subtraction and summation rule will be represented by $\widehat{R}_f(m,l)$.
 
 %\begin{figure}[!t]
 %\centering
@@ -375,7 +375,7 @@ After the final estimation of the spectrum is complete the nonlinear least squar
 \label{nlls}
 \end{equation}
 
-In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final estimate of the ACF $\hat{R}_f(m,l)$ at a specific range or its spectrum $\hat{S}_f(m,\omega)$. The parameter vector $\mathbf{P}$ would be the plasma parameters $N_e$, $T_e$, $T_i$ and $V_i$. The fit function, $\bm{\theta}$, is the IS spectrum calculated from models, such as once seen in \citep{kudeki:milla:1}, smeared by the ambiguity function. In the case of the long pulse the ambiguity can be simply applied by multiplying it with the autocorrelation function $R(l)$, if the summation rule is properly applied. 
+In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final estimate of the ACF $\widehat{R}_f(m,l)$ at a specific range or its spectrum $\widehat{S}_f(m,\omega)$. The parameter vector $\mathbf{P}$ would be the plasma parameters $N_e$, $T_e$, $T_i$ and $V_i$. The fit function, $\bm{\theta}$, is the IS spectrum calculated from models, such as once seen in \citep{kudeki:milla:1}, smeared by the ambiguity function. In the case of the long pulse the ambiguity can be simply applied by multiplying it with the autocorrelation function $R(l)$, if the summation rule is properly applied. 
 
 %The correlation matrix $\bm{\Sigma}$ is often realized as a diagonal matrix for many ISR systems the variance of the lags or each point of the spectrum being the values. The variance of the ACF estimator can be estimated using the following,
 %
@@ -411,7 +411,7 @@ Using the covariance matrix from the fitted parameters, an overall error estimat
 
 \begin{equation}
 \label{eqn:jacinv}
-\bm{\Sigma}_{\hat{\mathbf{p}}}=\frac{(\mathbf{J}^T\mathbf{J})^{-1} (\mathbf{y}-\bm{\theta}(\hat{\mathbf{p}}))^*\bm{\Sigma}^{-1}(\mathbf{y}-\bm{\theta}(\hat{\mathbf{p}}))}{L-N_{\mathbf{p}}},
+\bm{\Sigma}_{\mathbf{\hat{p}}}=\frac{(\mathbf{J}^T\mathbf{J})^{-1} (\mathbf{y}-\bm{\theta}(\mathbf{\hat{p}}))^*\bm{\Sigma}^{-1}(\mathbf{y}-\bm{\theta}(\mathbf{\hat{p}}))}{L-N_{\mathbf{p}}},
 \end{equation}
 
 \noindent where $N_{\mathbf{p}}$ is the number of parameters being fit. The variances of the parameters are then taken as the diagonals of the matrix. %If the Hessian matrix is undefined so it can not be inverted and a proper estimate of the errors is not possible.
@@ -548,7 +548,7 @@ The output of the ISR simulator from the parameters can be see in Figure \ref{fi
 \section{Conclusion}
 Sources of error in the ISR measurement process have be discussed along with the description of a full simulation of the measurement process. Possible uses for the simulator in research community have also been discussed and examples have been shown. These examples show how one can create large statistical data sets and also set up possible experiments. 
 
-Development of the simulator will continue by adding new pulses modes as currently only Barker Code and Long Pulse modulations are available at this time. The simulator can also be used to create synthetic data for dish based systems such as well. Other possible expansions of the simulator include adding a mode that can calculate returns from each receiver element, as is the current planned architecture of EISCAT 3-D, and or a multi-static receive mode. With these sorts of additions the simulator can help designers understand the capabilities of new systems. 
+Development of the simulator will continue by adding new pulses modes as currently only Barker Code and Long Pulse modulations are available at this time. The simulator can also be used to create synthetic data for dish based systems such as well. Other possible expansions of the simulator include adding a mode that can calculate returns from each receiver element, as is the current planned architecture of EISCAT-3D, and or a multi-static receive mode. With these sorts of additions the simulator can help designers understand the capabilities of new systems. 
 
 A more immediate application of this simulator would be to aide researchers plan their experiments. There are a number of phenomena  that change on very small spatio-temporal scales and to capture observations of them require optimizing the experiment set up. The ability of the simulator to create I and Q data gives it another advantage as some phenomena can only be observed at this data level. With all that in mind by releasing this simulation to the community we hope that other researchers can find utility in it as they plan experiments or to understand observed radar data. 
 
