@@ -465,7 +465,7 @@ For these simulations we will explore how a thin enhancement will be resolved wi
 \begin{figure}[!t]
 \centering
 \includegraphics[width=6in]{stationary}
-\caption{Results of stationary enhancement simulation. a. Input $N_e$; b. Output of simulator with 15 second integration;  Output of simulator with 60 second integration.}
+\caption{Results of stationary enhancement simulation. a) Input $N_e$. b) Output of simulator with 15 second integration. c) Output of simulator with 60 second integration.}
 \label{fig:stationaryall}
 \end{figure}
 
@@ -474,7 +474,7 @@ The blurring effect is not constant throughout the space due to the way the rada
 \begin{figure}[!t]
 \centering
 \includegraphics[width=5in]{moving6mins}
-\caption{Results of moving enhancement simulation at 600 seconds. a. Input $N_e$; b. Output of simulator with 60 second integration.}
+\caption{Results of moving enhancement simulation at 600 seconds. a) Input $N_e$. b) Output of simulator with 60 second integration.}
 \label{fig:moving10mins}
 \end{figure}
 
@@ -482,7 +482,7 @@ The blurring effect is not constant throughout the space due to the way the rada
 \begin{figure}[!t]
 \centering
 \includegraphics[width=5in]{moving14mins}
-\caption{Results of moving enhancement simulation at 840 seconds. a. Input $N_e$; b. Output of simulator with 60 second integration.}
+\caption{Results of moving enhancement simulation at 840 seconds. a) Input $N_e$. b) Output of simulator with 60 second integration.}
 \label{fig:moving14mins}
 \end{figure}
 
@@ -490,9 +490,16 @@ This change in the shape of the enhancement can give the impression that its mor
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=6in]{stationary}
-\caption{Results of stationary enhancement simulation. a. Input $N_e$; b. Output of simulator with 15 second integration;  Output of simulator with 60 second integration.}
-\label{fig:stationaryall}
+\includegraphics[width=6in]{moving10kmwidth}
+\caption{Results of moving enhancement simulation at 600 seconds with 10km wide enhancement. a) Input $N_e$. b) Output of simulator with 60 second integration.}
+\label{fig:moving10km}
+\end{figure}
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=6in]{moving18kmwidth}
+\caption{Results of moving enhancement simulation at 600 seconds with 10km wide enhancement. a) Input $N_e$. b) Output of simulator with 60 second integration.}
+\label{fig:moving18}
 \end{figure}
 
 \subsection{Full Parameter Experiment}
@@ -500,15 +507,15 @@ Lastly, plasma parameters derived from a multi-fluid model developed in \cite{se
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=6in]{000_inputdata}
+\includegraphics[width=6in]{0000_15_int}
 \caption{Contour of background ionospheric parameters ($N_e$, $T_e$, $T_i$) used for simulations.}
 \label{fig:plparamst0}
 \end{figure}
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=6in]{0480_input}
-\caption{Perturbations to Figure \ref{fig:plparamst0} due to an imposed current system of .875 $\mu$A/m$^2$ at $t=480$ s, auroral arc.}
+\includegraphics[width=6in]{1260_15_int}
+\caption{Perturbations to Figure \ref{fig:plparamst0} due to an imposed current system of .875 $\mu$A/m$^2$ at $t=1260$ s, auroral arc.}
 \label{fig:plparamst60}
 \end{figure}
 
@@ -530,20 +537,20 @@ The output of the ISR simulator from the parameters can be see in Figure \ref{fi
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=6in]{0480_60_int}
-\caption{Fitted Plasma Parameters at $t=480$ s with 60 second integration.}
+\includegraphics[width=6in]{1260_60_int}
+\caption{Fitted Plasma Parameters at $t=1260$ s with 60 second integration.}
 \label{fig:fplparamst60}
 \end{figure}
 
 Lastly, a case with 240 seconds of integration time or 1021 pulses per position is shown in Figure \ref{fig:f240plparamst60}. Again, the enhancements in electron density and temperature are visible but so is enhancement in ion temperature. The columns though are no longer simply straight up and down and have somewhat of a curvature to them. The electron temperature enhancement has also shifted and is slightly wider along the x-direction. 
 %% Fitted Data 240 second int
 
-\begin{figure}[!t]
-\centering
-\includegraphics[width=6in]{0480_240_int}
-\caption{Fitted Plasma Parameters at $t=480$ s with 240 second integration.}
-\label{fig:f240plparamst60}
-\end{figure}
+%\begin{figure}[!t]
+%\centering
+%\includegraphics[width=6in]{0480_240_int}
+%\caption{Fitted Plasma Parameters at $t=480$ s with 240 second integration.}
+%\label{fig:f240plparamst60}
+%\end{figure}
 
 These sorts of distortions demonstrate the trade off one faces when designing these experiments. As one increases the integration time we can expect the error created by the inherent measurement variance to go down but unfortunately if the parameter field is changing with time distortions from the plasma motion or change in the morphology can affect the reconstruction. because there are a long list of trade offs in designing an experiment the utility of this sort of simulation are clear. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
