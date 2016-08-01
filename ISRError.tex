@@ -102,13 +102,9 @@ Boston University, Boston, Massachusetts, USA.}
 % >> the body of the abstract.
 
 \begin{abstract}
-As with any sensing modality, incoherent scatter radar (ISR) has inherent errors and uncertainty in its measurements. A number of theoretical aspects behind these errors have been documented in the literature. The main sources of this error comes from spatiotemporal ambiguities and statistical errors that arise from the inherent fluctuation of the medium. 
 
-From the point of view from an experiment designer these sources of error can lead to a trade off between spatial and temporal resolution and statistical accuracy. The designer then has to work with questions dealing with resource allocation, such as how long to dwell in a specific direction. These questions can be rather hard to solve because there are a large number of degrees of freedom when designing an experiment.
+The sources of error from electronically steerable array (ESA) incoherent scatter radar (ISR) are investigated both theoretically and with use of an open source ISR simulator, developed by the authors. The main sources of error that will be explored are from the statistical uncertainty, which arises due to nature of the measurement mechanism, and the inherent space-time ambiguity from the sensor. The simulator under discussion can take a field of plasma parameters and create simulated ISR data at the in-phase and in-quadrature (I and Q) level and then process it to show a possible reconstruction of the parameters field. To show the utility of the simulator a number of examples will be shown, with one case using data from a self-consistent multi-ionic fluid transport model. This will demonstrate the impact the forward model of the ISR and statistical uncertainty on the parameter measurements, and the core trade offs that must be made when planning experiments. Thus, highlighting the need for this type of simulator to iterate through different experiment set ups.
 
-With the recent application of electronically scannable arrays (ESAs) to ISR, the number of degrees of freedom in experiment design have exploded. These types of systems, like AMISR and EISCAT-3D, allow for greater flexibility in processing along with making it is now possible to create full volumetric reconstructions of plasma parameters. These ESA systems are used heavily in the high latitude region of the ionosphere, which can have plasma phenomena that is highly variable in space and time. In order to develop an experiment to observe the plasma phenomena researchers have to wade through a number of different trade offs. To understand all of these trade offs may need to simulate the experiment.
-
-This publication will show a simulator that can take a field of plasma parameters and create ISR data at the IQ level and then process it to show a possible reconstruction of the parameters field. It can give researchers a new tool that can assist them in the set up their experiments. To show the utility of the simulator for experiment design for one of the examples we will data from a self-consistent multi-ionic fluid transport model. This will demonstrate the impact the forward model of the ISR on the parameter measurements and thus the need for a simulator to iterate through different experiment set ups. 
 
 \end{abstract}
 
@@ -500,7 +496,7 @@ Lastly, for this type of simulation, we show an example to demonstrate situation
 \begin{figure}[!t]
 \centering
 \includegraphics[width=6in]{moving10km18kmoutputs}
-\caption{Results of moving enhancement simulation at 480 seconds with 60 second integration. a) a) 10 km wide enhancement. b) 18 km wide enhancement.}
+\caption{Results of moving enhancement simulation at 480 seconds with 60 second integration. a) 10 km wide enhancement. b) 18 km wide enhancement.}
 \label{fig:moving1018fit}
 \end{figure}
 
