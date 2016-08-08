@@ -138,7 +138,7 @@ In this section the main sources of ISR errors will be discussed. The first part
 
 \subsection{Statistical Errors}
 
-The fluctuations observed by ISR are associated with two longitudinal wave modes in the plasma:  the ion-acoustic mode and the Langmuir mode.   Most ISR investigations involve the use multiple pulses to create an estimate of the ion acoustic spectrum (i.e., the Fourier Transform of the ACF) which is then fit to a theoretical model in order to estimate ionospheric state parameters (typically plasma density, electron temperature, ion temperature, and bulk line-of-site plasma motion). The theory of how the plasma parameters impact the statistics of these fluctuations have been discussed since the first use of this sensor modality \citep{gordon58,dougherty:farley1960, farleydougherty:ISR2, doughteryfarley:ISR3, hagfors1961}, and even as recent as 2011 there have been new formulations of this theory \citep{kudeki:milla:1,kudeki:milla:2}. 
+The fluctuations observed by ISR are associated with two longitudinal wave modes in the plasma: √äthe ion-acoustic mode and the Langmuir mode. √ä Most ISR investigations involve the use multiple pulses to create an estimate of the ion acoustic spectrum (i.e., the Fourier Transform of the ACF) which is then fit to a theoretical model in order to estimate ionospheric state parameters (typically plasma density, electron temperature, ion temperature, and bulk line-of-site plasma motion). The theory of how the plasma parameters impact the statistics of these fluctuations have been discussed since the first use of this sensor modality \citep{gordon58,dougherty:farley1960, farleydougherty:ISR2, doughteryfarley:ISR3, hagfors1961}, and even as recent as 2011 there have been new formulations of this theory \citep{kudeki:milla:1,kudeki:milla:2}. 
 
 The two main sources of statistical uncertainty will covered here are the random fluctuations from the electron density and noise from within the sensor itself. There are other sources of increased uncertainty, including sky noise and coherent scatter from other targets. 
 
@@ -188,7 +188,7 @@ The following section will detail the processing steps in the ISR simulator. The
 
 \subsection{Creating Filters}
 
-he simulator takes as input a discretized set of ionosphere state parameters in Cartesian coordinates which may vary in time.  This corresponds to the true field we will seek to reconstruct.   The first step in the simulator is to create theoretical ISR spectra at each point from the prescribed parameters.  For details on calculating these spectra from the intrinsic plasma parameters see \citet{kudeki:milla:1} and \citet{kudeki:milla:2}. 
+he simulator takes as input a discretized set of ionosphere state parameters in Cartesian√äcoordinates which may vary in time. √äThis corresponds to the true field we will seek to reconstruct. √ä The first step in the simulator is to create theoretical ISR spectra at each point from the prescribed parameters. √äFor details on calculating these spectra from the intrinsic plasma parameters see \citet{kudeki:milla:1} and \citet{kudeki:milla:2}. 
 
 Once the spectra have been created the simulator changes to a radar-centered spherical coordinate system. This coordinate change acts as a linear operator in the spatial dimensions as the spectra are weighted and averaged. The weighting in azimuth and elevation is determined by the antenna beam pattern while the weighting in range is simply just a test of whether the spectra are with in the range gate. If there are no spectra within the range gate a nearest neighbor rule is used which selects the closest point in Cartesian space. This method to create the spectra for each point is an acceptable approximation because spatial correlations between the electron density fluctuations will be on the order of the Debye length \citep{farley1969}, which is significantly smaller than the beam width or range gate size. The entire process of the spatial sampling is shown in the simplified diagram in Figure \ref{fig:beamdia}.
 
@@ -335,7 +335,7 @@ Applying a summation rule is generally the next step in creating an estimate of 
 
 \noindent where $v$ is the 'volume' index or the number of gates integrated at zero lag which must be an odd integer and $\widehat{R}_s(m,l)$ is the ACF estimate after the summation rule \citep{nygren1996}. 
 
-The final result of the this summation rule will still lead to a biased ACF. For the long pulse case this summation rule leads to the  following expected value for the estimator \citep{nygren1996},
+The final result of the this summation rule will still lead to a biased ACF. For the long pulse case this summation rule leads to the√ä following expected value for the estimator \citep{nygren1996},
 
 \begin{equation}
 \label{eq:sumruleest}
@@ -364,7 +364,7 @@ Lastly an estimate of the noise correlation is subtracted out of $\widehat{R}_s(
 %\label{fig:sumrule}
 %\end{figure}
 
-After the final estimation of the spectrum is complete the nonlinear least squares fitting takes place to determine the parameters.  The class of nonlinear least squares problems relevant to ISR parameter estimation can be represented as the  minimization of a cost function of the form \citep{kayvol1},
+After the final estimation of the spectrum is complete the nonlinear least squares fitting takes place to determine the parameters.  The class of nonlinear least squares problems relevant to ISR parameter estimation can be represented as the √äminimization of a cost function of the form \citep{kayvol1},
 
 \begin{equation}
 	\mathbf{\hat{p}}= \underset{\mathbf{p}}{\text{argmin}} (\mathbf{y}-\bm{\theta}(\mathbf{p}))^*\bm{\Sigma}^{-1}(\mathbf{y}-\bm{\theta}(\mathbf{p})).
