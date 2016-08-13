@@ -532,8 +532,8 @@ Finally, plasma parameters derived from a multi-fluid model developed in \cite{s
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=6in]{0000_15_int}
-\caption{Contour of background ionospheric parameters ($N_e$, $T_e$, $T_i$) used for simulations.}
+\includegraphics[width=6in]{backgroundallparams}
+\caption{Background ionospheric parameters ($N_e$, $T_e$, $T_i$) along with number density of ion species, used for simulations.}
 \label{fig:plparamst0}
 \end{figure}
 
@@ -546,7 +546,7 @@ Finally, plasma parameters derived from a multi-fluid model developed in \cite{s
 
 Using a beam pattern similar to the one seen in the right panel of Figure \ref{fig:background1}, we use the ISR simulator to explore how an electronically scanned ISR may reconstruct the scene. This a best case condition, as we have apriori knowledge of the plane that the arc is traveling in, and have set up the radar spatial beam pattern for the experiment to take advantage of this knowledge. This feature reduces the number of radar beams and required integration time to gain the desired statistics. 
 
-\pcom{I would plot the composition curve!}{It is also assumed that the ratios between ion species are known.} \pcom{see comment below - reword.}{This is a common practice in ISR fitting as allowing the ratios to be free parameters allows for non-unique solutions.} If the fixed, apriori assumed composition ratios between the different ion species are incorrect, this can lead to errors in the final parameter estimates. For the lower F region ionosphere, generally this usually leads to errors between 150-250 km where the ionosphere changes from NO$^+$ dominated to O$^+$ dominated. \pcom{awkward - reword}{This issue does come into play in this case, chemical recombination is cited as an effect in \citet{Perry:2015jf} and could be impacting the final parameter fitting.}
+\pcom{I would plot the composition curve!}{It is also assumed that the ratios between ion species are known.} \pcom{see comment below - reword.}{This is a common practice in ISR fitting as allowing the ratios to be free parameters allows for non-unique solutions.} If the fixed, apriori assumed composition ratios between the different ion species are incorrect, this can lead to errors in the final parameter estimates. For the lower F region ionosphere, generally this usually leads to errors between 150-250 km where the ionosphere changes from NO$^+$ dominated to O$^+$ dominated. \pcom{awkward - reword}{This issue does come into play in this case, chemical recombination is cited as an effect in \citet{Perry:2015jf} and could be impacting the final parameter fitting. \citep{Zettergren:2011ej, Blelly:2010gf}}
 
 {\bf JOHN: it is not always the case that allowing ion composition to vary causes non-unique solutions!  This is dangerous to imply.  For example, we let H+ and He+ vary all the time in the topside ionosphere and, with the right temperature constraint, it works.  It is completely situation dependent.}
 
