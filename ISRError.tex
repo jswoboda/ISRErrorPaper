@@ -167,13 +167,13 @@ The variance of this signal is further increased once noise from the sensor is a
 
 \begin{equation}
 \label{eqn:covdiagwn}
-C_{\tau,\tau} = \frac{1}{2J} \left(  |R(0)|^2 +|R(\tau)|^2\right) + \left|R_w (\tau)\right|^2.
+C_{\tau,\tau} = \frac{1}{2J} \left(  |R(0)|^2 +|R(\tau)|^2 + \left|R_w (0)\right|^2+\left|R_w (\tau)\right|^2\right).
 \end{equation}
 
 \subsection{Space-Time Errors}
 
 For practical radar experiments, the use of waveforms with non-zero time extent introduces artifacts in the form of an associated radar ambiguity function \citep{nygren1996}.  The errors created through this ambiguity function lead to a blurring or averaging of ACFs from different points in time and space. This is similar to a blurring operator one might see from image processing applications, such as in a camera or numerous other types of sensors. 
-
+ 
 The space-time ambiguity, $L(\tau_s,\mathbf{r}_s,t_s,\tau,\mathbf{r},t)$, is the kernel of a Fredholm integral equation of the first kind operating on the ACF, $R(\tau,\mathbf{r},t)$, which can change over space, $\mathbf{r}$, and time $t$. It can be represented as follows,
 
  \begin{equation}
@@ -387,7 +387,18 @@ The class of nonlinear least squares problems relevant to ISR parameter estimati
 \label{nlls}
 \end{equation}
 
-In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final estimate of the ACF $\widehat{R}_f(m,l)$ at a specific range or its spectrum $\widehat{S}_f(m,\omega)$. The parameter vector $\mathbf{P}$ would be the plasma parameters $N_e$, $T_e$, $T_i$ and $V_i$. The fit function, $\bm{\theta}$, is the IS spectrum calculated from models, such as once seen in \citep{kudeki:milla:1}, smeared by the ambiguity function. In the case of the long pulse the ambiguity can be simply applied by multiplying it with the autocorrelation function $R(l)$, if the summation rule is properly applied. In the past the Levenberg-Marquart algorithm to fit data \citep{nikoukar2008}
+In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final estimate of the ACF $\widehat{R}_f(m,l)$ at a specific range or its spectrum $\widehat{S}_f(m,\omega)$. The parameter vector $\mathbf{P}$ would be the plasma parameters $N_e$, $T_e$, $T_i$ and $V_i$. The fit function, $\bm{\theta}$, is the IS spectrum calculated from models, such as once seen in \citep{kudeki:milla:1}, smeared by the ambiguity function. In the case of the long pulse the ambiguity can be simply applied by multiplying it with the autocorrelation function $R(l)$, if the summation rule is properly applied. In the past the Levenberg-Marquart algorithm to fit data \citep{nikoukar2008}.
+
+%Using the covariance matrix from the fitted parameters, an overall error estimate can be achieved. This matrix is calculated using a numerical approximation to the Jacobian matrix that the function uses to determine the solution. Due to the way the numerical routines solve the problem, this matrix must be multiplied by the error between the estimated parameters and the data,
+
+The last step is to calculate the errors in the parameter estimates. To estimate the errors \cite{menke2012geophysical}
+\begin{equation}
+\label{eqn:jacinv}
+\bm{\Sigma}_{\mathbf{\hat{p}}}=\frac{(\mathbf{J}^T\mathbf{J})^{-1} (\mathbf{y}-\bm{\theta}(\mathbf{\hat{p}}))^*\bm{\Sigma}^{-1}(\mathbf{y}-\bm{\theta}(\mathbf{\hat{p}}))}{L-N_{\mathbf{p}}},
+\end{equation}
+
+\noindent where $N_{\mathbf{p}}$ is the number of parameters being fit. The variances of the parameters are then taken as the diagonals of the matrix.
+
 
 %The correlation matrix $\bm{\Sigma}$ is often realized as a diagonal matrix for many ISR systems the variance of the lags or each point of the spectrum being the values. The variance of the ACF estimator can be estimated using the following,
 %
@@ -425,7 +436,7 @@ In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final 
 %\label{eqn:jacinv}
 %\bm{\Sigma}_{\mathbf{\hat{p}}}=\frac{(\mathbf{J}^T\mathbf{J})^{-1} (\mathbf{y}-\bm{\theta}(\mathbf{\hat{p}}))^*\bm{\Sigma}^{-1}(\mathbf{y}-\bm{\theta}(\mathbf{\hat{p}}))}{L-N_{\mathbf{p}}},
 %\end{equation}
-%
+
 %\noindent where $N_{\mathbf{p}}$ is the number of parameters being fit. The variances of the parameters are then taken as the diagonals of the matrix.}
 
  %If the Hessian matrix is undefined so it can not be inverted and a proper estimate of the errors is not possible.
@@ -442,7 +453,7 @@ It is often necessary to get a large number of sensor measurements for a statist
 
 %\pcom{Very awkward and verbose; rewrite}{It is necessary to understand the statistics from the sensors used in scientific studies. In order to do this a large number of measurements must be taken with the sensor. There are issues with this approach in that the inputs can not be controlled so along with any random variation that may be found in the sensor the random variation of the measured process will be included and must be taken into account during the analysis of the data. With the simulator the statistical fluctuations from only the measurement mechanism only can be studied and thus reducing the uncertainty of the measurements.}
 
-For this example we show how distributions of plasma parameter measurements change as more pulses are averaged. To do this we created a field of constant plasma parameters typical of the high latitude ionosphere at around 250 km, and performed a Monte Carlo type simulated statistical experiment using a number of independent realizations. We use the parameters for the Poker Flat AMISR system for this simulation along with the plasma parameter listed in Table \ref{tb:param1}. For a number of independent radar pulse counts $J$, we used 4,600 realizations of the statistical ISR measurement process in each case to create statistical distributions of measured parameter values. The distributions can be seen in Figure \ref{fig:statshistall} which show distributions where 200, 500 and 1000 pulses are used respectively.  For a given pulse count $J$, the plasma parameters have a Gaussian-like distribution.  Furthermore, as expected the distribution narrows as the number of pulses $J$ is increased.  
+For this example we show how distributions of plasma parameter measurements change as more pulses are averaged. To do this we created a field of constant plasma parameters typical of the high latitude ionosphere at around 250 km, and performed a Monte Carlo type simulated statistical experiment using a number of independent realizations. We use the parameters for the Poker Flat AMISR system for this simulation along with the plasma parameter listed in Table \ref{tb:param1}. For a number of independent radar pulse counts $J$, we used 4,600 realizations of the statistical ISR measurement process in each case to create statistical distributions of measured parameter values. The distributions can be seen in Figure \ref{fig:statshistall} which show distributions where 200, 500 and 1000 pulses are used respectively.  For a given pulse count $J$, the plasma parameters have a Gaussian-like distribution. Furthermore, as expected the distribution narrows as the number of pulses $J$ is increased.  
 
 \begin{table}[!t]
 \centering
@@ -489,6 +500,16 @@ For these simulations we explore how a thin density enhancement is resolved with
 \end{figure}
 
 The blurring effect seen in this case study is not constant throughout the space due to the way the radar samples the space. This is illustrated in Figures \ref{fig:moving10mins} and \ref{fig:moving14mins}, where as the enhancement moves through the scene, its apparent size is affected by the orientation of the radar beams. As the enhancement becomes parallel to the radar beams then the shape in the reconstruction becomes smaller along the x-axis, as the range ambiguity is much larger than the cross range ambiguity from the beam pattern. To see the input and output electron density change with time see Movies S1 and S2.
+
+In
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=5in]{Errorstationary}
+\caption{Standard deviations from Figure \ref{fig:stationaryall} calculated in two different ways. a)  Estimate from fit for 15 second integration example. b) Estimate from fit for 60 second integration example. c) Estimate from sample variance calculation for 15 second integration example. d) Estimate from sample variance calculation for 60 second integration example.}
+\label{fig:errorstationaryall}
+\end{figure}
+
 
 \begin{figure}[!t]
 \centering
@@ -583,7 +604,7 @@ A more immediate application of this simulator can aid researchers in experiment
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{acknowledgments}
-This work was supported by the National Science Foundation, through Aeronomy Program Grant AGS-1339500 to Boston University and Cooperative Agreement AGS-1242204 between the NSF and the Massachusetts Institute of Technology, and by the Air Force Office of Scientific Research under contract FA9550-12-1-018.   The authors are grateful to the International Space Science Institute (ISSI, Bern, Switzerland) for sponsoring a series of workshops from which the idea for this work emerged. 
+This work was supported by the National Science Foundation, through Aeronomy Program Grant AGS-1339500 to Boston University and Cooperative Agreement AGS-1242204 between the NSF and the Massachusetts Institute of Technology, and by the Air Force Office of Scientific Research under contract FA9550-12-1-018.   The authors are grateful to the International Space Science Institute (ISSI, Bern, Switzerland) for sponsoring a series of workshops from which the idea for this work emerged. Work at ERAU was supported by NSF grant AGS-1339537
 
 Software used to create figures for this publications can be found at https://github.com/jswoboda/. Please contact the corresponding author, John Swoboda at swoboj@bu.edu, with any questions regarding the software along with any requests for the specific data used for the figures. \end{acknowledgments}
 
