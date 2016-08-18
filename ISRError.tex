@@ -391,13 +391,19 @@ In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final 
 
 %Using the covariance matrix from the fitted parameters, an overall error estimate can be achieved. This matrix is calculated using a numerical approximation to the Jacobian matrix that the function uses to determine the solution. Due to the way the numerical routines solve the problem, this matrix must be multiplied by the error between the estimated parameters and the data,
 
-The last step is to calculate the errors in the parameter estimates. To estimate the errors \cite{menke2012geophysical}
+The last step is to calculate the errors in the parameter estimates. In order to do this a numerical approximation of the jacobian matrix between the data and the ACF, $\mathbf{J}$, at $\mathbf{p}=\mathbf{\hat{p}}$. The formula to estimate the parameter error matrix, $\mathbf{C}_{\mathbf{\hat{p}}}$ according to \citet{Hysell:2000cq}, is
+
+
 \begin{equation}
 \label{eqn:jacinv}
-\bm{\Sigma}_{\mathbf{\hat{p}}}=\frac{(\mathbf{J}^T\mathbf{J})^{-1} (\mathbf{y}-\bm{\theta}(\mathbf{\hat{p}}))^*\bm{\Sigma}^{-1}(\mathbf{y}-\bm{\theta}(\mathbf{\hat{p}}))}{L-N_{\mathbf{p}}},
+\mathbf{C}_{\mathbf{\hat{p}}}=(\mathbf{J}^T \mathbf{C}^{-1}\mathbf{J})^{-1},
 \end{equation}
+%\begin{equation}
+%\label{eqn:jacinv}
+%\bm{\Sigma}_{\mathbf{\hat{p}}}=\frac{(\mathbf{J}^T\mathbf{J})^{-1} (\mathbf{y}-\bm{\theta}(\mathbf{\hat{p}}))^*\bm{\Sigma}^{-1}(\mathbf{y}-\bm{\theta}(\mathbf{\hat{p}}))}{L-N_{\mathbf{p}}},
+%\end{equation}
 
-\noindent where $N_{\mathbf{p}}$ is the number of parameters being fit. The variances of the parameters are then taken as the diagonals of the matrix.
+\noindent where $ \mathbf{C}$ is the covariance matrix from the ACFs or spectra depending on what is being fit. The covariance matrix for the ACF is detailed in Equation \ref{eqn:covcalc}, while the covariance matrix of the spectra is simply the ACF matrix but with discrete Fourier Transforms applied to the rows and columns. The variances of the parameters are then taken as the diagonals of the matrix.
 
 
 %The correlation matrix $\bm{\Sigma}$ is often realized as a diagonal matrix for many ISR systems the variance of the lags or each point of the spectrum being the values. The variance of the ACF estimator can be estimated using the following,
@@ -453,7 +459,7 @@ It is often necessary to get a large number of sensor measurements for a statist
 
 %\pcom{Very awkward and verbose; rewrite}{It is necessary to understand the statistics from the sensors used in scientific studies. In order to do this a large number of measurements must be taken with the sensor. There are issues with this approach in that the inputs can not be controlled so along with any random variation that may be found in the sensor the random variation of the measured process will be included and must be taken into account during the analysis of the data. With the simulator the statistical fluctuations from only the measurement mechanism only can be studied and thus reducing the uncertainty of the measurements.}
 
-For this example we show how distributions of plasma parameter measurements change as more pulses are averaged. To do this we created a field of constant plasma parameters typical of the high latitude ionosphere at around 250 km, and performed a Monte Carlo type simulated statistical experiment using a number of independent realizations. We use the parameters for the Poker Flat AMISR system for this simulation along with the plasma parameter listed in Table \ref{tb:param1}. For a number of independent radar pulse counts $J$, we used 4,600 realizations of the statistical ISR measurement process in each case to create statistical distributions of measured parameter values. The distributions can be seen in Figure \ref{fig:statshistall} which show distributions where 200, 500 and 1000 pulses are used respectively.  For a given pulse count $J$, the plasma parameters have a Gaussian-like distribution. Furthermore, as expected the distribution narrows as the number of pulses $J$ is increased.  
+For this example we show how distributions of plasma parameter measurements change as more pulses are averaged. To do this we created a field of constant plasma parameters typical of the high latitude ionosphere at around 250 km, and performed a Monte Carlo type simulated statistical experiment using a number of independent realizations. We use the parameters for the Poker Flat AMISR system for this simulation along with the plasma parameter listed in Table \ref{tb:param1}. For a number of independent radar pulse counts $J$, we used 4,600 realizations of the statistical ISR measurement process in each case to create statistical distributions of measured parameter values. The distributions can be seen in Figure \ref{fig:statshistall} which show distributions where 200, 500 and 1000 pulses are used respectively. For a given pulse count $J$, the plasma parameters have a Gaussian-like distribution. Furthermore, as expected the distribution narrows as the number of pulses $J$ is increased.  
 
 \begin{table}[!t]
 \centering
@@ -461,7 +467,7 @@ For this example we show how distributions of plasma parameter measurements chan
 \label{tb:param1}
 \begin{tabular}{ll}
 Species & O+ e-\\
-$N_e$    & $1e11$ \\
+$N_e$    & $1\times 10^{11}$ \\
 $T_e$      & $2100^o$ K   \\
 $T_i$      & $1100^o$ K \\
 $V_i$      & $0$ m/s
@@ -474,6 +480,17 @@ $V_i$      & $0$ m/s
 \caption{Normalized histograms of fitted plasma measurements from cases with 200, 500 and 1000 pulses integrated. These are estimates of probability density functions for each of the plasma parameters measurements given the values in Table \ref{tb:param1}.}
 \label{fig:statshistall}
 \end{figure}
+
+One utility of being able to create a large number of samples of fitted parameters is seen in error analysis. ISR measurements need to have estimates of the errors, and accuracy of the estimates of these errors can be explored using STISRS. Using case seen in Figure\ref{datahist} with 1000 pulses we can compare the actual distribution of parameter values. Figure \ref{histsingle} shows gives a comparison of these two different models using, one using the actual MSE calculated from each parameter and the average estimate of the error. 
+as the variance and average value for the mean. This example shows that the parameter distributions can be well represented by a Gaussian function but that the error estimated from the fit, may not give completely accurate representation of variance of these parameters. 
+
+\begin{figure}[!t]
+\centering
+\includegraphics[width=5in]{histsingle}
+\caption{Distributions of fitted plasma measurements from cases with 1000 pulses integrated. The red curve shows the actual distribution derived from a histogram of 4600 measurements. The blue curve is a Normal distribution using the MSE from the measurements as the variance and the average parameter value as the mean.  The green curve is a Normal distribution using the average estimate of error squared that comes with the parameter measurement as the variance and the average parameter value as the mean.}
+\label{fig:statshistsingle}
+\end{figure}
+
 
 STISRS can useful for identifying situations where assumptions in the parameter fitting break down. For example, a number of studies have explored the case where ISR parameter measurements and spectra show evidence of non-Maxwellian plasma behavior \citet{Akbari:2012dz,Akbari:2015fv}. Future studies using the simulator could help create a training set that can be used with a pattern recognition algorithm to identify cases where normal fitting procedures may be incorrect.
 
@@ -549,7 +566,7 @@ Lastly, for this type of simulation, we show an example to demonstrate the situa
 \subsection{Full Parameter Experiment}
 Finally, plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012} are used to drive the simulator. The specific example was originally used in \cite{Perry:2015jf} and was designed for comparison to  measurements from \pcom{acronym defined?}{RISR-N}. Images of the plasma parameters can be seen in Figures \ref{fig:plparamst0} and \ref{fig:plparamst60}. These enhancements in electron density, temperature and ion temperature are caused by an auroral arc created from a Region 1 field aligned current system of amplitude .875 $\mu$A/m$^2$, which moves through the field of view at 200 m/s.
 
-{\bf JOHN: it's really hard to see Te and Ti gradients in background parameters with the color scale you've used in these figures.  I would adjust them.  Also, what is the ion composition curve used?}
+
 
 \begin{figure}[!t]
 \centering
