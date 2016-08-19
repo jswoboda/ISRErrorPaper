@@ -499,15 +499,15 @@ An important aspect of experiment design is determining the observability of pla
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=6in]{backgroundandsamp}
+\includegraphics[width=4in]{backgroundandsamp}
 \caption{Contour of background $N_e$ for simulations and the spatial sampling pattern}
 \label{fig:background1}
 \end{figure}
 
 %For these simulations we want to show how ambiguities could arise when trying to image just simple electron density enhancements with the beam pattern shown in the right panel of Figure \ref{fig:background1},
-For these simulations we explore how a thin density enhancement is resolved with a radar beam pattern shown in the right panel of Figure \ref{fig:background1}, where each dot is a range gate in one of the 25 beams used. This thin density enhancement is 2 km in width and enhances the density by 5 times the background at its altitude. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction. The results of a single realization of our simulation are seen in Figure \ref{fig:stationaryall} using a 15 second and 60 second integration time, 60 and 240 pulses per position respectively. The different integration times show that, although the enhancement is blurred, the variance of the measurement can impact the quality of the reconstruction because of the inherent noise quality of the signal.
+For these simulations we explore how a thin density enhancement is resolved with a radar beam pattern shown in the right panel of Figure \ref{fig:background1}, where each dot is a range gate in one of the 25 beams used. This thin density enhancement is 2 km in width and enhances the density by 5 times the background at its altitude. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction. The results of a single realization of our simulation are seen in Figure \ref{fig:stationaryall} using a 15 second and 60 second integration time, 60 and 240 pulses per position respectively. The different integration times show that, although the enhancement is blurred, the variance of the measurement can impact the quality of the reconstruction because of the inherent noise quality of the signal. The expected errors for both of the reconstructions can be seen in \ref{fig:errorstationaryall}. As expected the estimated errors show the uncertainties for the case with less pulses to be larger. 
 
-{\bf JOHN: you need to quantify the variance for Fig 7b and 7c.  Does it scale as expected given the known pulse counts J?  In other words, could I have predicted this without the simulator just using eq (9) for example as my knowledge of covariance?  Is the simulator telling us something new here?  What is it?  Are the results here totally dependent on this particular case study, or can you generalize at all?}
+Because we know the input parameters we can do a quick comparison using the root mean squared error (RMSE) for each case. If we comparing the RMSE between the 15 and 60 second integration cases we find that the ratio between the two is approximately 5.40. The expect RMSE ratio between the two should be about 2 because the variance of the ACFs scales as $1/\sqrt{J}$, where $J$ is the number of pulses. If we instead median instead of a mean operator in the error calculation this ratio becomes 1.55 which is some what more in line with what is expected.
 
 \begin{figure}[!t]
 \centering
@@ -516,22 +516,19 @@ For these simulations we explore how a thin density enhancement is resolved with
 \label{fig:stationaryall}
 \end{figure}
 
-The blurring effect seen in this case study is not constant throughout the space due to the way the radar samples the space. This is illustrated in Figures \ref{fig:moving10mins} and \ref{fig:moving14mins}, where as the enhancement moves through the scene, its apparent size is affected by the orientation of the radar beams. As the enhancement becomes parallel to the radar beams then the shape in the reconstruction becomes smaller along the x-axis, as the range ambiguity is much larger than the cross range ambiguity from the beam pattern. To see the input and output electron density change with time see Movies S1 and S2.
-
-In
-
 \begin{figure}[!t]
 \centering
-\includegraphics[width=5in]{Errorstationary}
-\caption{Standard deviations from Figure \ref{fig:stationaryall} calculated in two different ways. a)  Estimate from fit for 15 second integration example. b) Estimate from fit for 60 second integration example. c) Estimate from sample variance calculation for 15 second integration example. d) Estimate from sample variance calculation for 60 second integration example.}
+\includegraphics[width=4in]{Errorstationary}
+\caption{Standard deviations from Figure \ref{fig:stationaryall}. a)  Estimate from fit for 15 second integration example. b) Estimate from fit for 60 second integration example.}
 \label{fig:errorstationaryall}
 \end{figure}
 
+The blurring effect seen in this case study is not constant throughout the space due to the way the radar samples the space. This is illustrated in Figures \ref{fig:moving10mins} and \ref{fig:moving14mins}, where as the enhancement moves through the scene, its apparent size is affected by the orientation of the radar beams. As the enhancement becomes parallel to the radar beams then the shape in the reconstruction becomes smaller along the x-axis, as the range ambiguity is much larger than the cross range ambiguity from the beam pattern. To see the input and output electron density change with time see Movies S1 and S2.
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=6in]{moving6mins}
-\caption{Results of moving enhancement simulation at 600 seconds. a) Input $N_e$. b) Output of simulator with 60 second integration.}
+\caption{Results of moving enhancement simulation at 600 seconds. a) Input $N_e$. b) Output of simulator with 60 second integration. c) Estimated errors from fit.}
 \label{fig:moving10mins}
 \end{figure}
 
@@ -539,32 +536,30 @@ In
 \begin{figure}[!t]
 \centering
 \includegraphics[width=6in]{moving14mins}
-\caption{Results of moving enhancement simulation at 840 seconds. a) Input $N_e$. b) Output of simulator with 60 second integration.}
+\caption{Results of moving enhancement simulation at 840 seconds. a) Input $N_e$. b) Output of simulator with 60 second integration. c) Estimated errors from fit.}
 \label{fig:moving14mins}
 \end{figure}
 
 This change in the shape of the enhancement can give the impression that its morphology has developed as it was moving through the field of view of the radar. This could lead to an incorrect interpretation of the physical process taking place. Thus one must be careful when analyzing these sorts of reconstructions.
 
-Lastly, for this type of simulation, we show an example to demonstrate the situation where a set of two different input parameters can yield qualitatively similar results. For these cases we create electron density enhancements similar in size as what is seen in \citet{Semeter:2005fo} from a poleward boundary intensification event. The inputs can be seen in Figure \ref{fig:moving1018in} which have enhancements of 10 km width and 18 km width. The enhancement in the 10 km width example is 6 times higher than the background while the 18 km width enhancement is 3 times higher than the background. Looking at the fitted data in Figure \ref{fig:moving1018fit} \pcom{weak - strengthen the statement}{one can see that they seem rather similar} and its difficult to disambiguate the actual sizes of the enhancements. For the full input electron density changing with time for the 10 km example with time see Movie S3 and for the fitted data S4. The 18 km case can be seen in Movies S5 and S6 for input and fitted parameters respectively.  
-
-{\bf JOHN: again, you need to quantify expected variance here so that the reader is convinced something real is happening.  All these statements are qualitative.  It would also be good to have more conclusions so the reader can judge the value of this simulator to provide information - i.e. would I have been able to see this feature without ISR's statistical nature?  How much do these case results depend on radar beam sampling, and how much do they depend on ISR statistical behavior? I haven't edited the language as much above since it will likely change given these needs.}
+Lastly, for this type of simulation, we show an example to demonstrate the situation where a set of two different input parameters can yield qualitatively similar results. For these cases we create electron density enhancements similar in size as what is seen in \citet{Semeter:2005fo} from a poleward boundary intensification event. The inputs can be seen in Figure \ref{fig:moving10all} which have enhancements of 10 km width and 18 km width. The enhancement in the 10 km width example is 6 times higher than the background while the 18 km width enhancement is 3 times higher than the background. Looking at the fitted data in Figure \ref{fig:moving18all} \pcom{weak - strengthen the statement}{one can see that they seem rather similar} and its difficult to disambiguate the actual sizes of the enhancements. For the full input electron density changing with time for the 10 km example with time see Movie S3 and for the fitted data S4. The 18 km case can be seen in Movies S5 and S6 for input and fitted parameters respectively.  
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=6in]{moving10km18kminputs}
-\caption{Input $N_e$ for moving enhancement simulation at 480 seconds. a) 10 km wide enhancement. b) 18 km wide enhancement.}
-\label{fig:moving1018in}
+\includegraphics[width=6in]{moving10kminouterr}
+\caption{10 km wide enhancement moving simulation at 480 seconds. a) Input $N_e$. a)  b) Fitted $N_e$ with 60 second integration. c) Estimated error from fit.}
+\label{fig:moving10all}
 \end{figure}
 
 \begin{figure}[!t]
 \centering
-\includegraphics[width=6in]{moving10km18kmoutputs}
-\caption{Results of moving enhancement simulation at 480 seconds with 60 second integration. a) 10 km wide enhancement. b) 18 km wide enhancement.}
-\label{fig:moving1018fit}
+\includegraphics[width=6in]{moving18kminouterr}
+\caption{18 km wide enhancement moving simulation at 480 seconds. a) Input $N_e$. a)  b) Fitted $N_e$ with 60 second integration. c) Estimated error from fit.}
+\label{fig:moving18all}
 \end{figure}
 
 \subsection{Full Parameter Experiment}
-Finally, plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012} are used to drive the simulator. The specific example was originally used in \cite{Perry:2015jf} and was designed for comparison to  measurements from \pcom{acronym defined?}{RISR-N}. Images of the plasma parameters can be seen in Figures \ref{fig:plparamst0} and \ref{fig:plparamst60}. These enhancements in electron density, temperature and ion temperature are caused by an auroral arc created from a Region 1 field aligned current system of amplitude .875 $\mu$A/m$^2$, which moves through the field of view at 200 m/s.
+Finally, plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012} are used to drive the simulator. The specific example was originally used in \cite{Perry:2015jf} and was designed for comparison to measurements from the Resolute Bay Incoherent Scatter Radar. Images of the plasma parameters can be seen in Figures \ref{fig:plparamst0} and \ref{fig:plparamst60}. These enhancements in electron density, temperature and ion temperature are caused by an auroral arc created from a Region 1 field aligned current system of amplitude .875 $\mu$A/m$^2$, which moves through the field of view at 200 m/s.
 
 
 
@@ -584,20 +579,11 @@ Finally, plasma parameters derived from a multi-fluid model developed in \cite{s
 
 Using a beam pattern similar to the one seen in the right panel of Figure \ref{fig:background1}, we use the ISR simulator to explore how an electronically scanned ISR may reconstruct the scene. This a best case condition, as we have apriori knowledge of the plane that the arc is traveling in, and have set up the radar spatial beam pattern for the experiment to take advantage of this knowledge. This feature reduces the number of radar beams and required integration time to gain the desired statistics. 
 
-\pcom{I would plot the composition curve!}{It is also assumed that the ratios between ion species are known.} \pcom{see comment below - reword.}{This is a common practice in ISR fitting as allowing the ratios to be free parameters allows for non-unique solutions.} If the fixed, apriori assumed composition ratios between the different ion species are incorrect, this can lead to errors in the final parameter estimates. For the lower F region ionosphere, generally this usually leads to errors between 150-250 km where the ionosphere changes from NO$^+$ dominated to O$^+$ dominated. \pcom{awkward - reword}{This issue does come into play in this case, chemical recombination is cited as an effect in \citet{Perry:2015jf} and could be impacting the final parameter fitting. \citep{Zettergren:2011ej, Blelly:2010gf}}
+It is also assumed that the ratios between ion species are known. This is a common practice in ISR fitting as allowing the ratios to be free parameters can allow for non-unique solutions depending on the ion species that are present. If the fixed, apriori assumed composition ratios between the different ion species are incorrect, this can lead to errors in the final parameter estimates. For the lower F region ionosphere, generally this usually leads to errors between 150-250 km where the ionosphere changes from NO$^+$ dominated to O$^+$ dominated \citep{Zettergren:2011ej, Blelly:2010gf}. Another aspect from this specific case as the field aligned current passes through this creates an influx of  NO$^+$ in the cross over region for this simulation \citet{Perry:2015jf} .
 
-{\bf JOHN: it is not always the case that allowing ion composition to vary causes non-unique solutions!  This is dangerous to imply.  For example, we let H+ and He+ vary all the time in the topside ionosphere and, with the right temperature constraint, it works.  It is completely situation dependent.}
+The output of the STISRS from the parameters can be seen in Figure \ref{fig:fplparamst60} and in Movie S8. The integration is started at $t=960$ s into the simulation with the plasma parameters shown in seen in Figure \ref{fig:plparamst60}. The full set of plasma parameters over time can be seen in Movie S7. For this case, a 60 second integration time is used, which for the 27 beam radar experiment set up gives 255 pulses per position. Lastly the expected errors from the fit can be seen Figure \ref{fig:fplparamst60err}.
 
-%\begin{figure}[!t]
-%\centering
-%\includegraphics[width=1.5in]{mattsimbeams}
-%\caption{Spatal sampling pattern for ISR.}
-%\label{fig:samp2}
-%\end{figure}
-
-The output of the ISR simulator from the parameters can be seen in Figure \ref{fig:fplparamst60} and in Movie S8. The integration is started at $t=960$ s into the simulation with the plasma parameters shown in seen in Figure \ref{fig:plparamst60}. The full set of plasma parameters over time can be seen in Movie S7. For this case, a 60 second integration time is used, which for the 27 beam radar experiment set up gives 255 pulses per position. We highlight several features in the fitted results.  First, enhancements in electron and ion temperature are clearly visible. Second, we examine whether the cavity in electron density that is formed is also visible. These types of cavities are signs of downward current flow and there has been a question (REF?) as to whether these could be observed well with ISR systems \pcom{awkward-reword}{due to their defining feature being an evacuations of electrons, thus reducing the return power from the scattered signal}. The image in \ref{fig:fplparamst60} shows the best case of finding this cavity with this beam pattern, as at this time the cavity is close to perpendicular with one of the beams. \pcom{very qualitative - reword/clarify}{For the other cases where the beams are not well aligned with the cavity it becomes much more difficult to observe it as the range ambiguity "fills in" the evacuation.}
-
-{\bf JOHN: You don't give any uncertainties on the final fit parameters.  So it's really hard for me to judge whether the features you are describing are statistically significant.  You have a full simulator that can gauge these uncertainties, so I think that needs to be included here.  Also, for the final paragraph, more clarity is needed: what is the simulation telling you that helps with radar design?  It's probably in there, but needs to be more clearly brought out.}
+We highlight several features in the fitted results. First, enhancements in electron and ion temperature are clearly visible and well above the expected error. Second, we examine whether the cavity in electron density that is formed is also visible. These types of cavities are signs of downward current flow and there has been a question (REF?) as to whether these could be observed well with ISR systems \pcom{awkward-reword}{due to their defining feature being an evacuations of electrons, thus reducing the return power from the scattered signal}. The image in \ref{fig:fplparamst60} shows the best case of finding this cavity with this beam pattern, as at this time the cavity is close to perpendicular with one of the beams. \pcom{very qualitative - reword/clarify}{For the other cases where the beams are not well aligned with the cavity it becomes much more difficult to observe it as the range ambiguity "fills in" the evacuation.}
 
 %% Fitted Data
 
@@ -608,16 +594,19 @@ The output of the ISR simulator from the parameters can be seen in Figure \ref{f
 \label{fig:fplparamst60}
 \end{figure}
 
-
+\begin{figure}[!t]
+\centering
+\includegraphics[width=6in]{0960_60_int_err}
+\caption{Estimated errors from fitted Plasma Parameters at $t=960$ s with 60 second integration.}
+\label{fig:fplparamst60err}
+\end{figure}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
-We have constructed a simulation of the full ISR measurement process, incorporating ESA radar capabilities and the full radar space-time ambiguity along with inherent ISR error sources.  Possible uses for the simulator in the research community have also been discussed and examples have been shown. These examples show how one can use the simulator to create large statistical data sets and also to more optimally design ionospheric radar experiments in the ISR space within the inherently large number of free parameters afforded by the radar control parameters.
+We have constructed a simulation of the full ISR measurement process, incorporating ESA radar capabilities and the full radar space-time ambiguity along with inherent ISR error sources, referred to as STISRS. Possible uses for STISRS in the research community have also been discussed and examples have been shown. These examples show how one can use the simulator to create large statistical data sets and also to more optimally design ionospheric radar experiments in the ISR space within the inherently large number of free parameters afforded by the radar control parameters. 
 
 Development of the simulator will continue by adding new radar waveform modes, as currently only \pcom{Barker codes are not defined here}{Barker Code} and uncoded single pulse modulations are available at this time. The simulator can also be used to create synthetic data for traditional single antenna based systems as well. Other possible expansions of the simulator include capability to calculate returns from each receiver element in a ESA based ISR system, such as the planned architecture of EISCAT-3D, and multi-static radar capabilities. These future additions will increase the simulator's value to designers who wish to more optimally exploit the capabilities of new systems. 
 
-A more immediate application of this simulator can aid researchers in experiment planning. There are a number of phenomena  that change on very small spatio-temporal scales, e.g. at high latitudes, and capturing observations of them would greatly benefit from optimization of the experiment set up. The ability of the simulator to directly create complex receiver voltage data provides a significant and novel capability, \pcom{which ones?? confused}{as some phenomena can only be observed at this data level.} By releasing this simulation to the community, we hope that other researchers can find utility in it as they plan experiments or to understand observed radar data. 
-
-{\bf JOHN: this conclusion needs more 'punching up' and emphasis on what is new and significant about the simulator capabilities, both to get credit for yourself and to encourage its use by the community.  Focus more on what is truly new.}
+A more immediate application of this simulator can aid researchers in experiment planning. There are a number of phenomena that change on very small spatio-temporal scales, e.g. at high latitudes, and capturing observations of them would greatly benefit from optimization of the experiment set up. Researchers would be able iterate through different set ups for their experiments instead only being able to pick one just hope for the best. The ability of STISRS to directly create complex receiver voltage data provides a significant and novel capability, as some phenomena, such as those that have time scales on the order of an interpulse period, can only be observed at this data level. By releasing this simulation to the community, we hope that other researchers can find utility in it as they plan experiments or to understand observed radar data. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{acknowledgments}
