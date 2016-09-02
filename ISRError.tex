@@ -135,14 +135,11 @@ Application of electronically steerable array (ESA) technology to ISR has been a
 One benefit of ESA based ISR is that volumetric reconstructions of plasma parameters can be created \citep{Semeter2009738, Nicolls:2007ie, dahlgren2012di}. ESA systems also have been used to reconstruct full vector velocity fields from line-of-sight bulk Doppler measurements \citep{butler:imagingfregiondrifts,RDS:RDS20195}. However, it has been shown that volumetric reconstructions of this type can yield measurements with a high degree of parameter ambiguity \citep{Dahlgren:2012dq}. Similar types of ambiguities arise using systems with a single antenna.  \citet{Semeter:2005fo} illustrated the challenges in interpreting spatially scanned measurements in a highly dynamic environment, as well as the benefits of a flexible post-processing environment.
 
 With the continued interest in ISR as an imaging sensor, 
-%With new ESA based capabilities for the ISR community, 
-a discussion of the possible sources of error is needed. However, these sources of error, from statistical uncertainty and spatio-temporal ambiguity, create complex functions and choices in the context of experiment design. Because of this complicated trade space, it is useful to simulate the ISR measurement process before an experiment is attempted. 
+a rigorous mathematical framework is needed to understand uncertainties in the high-level data products produced.  These sources of error, from statistical uncertainty and spatio-temporal ambiguity, create complex functions and choices in the context of experiment design. Because of this complex multi-dimensional trade space, it is useful to simulate the ISR measurement process before an experiment is attempted. 
 % JOHN:  Experiment design is only a part of the story.   What I write below is really talking about a Bayesian assimilation framework.  We can discuss whether to expand further for this paper.
-ISR is also increasingly called upon to validate predictions from multi-dimensional physical models.  Simulation becomes a critical tool in this  context by providing a quantitative assessment of the observability of a predicted response, which may involve subtle variations in ionospheric state parameters (see Section~\ref{sec:fullparam}).  
+ISR is also increasingly called upon to validate predictions from multi-dimensional physical models.  Simulation becomes a critical tool in this  context by providing a quantitative assessment of the observability of a predicted response, which involve subtle variations in ionospheric state parameters (see Section~\ref{sec:fullparam}).  
 
-This paper will describe our method to simulate the entire ISR process with consideration of all three spatial sampling dimensions for a monostatic radar. This method is available in the software package called STISRS (Space-Time ISR Simulator).
-
-The remainder of paper is organized as follows. Section 2 will list possible sources of ISR error, which are included in our simulation method. The simulation method behind STISRS will be described in Section 3. Section 4 will show a number of examples of from the simulator, ranging from a stationary column of enhanced electron density to the output of a self-consistent multi-fluid ionospheric model \citep{semeter:plasmatransport2012}. These examples point the way towards development of best practices for systematic ESA class ISR experiment design intended to conduct measurements that best reflect the physics actually present in the ionosphere.
+This paper describes a method to simulate the entire ISR process with consideration of all three spatial sampling dimensions for a monostatic radar. This method is available in the software package called STISRS (Space-Time ISR Simulator).  The remainder of paper is organized as follows. Section 2 will list possible sources of ISR error, which are included in our simulation method. The simulation method behind STISRS will be described in Section 3. Section 4 will show a number of examples of from the simulator, ranging from a stationary column of enhanced electron density to the output of a self-consistent multi-fluid ionospheric model \citep{semeter:plasmatransport2012}. These examples point the way towards development of best practices for systematic ESA class ISR experiment design intended to conduct measurements that best reflect the physics actually present in the ionosphere.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ISR Errors}
 
@@ -150,9 +147,9 @@ In this section two sources of ISR error will be discussed. The first part of th
 
 \subsection{Statistical Errors}
 
-The electron density fluctuations observed by ISR techniques are associated primarily with two longitudinal wave modes in the plasma: the ion-acoustic mode and the Langmuir mode \citep{chen1984introduction}.  All ISR experiment realizations involve the use of multiple independent samples, created by measuring ionospheric scatter from repeated individual radar pulses, to create an estimate of the ion acoustic spectrum (i.e., the Fourier transform of the autocorrelation function or ACF). This experimental observation is then fit to a theoretical plasma physics based model in order to estimate ionospheric state parameters (typically plasma density, electron temperature, ion temperature, and bulk line-of-sight plasma motion). The plasma theory of how the plasma parameters impact the statistics of the density fluctuations has been the topic of multiple studies since the first use of this sensor modality \citep{gordon58,dougherty:farley1960, farleydougherty:ISR2, doughteryfarley:ISR3, hagfors1961}, with recent reformulations of this theory occurring even recently  \citep{kudeki:milla:1,kudeki:milla:2}. 
+The electron density fluctuations observed by ISR techniques are associated primarily with two longitudinal wave modes in the plasma: the ion-acoustic mode and the Langmuir mode \citep{evans;isr}.  Most ISR experiments involve the use of multiple independent samples, created by measuring ionospheric scatter from repeated individual radar pulses, to create an estimate of the ion acoustic spectrum (i.e., the Fourier transform of the autocorrelation function or ACF). This experimental observation is then fit to a theoretical plasma physics based model in order to estimate ionospheric state parameters (typically plasma density, electron temperature, ion temperature, and bulk line-of-sight plasma motion). The theory or how the plasma parameters impact the statistics of the density fluctuations has developed through in a series of studies since the first use of this sensor modality \citep{gordon58,dougherty:farley1960, farleydougherty:ISR2, doughteryfarley:ISR3, hagfors1961}, with reformulations of the theory occurring even recently  \citep{kudeki:milla:1,kudeki:milla:2}. 
 
-The two main sources of statistical uncertainty in received electric field fluctuations within radar backscatter, or equivalently in received voltages measured at the antenna terminals of a radar system, are described here as (1) random fluctuations from the electron density, and (2) noise from within the sensor itself. There are other sources of increased uncertainty, including sky noise and coherent scatter from other targets, but that is outside the scope of this paper.
+The two main sources of statistical uncertainty in received electric field fluctuations within radar backscatter, or, equivalently, in received voltages measured at the antenna terminals of a radar system, are described here as (1) random fluctuations from the electron density, and (2) noise from within the sensor itself. There are other sources of increased uncertainty, including sky noise and coherent scatter from other targets, but that is outside the scope of this paper.
 % JOHN:  don't sky noise and receiver noise propagate identically  thru the math?   Just wondering about the "outside the scope" comment.  The coherent scatter from other targets is clutter, which is a different category.
 
 The received voltage values at the antenna terminal, comprising the incoherent scatter signal, also have the properties of a random process. As such, it is necessary to average samples of an estimator for autocorrelation or power spectrum \citep{Diaz:2008co}.  For the autocorrelation case, a covariance matrix between each lag estimate can be determined using the formulation in Equation 2 of \citet{hysell2008}, rewritten here as
@@ -179,7 +176,7 @@ C_{\tau,\tau} = \frac{1}{2J} \left(  |R(0)|^2 +|R(\tau)|^2 + \left|R_w (0)\right
 
 \subsection{Space-Time Errors}
 
-For practical radar experiments, the use of waveforms with non-zero time extent introduces artifacts in the form of an associated radar ambiguity function \citep{nygren1996}.  The errors created through this ambiguity function lead to a blurring or averaging of ACFs from different points in time and space. This is analogous to a blurring operator one might see from image processing applications, such as in a camera or numerous other types of sensors. 
+For practical radar experiments, the use of waveforms with non-zero time extent introduces artifacts in the form of an associated radar ambiguity function \citep{nygren1996}.  The errors created through this ambiguity function lead to a blurring or averaging of ACFs from different points in time and space. This is analogous to a blurring operator one might encounter in standard image processing applications.
  
 The space-time ambiguity, $L(\tau_s,\mathbf{r}_s,t_s,\tau,\mathbf{r},t)$, is the kernel of a Fredholm integral equation of the first kind operating on the ACF, $R(\tau,\mathbf{r},t)$, which can change over space, $\mathbf{r}$, and time $t$. It can be represented as follows,
 
@@ -199,7 +196,9 @@ The space-time ambiguity, $L(\tau_s,\mathbf{r}_s,t_s,\tau,\mathbf{r},t)$, is the
 
 \noindent where $G(t_s,t)$ is the kernel for the time dimension, $F(\theta_s,\phi_s,\theta,\phi)$ is radar beam shape which acts as a kernel in azimuth and elevation, and $W(\tau_s,r_s,\tau,r) $ represents the range-lag ambiguity function which acts as a kernel along range $r$ and lag $\tau$. The derivation of this operator is also given by \citet{RDS:RDS20236}.
 
-For ISR experiment design, both the radar beam ambiguity and range-lag ambiguity functions create a fundamental trade off between statistical variation of the signal and spatial and temporal resolution of the signal. In order to perform a statistical estimate of signal fluctuations, radar pulses (each a separate sample of the overall statistical process) need to be averaged together. Due to the statistical nature of ISR radar scatter, this is necessary even for the case where there is no noise, i.e. the infinite signal to noise ratio (SNR) case. The statistical averaging process is mainly done over time, but can be done over space as well by averaging across beams or range gates. If the ionosphere is drifting with a known vector velocity, \citet{RDS:RDS20236} showed that the stationarity assumption for ISR integration will be better met by averaging those beam positions that approximately correspond to the same scattering volume within the moving frame of reference. However, this approach may degrade spatial resolution at the expense of improvement in temporal resolution. 
+For ISR experiment design, both the radar beam ambiguity and range-lag ambiguity functions create a fundamental trade off between statistical variation of the signal and spatiotemporal resolution of the signal. In order to perform a statistical estimate of signal fluctuations, radar pulses (each a separate sample of the overall statistical process) need to be averaged together. Due to the statistical nature of ISR radar scatter, this is necessary even for the case of infinite signal-to-noise ratio.   
+
+The statistical averaging process is mainly done over time, but can be done over space as well by averaging across beams or range gates. If the ionosphere is drifting with a known vector velocity, \citet{RDS:RDS20236} pointed out that the stationarity assumption for ISR integration is  better met by averaging those beam positions that approximately correspond to the same scattering volume within the moving frame of reference. However, this approach may degrade spatial resolution at the expense of improvement in temporal resolution. 
 %As tradeoffs similar to these are inherently coupled and often case-specific, the best approach for a given experimental situation can best be explored through simulation.
 The optimal experiment design and processing strategy depend critically on the objectives of the experiment.   This trade space may be effectively explored through simulation.
 
@@ -228,7 +227,7 @@ Once the spectra have been created, the simulator transforms the resulting value
 % H_m(\omega) = \sqrt{S_m(\omega | \: \bm{\theta})}.
 % \end{equation}
 
-Once the spectrum for a given radar scattering volume has been determined, an appropriate spectral shaping filter is created. The method to create the filter given a desired spectrum or ACF can be done in a number of ways \citep{Kasdin:1995wi}. The implementation in STISRS creates an infinite impulse response filter. The coefficients are determined using the ACF by solving the following set of equations,
+Once the theoretical spectrum for a given scattering volume has been calculated, an appropriate spectral shaping filter is created. The method to create the filter given a desired spectrum or ACF can be done in a number of ways \citep{Kasdin:1995wi}. The implementation in STISRS creates an infinite impulse response filter. The coefficients are determined using the ACF by solving the following set of equations,
 
 \begin{equation}
 \label{eq:filtereq}
@@ -241,7 +240,7 @@ Once the spectrum for a given radar scattering volume has been determined, an ap
 \label{eq:filtz}
 H_m(z) = \frac{G}{1-\displaystyle \sum_{l=1}^{L} a_l z^{-l}}.
 \end{equation}
-\noindent The gain term $G$ is used to make sure the noise is the correct variance. This can be calculated as 
+\noindent The gain term $G$ is used to make sure the noise has the correct variance. This can be calculated as 
 
 \begin{equation}
 \label{eq:gainterm}
@@ -253,7 +252,7 @@ G=\sqrt{\displaystyle \sum_{l=0}^L -a_l R_m(l)},
 
 \subsection{Simulated Complex Voltage Creation}
 
-The algorithm used to create sampled complex receiver voltages employs a complex white Gaussian noise (CWGN) process ("plant") that is spectrally shaped at its output using a time domain filter. As stated in the previous subsection, each point in space and time will have a separate noise plant and filter which is derived from the plasma and radar parameters parameters.  Figure \ref{fig:IQdiagram} presents a representative example. 
+The algorithm used to create sampled complex receiver voltages employs a complex white Gaussian noise (CWGN) process (``plant") that is spectrally shaped at its output using a time domain filter. As stated in the previous subsection, each point in space and time will have a separate noise plant and filter which is derived from the plasma and radar parameters parameters.  Figure \ref{fig:IQdiagram} presents a representative example. 
 
 \begin{figure}[h!]
 \centering
@@ -262,7 +261,7 @@ The algorithm used to create sampled complex receiver voltages employs a complex
 \label{fig:IQdiagram}
 \end{figure}
 
-The creation of one set of complex receiver voltage data can be represented as the following  :   
+The creation of one set of complex receiver voltage data can be represented by
 
 \begin{equation}
 \label{eq2}
@@ -296,14 +295,14 @@ P_r = \frac{cG \lambda^2}{2(4\pi)^2}\frac{P_t }{R^2}\frac{\sigma_e N_e}{(1+k^2\l
  
  \noindent where $P_r$ is the power received in Watts (W), $k$ is the wavenumber of the radar in meters (m), $c$ is the speed of light in m/s, $G$ is the gain of the antenna, $P_t$ is the power of the transmitter in W, $\sigma_e$ is the electron radar cross section in $m^2$,  $\lambda_D$ is the Debye length in m, $N_e$ is the electron density in m$^{-3}$and $T_r$ is the electron to ion temperature ratio.
   
-The received signal power calculated at each range gate using equation~\ref{eq3} is used as a scaling constant for each $y_m(k)$ series.  Finally, a delayed and summed operator yields a model of the received radar scatter signal:
+The received signal power calculated at each range gate using Equation~\ref{eq3} is used as a scaling constant for each $y_m(k)$ series.  Finally, a delayed and summed operator yields a model of the received radar scatter signal:
  
 \begin{equation}
 \label{eq4}
 x(n) = \displaystyle\sum\limits_{m =0}^{M-1} \alpha(m)y_m(n-m),
 \end{equation}
 
-\noindent where $\alpha(m) = \sqrt{P_r(m)}/\widehat{\sigma_y}$ and $\widehat{\sigma_y}$ is the estimate of the standard deviation of $y_m(k)$. Lastly, to model total noise from the radar system and environment, an additive CWGN process is included, creating the final simulated complex receiver voltage sequence
+\noindent where $\alpha(m) = \sqrt{P_r(m)}/\widehat{\sigma}_y$ and $\widehat{\sigma}_y$ is the estimate of the standard deviation of $y_m(k)$. Lastly, to model total noise from the radar system and environment, an additive CWGN process is included, creating the final simulated complex receiver voltage sequence
 
 \begin{equation}
 \label{eq:addnoise}
@@ -316,7 +315,7 @@ A full diagram of the model can be seen in Figure \ref{fig:isrdiag}.
 
 \subsection{ACF Estimation}
 
-After complex receiver voltage data has been created, it is processed to create estimates of the ACF at desired points of space. This type of processing has been detailed and analyzed by e.g. \citet{farley1969} and other authors \citep{nygren1996}. This processing follows a flow chart seen in Figure \ref{fig:chain}.  Note that we assume here a signal pipeline which creates a single altitude measurement for analysis.  More sophisticated approaches for ISR analysis exist that use information from multiple altitudes, including full profile analysis \citep{RDS:RDS3308}, lag profile inversion \citep{Virtanen:20082vx}, and others, but treatment of these approaches is beyond the scope of this manuscript.
+After complex receiver voltage data has been created, it is processed to create estimates of the ACF at desired points of space \citep[see, e.g.,][]{farley1969,nygren1996}. This processing follows the flow chart presented in Figure \ref{fig:chain}.  Note that we assume here a signal pipeline which creates a single altitude measurement for analysis.  More sophisticated approaches for ISR analysis exist that use information from multiple altitudes, including full profile analysis \citep{RDS:RDS3308}, lag profile inversion \citep{Virtanen:20082vx}, and others, but treatment of these approaches is beyond the scope of this work.
 
 \begin{figure}[!t]
 \centering
@@ -326,7 +325,7 @@ After complex receiver voltage data has been created, it is processed to create 
 \end{figure}
 
 
-The lag product formation is an initial estimate of the autocorrelation function. The sampled complex receiver voltage can be represented as $x(n) \in\mathbb{C}^N$ where $N$ is the number of samples in an inter pulse period. For each range gate $m\in 0,1,...M-1$ a complex autocorrelation is estimated for each lag of $l \in 0,1...,L-1$.  To get better statistics this operation is performed for each pulse $j\in 0,1,...J-1$ and then summed over $J$ independent pulses. The entire operation to form the initial estimate of $\widehat{R}(m,l)$ can be seen in Equation \ref{eq:lagpro}:
+The lag product formation is an initial estimate of the autocorrelation function. The sampled complex receiver voltage can be represented as $x(n) \in\mathbb{C}^N$ where $N$ is the number of samples in an inter pulse period. For each range gate $m\in 0,1,...M-1$ a complex autocorrelation is estimated for each lag of $l \in 0,1...,L-1$.  To get better statistics this operation is performed for each pulse $j\in 0,1,...J-1$ and then summed over $J$ independent pulses. The entire operation to form the initial estimate of $\widehat{R}(m,l)$ may be expressed as
 
 \begin{equation}
 \label{eq:lagpro}
@@ -348,7 +347,9 @@ The case shown in Equation \ref{eq:lagpro} is a centered lag product.  Other typ
 %
 %\noindent With out the $\frac{1}{L-l}$ term the estimator will be windowed with a triangular function thus impacting the estimate of the ISR spectrum as this will act as a convolution in the frequency domain. This bias is taken into account in \citep{farley1969} but it is simply wrapped up into the ambiguity function. 
 
-Applying a summation rule is generally the next step in creating an estimate of the autocorrelation function for single altitude analysis. This is done for a number of reasons, but primarily to improve estimate statistics.  Furthermore, if the right rule is chosen, then the range ambiguity can be made approximately constant across the lags \citep{nygren1996}. The trapezoidal summation rule used in our simulation is a common choice and can be represented as follows
+Applying a summation rule is generally the next step in creating an estimate of the autocorrelation function for single altitude analysis. This is done for a number of reasons, but primarily to improve estimate statistics.  Furthermore, if the right rule is chosen, then the range ambiguity can be made approximately constant across the lags \citep{nygren1996}. 
+% JOHN:  the use of a summation rule is intimately connected to the "overspread" issue, which leads to redundant entries in the lag profile matrix, right?   I've not thought about this deeply, but I wonder if we can say something insightful about this here.  As far as I know, summation rule issues haven't been discussed in the literature in detail.
+The trapezoidal summation rule used in our simulation is a common choice and can be represented as follows.
 
 \begin{equation}
 \label{eq:sumrule}
@@ -356,7 +357,6 @@ Applying a summation rule is generally the next step in creating an estimate of 
 \end{equation}
 
 \noindent where $v$ is the 'volume' index or the number of gates integrated at zero lag (restricted to odd integers here) and $\widehat{R}_s(m,l)$ is the final ACF estimate after the summation rule \citep{nygren1996}. 
-
 % pcom checked for variables, already defined
 However, the final result of this summation rule will still lead to a biased ACF. For the uncoded waveform case, this summation rule leads to the ollowing expected value for the estimator \citep{nygren1996},
 
@@ -390,14 +390,16 @@ Finally, noise effects are included by subtracting an estimate of the noise corr
 After the final estimation of the spectrum is complete, nonlinear least squares fitting takes place to determine plasma parameters.  
 %\pcom{This entire section can be collapsed to one reference and saved for the thesis chapter.}%
 %{
-The class of nonlinear least squares problems relevant to ISR parameter estimation can be represented as the Êminimization of a cost function of the form \citep{kayvol1},
+The class of nonlinear least squares problems relevant to ISR parameter estimation can be represented as the minimization of a cost function of the form \citep{kayvol1},
 
 \begin{equation}
 	\mathbf{\hat{p}}= \underset{\mathbf{p}}{\text{argmin}} (\mathbf{y}-\bm{\theta}(\mathbf{p}))^*\bm{\Sigma}^{-1}(\mathbf{y}-\bm{\theta}(\mathbf{p})).
 \label{nlls}
 \end{equation}
 
-In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final estimate of the ACF $\widehat{R}_f(m,l)$ at a specific range or its spectrum $\widehat{S}_f(m,\omega)$. The parameter vector $\mathbf{P}$ would be the plasma parameters $N_e$, $T_e$, $T_i$ and $V_i$. The fit function, $\bm{\theta}$, is the IS spectrum calculated from models, such as once seen in \citep{kudeki:milla:1}, smeared by the ambiguity function. In the case of the long pulse the ambiguity can be simply applied by multiplying it with the autocorrelation function $R(l)$, if the summation rule is properly applied. In the past the Levenberg-Marquart algorithm to fit data \citep{nikoukar2008}.
+In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final estimate of the ACF $\widehat{R}_f(m,l)$ at a specific range, or its spectrum $\widehat{S}_f(m,\omega)$. The parameter vector $\mathbf{P}$ would be the plasma parameters $N_e$, $T_e$, $T_i$ and $V_i$. The fit function, $\bm{\theta}$, is the IS spectrum calculated from a models \citep[e.g.,][]{kudeki:milla:1} and smeared by the ambiguity function. In the case of the long pulse the ambiguity can be simply applied by multiplying it with the autocorrelation function $R(l)$ if the summation rule is properly applied. In the past, the Levenberg-Marquart algorithm to fit data \citep{nikoukar2008}.
+% JOHN:  I may have missed something, but what are you using to fit the data (i.e., for the nonlinear minimization)?
+
 
 %Using the covariance matrix from the fitted parameters, an overall error estimate can be achieved. This matrix is calculated using a numerical approximation to the Jacobian matrix that the function uses to determine the solution. Due to the way the numerical routines solve the problem, this matrix must be multiplied by the error between the estimated parameters and the data,
 
@@ -469,7 +471,7 @@ It is often necessary to get a large number of sensor measurements for a statist
 
 %\pcom{Very awkward and verbose; rewrite}{It is necessary to understand the statistics from the sensors used in scientific studies. In order to do this a large number of measurements must be taken with the sensor. There are issues with this approach in that the inputs can not be controlled so along with any random variation that may be found in the sensor the random variation of the measured process will be included and must be taken into account during the analysis of the data. With the simulator the statistical fluctuations from only the measurement mechanism only can be studied and thus reducing the uncertainty of the measurements.}
 
-For this example we show how distributions of plasma parameter measurements change as more pulses are averaged. To do this we created a field of constant plasma parameters typical of the high latitude ionosphere at around 250 km, and performed a Monte Carlo type simulated statistical experiment using a number of independent realizations. We use the parameters for the Poker Flat AMISR system for this simulation along with the plasma parameter listed in Table \ref{tb:param1}. For a number of independent radar pulse counts $J$, we used 4,600 realizations of the statistical ISR measurement process in each case to create statistical distributions of measured parameter values. The distributions can be seen in Figure \ref{fig:statshistall} which show distributions where 200, 500 and 1000 pulses are used respectively. For a given pulse count $J$, the plasma parameters have a Gaussian-like distribution. Furthermore, as expected the distribution narrows as the number of pulses $J$ is increased.  
+For this example we show how distributions of plasma parameter measurements change as more pulses are averaged. To do this we created a field of constant plasma parameters typical of the high latitude ionosphere at around 250 km, and performed a Monte Carlo-type simulated statistical experiment using a number of independent realizations. We use the parameters for the Poker Flat AMISR system for this simulation along with the plasma parameter listed in Table \ref{tb:param1}. For a number of independent radar pulse counts, $J$, we used 4,600 realizations of the statistical ISR measurement process in each case to create statistical distributions of measured parameter values. The distributions can be seen in Figure \ref{fig:statshistall} which show distributions where 200, 500 and 1000 pulses are used respectively. For a given pulse count $J$, the plasma parameters have a Gaussian-like distribution. As expected the distribution narrows as the number of pulses $J$ is increased.  
 
 \begin{table}[!t]
 \centering
@@ -491,7 +493,7 @@ $V_i$      & $0$ m/s
 \label{fig:statshistall}
 \end{figure}
 
-One utility of being able to create a large number of samples of fitted parameters is seen in error analysis. ISR measurements need to have estimates of the errors, and accuracy of the estimates of these errors can be explored using STISRS. Using case seen in Figure \ref{fig:statshistall} with 1000 pulses we can compare the actual distribution of parameter values. Figure \ref{fig:statshistsingle} shows gives a comparison of these two different models using, one using the sample variance calculated from each parameter and the average estimate of the error, as the variance and average value for the mean. This example shows that the parameter distributions can be well represented by a Gaussian function but that the error estimated from the fit, may not give a completely accurate representation of variance of these parameters. 
+One utility of being able to create a large number of samples of fitted parameters is seen in the error analysis. ISR measurements need to have estimates of the errors, and accuracy of the estimates of these errors can be explored using STISRS. Using case seen in Figure \ref{fig:statshistall} with 1000 pulses we can compare with the actual distribution of parameter values. Figure \ref{fig:statshistsingle} shows gives a comparison of these two different models using, one using the sample variance calculated from each parameter and the average estimate of the error, as the variance and average value for the mean. This example shows that the parameter distributions are well represented by a Gaussian function but that the error estimated from the fit may not give a completely accurate representation of variance of these parameters. 
 
 \begin{figure}[!t]
 \centering
@@ -501,22 +503,26 @@ One utility of being able to create a large number of samples of fitted paramete
 \end{figure}
 
 
-STISRS can useful for identifying situations where assumptions in the parameter fitting break down. For example, a number of studies have explored the case where ISR parameter measurements and spectra show evidence of non-Maxwellian plasma behavior \citep{Akbari:2012dz,Akbari:2015fv}. Future studies using the simulator could help create a training set that can be used with a pattern recognition algorithm to identify cases where normal fitting procedures may be incorrect.
+STISRS can useful for identifying situations where assumptions in the parameter fitting break down. For example, a number of studies have explored the case where ISR parameter measurements and spectra show evidence of non-Maxwellian plasma behavior \citep[see, e.g.,][for AMISR examples]{Akbari:2012dz,Akbari:2015fv}. Future studies using the simulator could help create a training set that can be used with a pattern recognition algorithm to identify cases where normal fitting procedures may be incorrect.
 
 \subsection{Electron Density Measurement}
-An important aspect of experiment design is determining the observability of plasma phenomena with ISR. The simulator can be used to help understand the trade space accompanying each experiment. With this in mind, we use a simple two dimensional spatial field of ionospheric parameters as a demonstration case study. An all-O$^+$ ionosphere is created with a background electron density that follows a Chapman function with $1\times10^{11}$ m$^{-3}$ as the peak value and a constant electron and ion temperatures of 2000 $^\circ$K and 1500 $^\circ$K respectively. The background electron density can be seen in left panel of  Figure \ref{fig:background1}.
+An important aspect of experiment design is determining the observability of plasma phenomena with ISR. The simulator can be used to help understand the trade space accompanying a given experimental configuration. With this in mind, we use a simple two dimensional spatial field of ionospheric parameters as an illustrative case study. An all-O$^+$ ionosphere is created with a background electron density that follows a Chapman function with $1\times10^{11}$ m$^{-3}$ as the peak value and a constant electron and ion temperatures of 2000 $^\circ$K and 1500 $^\circ$K respectively. The background ionosphere is depicted in Figure \ref{fig:background1}.
 
 \begin{figure}[!t]
 \centering
 \includegraphics[width=4in]{backgroundandsamp}
 \caption{Contour of background $N_e$ for simulations and the spatial sampling pattern}
+% JOHN:  you don't need both of these panels, just the one on the right along with the colorbar.   Also, you should reduce the number of labels on colorbar, increase the font, and absorb exponent into units (which are not given).  Also there is no indication of what scalar is being plotted.   Typically you would write parameter/units above the colorbar:   $N_e (10^{10}$m$^{-3})$.   This comment goes for other plots too.
 \label{fig:background1}
 \end{figure}
 
 %For these simulations we want to show how ambiguities could arise when trying to image just simple electron density enhancements with the beam pattern shown in the right panel of Figure \ref{fig:background1},
-For these simulations we explore how a thin density enhancement is resolved with a radar beam pattern shown in the right panel of Figure \ref{fig:background1}, where each dot is a range gate in one of the 25 beams used. This thin density enhancement is 2 km in width and enhances the density by 5 times the background at its altitude. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction. The results of a single realization of our simulation are seen in Figure \ref{fig:stationaryall} using a 15 second and 60 second integration time, 60 and 240 pulses per position respectively. The different integration times show that, although the enhancement is blurred, the variance of the measurement can impact the quality of the reconstruction because of the inherent noise quality of the signal. The expected errors for both of the reconstructions can be seen in \ref{fig:errorstationaryall}. As expected the estimated errors show the uncertainties for the case with less pulses to be larger. 
+We first explore how a thin stationary density enhancement is resolved with the radar beam pattern shown in Figure \ref{fig:background1}, where each dot is a range gate in one of the 25 beams used. In Figure~\ref{fig:stationaryall}a, a thin density enhancement 2 km in width and 5 times the background is placed in the radar field of view. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction.  The results of a single realization of our simulation 
+%JOHN:  I don't know what "results of a single realization of our simulation" means here.  Is this different than "results of our simulation"?
+are seen in Figure \ref{fig:stationaryall}b and c using 15 and 60 second integration times, corresponding to 60 and 240 pulses per position, respectively. The different integration times show that although the enhancement is blurred the variance of the measurement impacts the quality of the reconstruction because of the inherent noise-like nature of of the signal. The expected errors for both of the reconstructions are shown in \ref{fig:errorstationaryall}. As expected the estimated errors show the uncertainties for the case with less pulses to be larger. 
+%JOHN:  I've tried to fix figure referencing in the above since it didn't mesh with what you had.   Also, how are you deriving density, is it just range corrected power here, or full spectrum fitting?  
 
-Because we know the input parameters we can do a quick comparison using the root mean squared error (RMSE) for each case. If we comparing the RMSE between the 15 and 60 second integration cases we find that the ratio between the two is approximately 5.40. The expect RMSE ratio between the two should be about 2 because the variance of the ACFs scales as $1/\sqrt{J}$, where $J$ is the number of pulses. If we instead median instead of a mean operator in the error calculation this ratio becomes 1.55 which is some what more in line with what is expected.
+Because we know the input parameters, we can do a quick comparison using the root mean squared error (RMSE) for each case. If we comparing the RMSE between the 15 and 60 second integration cases we find that the ratio between the two is approximately 5.4. The expect RMSE ratio between the two should be about 2 because the variance of the ACFs scales as $1/\sqrt{J}$, where $J$ is the number of pulses. If we instead use a median instead of a mean operator in the error calculation, this ratio becomes 1.55, which is some what more in line with what is expected.
 
 \begin{figure}[!t]
 \centering
@@ -532,7 +538,7 @@ Because we know the input parameters we can do a quick comparison using the root
 \label{fig:errorstationaryall}
 \end{figure}
 
-The blurring effect seen in this case study is not constant throughout the space due to the way the radar samples the space. This is illustrated in Figures \ref{fig:moving10mins} and \ref{fig:moving14mins}, where as the enhancement moves through the scene, its apparent size is affected by the orientation of the radar beams. As the enhancement becomes parallel to the radar beams then the shape in the reconstruction becomes smaller along the x-axis, as the range ambiguity is much larger than the cross range ambiguity from the beam pattern. To see the input and output electron density change with time see Movies S1 and S2.
+The blurring effect seen in this case study is not constant throughout the space due to the way the radar samples the space. This is illustrated in Figures \ref{fig:moving10mins} and \ref{fig:moving14mins}, where as the enhancement moves through the scene, its apparent size is affected by the orientation of the radar beams. As the enhancement becomes parallel to the radar beams then its morphology in the reconstruction becomes smaller along the x-axis, as the range ambiguity is much larger than the cross range ambiguity. (To see the input and output electron density change with time, the reader is referred to Movies S1 and S2.)
 
 \begin{figure}[!t]
 \centering
@@ -549,11 +555,11 @@ The blurring effect seen in this case study is not constant throughout the space
 \label{fig:moving14mins}
 \end{figure}
 
-This change in the shape of the enhancement can give the impression that its morphology has developed as it was moving through the field of view of the radar. This could lead to an incorrect interpretation of the physical process taking place. Thus one must be careful when analyzing these sorts of reconstructions.
+This change in the shape of the enhancement can give the impression that its morphology has evolved as it was moving through the field of view of the radar. This could lead to an incorrect interpretation of the physical process taking place, and issue raised by \citet{Dahlgren:2012dq}.   Thus one must be careful when analyzing these sorts of reconstructions.
 
 Lastly, for this type of simulation, we show an example to demonstrate the situation where a set of two different input parameters can yield qualitatively similar results. For these cases we create electron density enhancements similar in size as what is seen in \citet{Semeter:2005fo} from a poleward boundary intensification event. The sizes of these enhancement are 10 km width and 18 km width. The enhancement in the 10 km width example is 6 times higher than the background while the 18 km width enhancement is 3 times higher than the background.
 
-The input electron density, the fitted electron density and the expected error for the 10 km enhancement can be seen in Figure \ref{fig:moving10all}. The same images for the 18 km wide case can be seen in Figure \ref{fig:moving18all}. Both cases show that electron density enhancements are well above the expected errors. The fitted electron density for 10 km enhancement the 18 km enhancement show nearly identical results. This simple example demonstrates the possibility to create a non-unique solution in ISR. But it also shows a utility for STISRS in that it can be used to determine if an experiment set up will lead to ambiguous results between two different sets of phenomena. For the full input electron density changing with time for the 10 km example with time see Movie S3 and for the fitted data S4. The 18 km case can be seen in Movies S5 and S6 for input and fitted parameters respectively.  
+The input electron density, the fitted electron density and the expected error for the 10 km enhancement can be seen in Figure \ref{fig:moving10all}. The same images for the 18 km wide case can be seen in Figure \ref{fig:moving18all}. Both cases show that electron density enhancements are well above the expected errors. The fitted electron density for 10 km enhancement the 18 km enhancement show nearly identical results. This simple example demonstrates the possibility to create a non-unique solution in ISR. But it also shows a utility for STISRS in that it can be used to determine if an experiment set up will lead to ambiguous results between two different sets of phenomena. (For the full input electron density changing with time for the 10 km example with time see Movie S3 and for the fitted data S4. The 18 km case can be seen in Movies S5 and S6 for input and fitted parameters respectively.)
 
 \begin{figure}[!t]
 \centering
@@ -571,7 +577,7 @@ The input electron density, the fitted electron density and the expected error f
 
 \subsection{Full Parameter Experiment}
 \label{sec:fullparam}
-Finally, plasma parameters derived from a multi-fluid model developed in \cite{semeter:plasmatransport2012} are used to drive STISRS. The specific example was originally used in \cite{Perry:2015jf} and was designed for comparison to measurements from the Resolute Bay Incoherent Scatter Radar. Images of the plasma parameters can be seen in Figures \ref{fig:plparamst0} and \ref{fig:plparamst60}. These enhancements in electron density, temperature and ion temperature are caused by an auroral arc created from a Region 1 field aligned current system of amplitude .875 $\mu$A/m$^2$, which moves through the field of view at 200 m/s.
+Finally, plasma parameters derived from the multi-fluid model developed by \cite{semeter:plasmatransport2012} are used to drive STISRS. The specific model run was originally used by \cite{Perry:2015jf} to assist in interpreting measurements from the Resolute Bay Incoherent Scatter Radar (RISR). Images of the modeled plasma parameters are shown in Figures \ref{fig:plparamst0} and \ref{fig:plparamst60}. The enhancements in electron density, electron temperature, and ion temperature represent the self-consistent regional response of the ionosphere to an field-aligned current system with amplitude .875 $\mu$A/m$^2$ that moves with respect to the radar with a velocity of 200 m/s.   We thus have a physically self-consistent evolution of ionospheric state parameters in space and time.   A reasonable objective for a multi-beam ISR experiment could be to validate such a model prediction.  STISRS can be used to assess the observability of this dynamic and establish confidence intervals on the results.  
 
 \begin{figure}[!t]
 \centering
@@ -587,13 +593,16 @@ Finally, plasma parameters derived from a multi-fluid model developed in \cite{s
 \label{fig:plparamst60}
 \end{figure}
 
-Using a beam pattern similar to the one seen in the right panel of Figure \ref{fig:background1}, we use STISRS to explore how an electronically scanned ISR may reconstruct the scene. This a best case condition, as we have apriori knowledge of the plane that the arc is traveling in, and have set up the radar spatial beam pattern for the experiment to take advantage of this knowledge. This feature reduces the number of radar beams and required integration time to gain the desired statistics. 
-
-It is also assumed that the ratios between ion species are known. This is a common practice in ISR fitting as allowing the ratios to be free parameters can allow for non-unique solutions depending on the ion species that are present. If the fixed, apriori assumed composition ratios between the different ion species are incorrect, this can lead to errors in the final parameter estimates. For the lower F region ionosphere, generally this usually leads to errors between 150-250 km where the ionosphere changes from NO$^+$ dominated to O$^+$ dominated \citep{Zettergren:2011ej, Blelly:2010gf}. Another aspect from this specific case as the field aligned current passes through this creates an influx of  NO$^+$ in the cross over region for this simulation \citet{Perry:2015jf} .
+Using a beam pattern similar to the one seen in the right panel of Figure \ref{fig:background1}, we use STISRS to explore how an electronically scanned ISR may reconstruct this dynamic.  For the purposes of illustration, we use the contrived case where the radar spatial beam pattern is defined to be in the plane of convection.  It is also assumed that the ratios between ion species are known. This is a common practice in ISR fitting, as allowing the ratios to be free parameters can allow for non-unique solutions depending on the ion species that are present. If the fixed, apriori assumed composition ratios between the different ion species are incorrect, this can lead to errors in the final parameter estimates. For the lower F region ionosphere, this generally leads to errors between 150-250 km where the ionosphere changes from NO$^+$ dominated to O$^+$ dominated \citep{Zettergren:2011ej, Blelly:2010gf}. Another aspect from this specific case as the field aligned current passes through this creates an influx of  NO$^+$ in the crossover region for this simulation \citet{Perry:2015jf}.
+% JOHN:  I can't figure out what the above sentence fragment is supposed to be.
 
 The output of the STISRS from the parameters can be seen in Figure \ref{fig:fplparamst60} and in Movie S8. The integration is started at $t=960$ s into the simulation with the plasma parameters shown in seen in Figure \ref{fig:plparamst60}. The full set of plasma parameters over time can be seen in Movie S7. For this case, a 60 second integration time is used, which for the 27 beam radar experiment set up gives 255 pulses per position. Lastly the expected errors from the fit can be seen Figure \ref{fig:fplparamst60err}.
 
-We highlight several features in the fitted results. First, enhancements in electron and ion temperature are clearly visible and well above the expected error. Second, we examine whether the cavity in electron density that is formed is also visible. These types of cavities are signs of downward current flow and there has been a question (REF?) as to whether these could be observed well with ISR systems \pcom{awkward-reword}{due to their defining feature being an evacuations of electrons, thus reducing the return power from the scattered signal}. The image in \ref{fig:fplparamst60} shows the best case of finding this cavity with this beam pattern, as at this time the cavity is close to perpendicular with one of the beams. For the other cases where the beams are not well aligned with the cavity it becomes much more difficult to observe it due to the range ambiguity being larger than the beam width, making the "filling in" of the evacuated electrons more pronounced. 
+We highlight several features in the fitted results. First, the predicted enhancements in electron and ion temperature are clearly observable and well above the expected error. Second, we examine whether the predicted density cavity in the downward field-aligned current region is  detectable.  A deepening and broadening region of plasma evacuation is predicted as a self-consistent response to a confined up-down current pair \citep[e.g.,][]{wright;alfven}.  But it has been unclear whether this prediction can be validated with ISR, since it involves detecting coherent channels of reduced backscatter power embedded within a higher density background. 
+
+The images shown in \ref{fig:fplparamst60} represent the best case scenario for identifying the presence of this cavity since, at this time, the cavity is nearly co-aligned with one of the beams. 
+%For the other cases where the beams are not well aligned with the cavity it becomes much more difficult to observe it due to the range ambiguity being larger than the beam width, making the "filling in" of the evacuated electrons more pronounced. 
+Using density measurements alone (panel a) the presence of the cavity is visible, but only marginally so as it is blended with the adjacent  enhancement produced by the applied precipitation in the upward current channel.  A similar ambiguity exists with the electron temperature result, which could easily be interpreted as purely an effect of heating from soft precipitation.   However, the ion temperature increase in panel b is decidedly narrower than the electron temperature enhancement, offering a possible observable fingerprint for the presence of a confined up-down current pair.  The simulation result illustrates the efficacy of a collective analysis of all plasma state parameters in evaluating the physical mechanism responsible for an observed dynamic.  This is a common approach in data assimilation problems.
 
 %% Fitted Data
 
@@ -601,6 +610,7 @@ We highlight several features in the fitted results. First, enhancements in elec
 \centering
 \includegraphics[width=6in]{0960_60_int}
 \caption{Fitted Plasma Parameters at $t=960$ s with 60 second integration.}
+%JOHN:  need to label these A,  B, C
 \label{fig:fplparamst60}
 \end{figure}
 
