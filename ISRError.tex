@@ -348,7 +348,7 @@ The case shown in Equation \ref{eq:lagpro} is a centered lag product.  Other typ
 %\noindent With out the $\frac{1}{L-l}$ term the estimator will be windowed with a triangular function thus impacting the estimate of the ISR spectrum as this will act as a convolution in the frequency domain. This bias is taken into account in \citep{farley1969} but it is simply wrapped up into the ambiguity function. 
 
 Applying a summation rule is generally the next step in creating an estimate of the autocorrelation function for single altitude analysis. This is done for a number of reasons, but primarily to improve estimate statistics.  Furthermore, if the right rule is chosen, then the range ambiguity can be made approximately constant across the lags \citep{nygren1996}. 
-% JOHN:  the use of a summation rule is intimately connected to the "overspread" issue, which leads to redundant entries in the lag profile matrix, right?   I've not thought about it deeply, but I wonder if we can say something insightful about this here.  As far as I know, summation rule issues haven't been discussed in the literature in detail.
+% JOHN:  the use of a summation rule is intimately connected to the "overspread" issue, which leads to redundant entries in the lag profile matrix, right?   I wonder if we can say something more insightful about summmation rules here.  As far as I know, this topic hasen't been discussed in the literature in detail, except that one Nygren paper.
 The trapezoidal summation rule used in our simulation is a common choice and can be represented as follows.
 
 \begin{equation}
@@ -398,7 +398,7 @@ The class of nonlinear least squares problems relevant to ISR parameter estimati
 \end{equation}
 
 In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final estimate of the ACF $\widehat{R}_f(m,l)$ at a specific range, or its spectrum $\widehat{S}_f(m,\omega)$. The parameter vector $\mathbf{P}$ would be the plasma parameters $N_e$, $T_e$, $T_i$ and $V_i$. The fit function, $\bm{\theta}$, is the IS spectrum calculated from a models \citep[e.g.,][]{kudeki:milla:1} and smeared by the ambiguity function. In the case of the long pulse the ambiguity can be simply applied by multiplying it with the autocorrelation function $R(l)$ if the summation rule is properly applied. In the past, the Levenberg-Marquart algorithm to fit data \citep{nikoukar2008}.
-% JOHN:  I may have missed something, but what are you using to fit the data (i.e., for the nonlinear minimization)?
+% JOHN:  I may have missed something, but what are you using to fit the data (i.e., for the nonlinear minimization)?    You refer to 
 
 
 %Using the covariance matrix from the fitted parameters, an overall error estimate can be achieved. This matrix is calculated using a numerical approximation to the Jacobian matrix that the function uses to determine the solution. Due to the way the numerical routines solve the problem, this matrix must be multiplied by the error between the estimated parameters and the data,
