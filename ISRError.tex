@@ -398,7 +398,7 @@ The class of nonlinear least squares problems relevant to ISR parameter estimati
 \end{equation}
 
 In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final estimate of the ACF $\widehat{R}_f(m,l)$ at a specific range, or its spectrum $\widehat{S}_f(m,\omega)$. The parameter vector $\mathbf{P}$ would be the plasma parameters $N_e$, $T_e$, $T_i$ and $V_i$. The fit function, $\bm{\theta}$, is the IS spectrum calculated from a models \citep[e.g.,][]{kudeki:milla:1} and smeared by the ambiguity function. In the case of the long pulse the ambiguity can be simply applied by multiplying it with the autocorrelation function $R(l)$ if the summation rule is properly applied. In the past, the Levenberg-Marquart algorithm to fit data \citep{nikoukar2008}.
-% JOHN:  I may have missed something, but what are you using to fit the data (i.e., for the nonlinear minimization)?    You refer to 
+% JOHN:  I may have missed something, but what are you using to fit the data (i.e., for the nonlinear minimization)?    You refer to Lev-Mar as something used "in the past."  If you are using something different to minimize your Kay cost function, what is it?
 
 
 %Using the covariance matrix from the fitted parameters, an overall error estimate can be achieved. This matrix is calculated using a numerical approximation to the Jacobian matrix that the function uses to determine the solution. Due to the way the numerical routines solve the problem, this matrix must be multiplied by the error between the estimated parameters and the data,
