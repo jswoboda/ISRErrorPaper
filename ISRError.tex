@@ -315,7 +315,7 @@ A full diagram of the model can be seen in Figure \ref{fig:isrdiag}.
 
 
 \subsection{ACF Estimation}
-
+\label{sec:acf}
 After complex receiver voltage data has been created, it is processed to create estimates of the ACF at desired points of space \citep[see, e.g.,][]{farley1969,nygren1996}. This processing follows the flow chart presented in Figure \ref{fig:chain}.  Note that we assume here a signal pipeline which creates a single altitude measurement for analysis.  More sophisticated approaches for ISR analysis exist that use information from multiple altitudes, including full profile analysis \citep{RDS:RDS3308}, lag profile inversion \citep{Virtanen:20082vx}, and others, but treatment of these approaches is beyond the scope of this work.
 
 \begin{figure}[!t]
@@ -348,10 +348,10 @@ The case shown in Equation \ref{eq:lagpro} is a centered lag product.  Other typ
 %
 %\noindent With out the $\frac{1}{L-l}$ term the estimator will be windowed with a triangular function thus impacting the estimate of the ISR spectrum as this will act as a convolution in the frequency domain. This bias is taken into account in \citep{farley1969} but it is simply wrapped up into the ambiguity function. 
 
-Applying a summation rule is generally the next step in creating an estimate of the autocorrelation function for single altitude analysis. This is done for a number of reasons, but primarily to improve estimate statistics.  Furthermore, if the right rule is chosen, then the range ambiguity can be made approximately constant across the lags \citep{nygren1996}. 
+Applying a summation rule is generally the next step in creating an estimate of the autocorrelation function for single altitude analysis. This is done for a number of reasons, but primarily to improve estimate statistics.  Furthermore, if the right rule is chosen, then the range ambiguity can be made approximately constant across the lags, which can make inversions easier \citep{nygren1996}. Summation rules based on other criterial can be used but our simulations use the trapezoidal summation, which is a common choice and leads to the common resolution across all lags. It can be represented as follows.
 % JOHN:  the use of a summation rule is intimately connected to the "overspread" issue, which leads to redundant entries in the lag profile matrix, right?   I wonder if we can say something more insightful about summmation rules here.  As far as I know, this topic hasen't been discussed in the literature in detail, except that one Nygren paper.
 % Josh: I'm not sure what else we can say here. If summation rule isn't performed then the resolution of the lags along range will be different, but when you fit the ACF to the parameters you sort of make an assumption that all of the lags are in the same resolution cell. For example the 0th lag will be ambiguous along L range gates while the l-1 range gate will be ambitious along only 1.
-The trapezoidal summation rule used in our simulation is a common choice and can be represented as follows.
+
 
 \begin{equation}
 \label{eq:sumrule}
@@ -519,11 +519,12 @@ An important aspect of experiment design is determining the observability of pla
 \end{figure}
 
 %For these simulations we want to show how ambiguities could arise when trying to image just simple electron density enhancements with the beam pattern shown in the right panel of Figure \ref{fig:background1},
-We first explore how a thin stationary density enhancement is resolved with the radar beam pattern shown in Figure \ref{fig:background1}, where each dot is a range gate in one of the 25 beams used. In Figure~\ref{fig:stationaryall}a, a thin density enhancement 2 km in width and 5 times the background is placed in the radar field of view. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction.  The results of a single realization of our simulation 
+We first explore how a thin stationary density enhancement is resolved with the radar beam pattern shown in Figure \ref{fig:background1}, where each dot is a range gate in one of the 25 beams used. In Figure~\ref{fig:stationaryall}a, a thin density enhancement 2 km in width and 5 times the background is placed in the radar field of view. The enhancement is at the resolution limit of the original Cartesian grid, a delta function in the x direction.  The results of a single realization of fitted electron density from our simulation, without any averaging beyond the the processing described in Section \ref{sec:acf},
 %JOHN:  I don't know what "results of a single realization of our simulation" means here.  Is this different than "results of our simulation"?
-are seen in Figure \ref{fig:stationaryall}b and c using 15 and 60 second integration times, corresponding to 60 and 240 pulses per position, respectively. The different integration times show that although the enhancement is blurred the variance of the measurement impacts the quality of the reconstruction because of the inherent noise-like nature of of the signal. The expected errors for both of the reconstructions are shown in \ref{fig:errorstationaryall}. As expected the estimated errors show the uncertainties for the case with less pulses to be larger. 
+%Josh: No extra averaging of fitted parameters.
+are seen in Figure \ref{fig:stationaryall}b and c using 15 and 60 second integration times, corresponding to 60 and 240 pulses per position, respectively. The different integration times show that although the enhancement is blurred the variance of the measurement impacts the quality of the reconstruction because of the inherent noise-like nature of of the signal. The expected errors for both of the reconstructions are shown in Figure \ref{fig:errorstationaryall}. As expected the estimated errors show the uncertainties for the case with less pulses to be larger. 
 %JOHN:  I've tried to fix figure referencing in the above since it didn't mesh with what you had.   Also, how are you deriving density, is it just range corrected power here, or full spectrum fitting?  
-
+%Josh: Fitted density, I mention it in the previous paragraph
 Because we know the input parameters, we can do a quick comparison using the root mean squared error (RMSE) for each case. If we comparing the RMSE between the 15 and 60 second integration cases we find that the ratio between the two is approximately 5.4. The expect RMSE ratio between the two should be about 2 because the variance of the ACFs scales as $1/\sqrt{J}$, where $J$ is the number of pulses. If we instead use a median instead of a mean operator in the error calculation, this ratio becomes 1.55, which is some what more in line with what is expected.
 
 \begin{figure}[!t]
@@ -595,13 +596,14 @@ Finally, plasma parameters derived from the multi-fluid model developed by \cite
 \label{fig:plparamst60}
 \end{figure}
 
-Using a beam pattern similar to the one seen in the right panel of Figure \ref{fig:background1}, we use STISRS to explore how an electronically scanned ISR may reconstruct this dynamic.  For the purposes of illustration, we use the contrived case where the radar spatial beam pattern is defined to be in the plane of convection.  It is also assumed that the ratios between ion species are known. This is a common practice in ISR fitting, as allowing the ratios to be free parameters can allow for non-unique solutions depending on the ion species that are present. If the fixed, apriori assumed composition ratios between the different ion species are incorrect, this can lead to errors in the final parameter estimates. For the lower F region ionosphere, this generally leads to errors between 150-250 km where the ionosphere changes from NO$^+$ dominated to O$^+$ dominated \citep{Zettergren:2011ej, Blelly:2010gf}. Another aspect from this specific case as the field aligned current passes through this creates an influx of  NO$^+$ in the crossover region for this simulation \citet{Perry:2015jf}.
+Using a beam pattern similar to the one seen in the right panel of Figure \ref{fig:background1}, we use STISRS to explore how an electronically scanned ISR may reconstruct this dynamic auroral arc system.  For the purposes of illustration, we use the contrived case where the radar spatial beam pattern is defined to be in the plane of convection.  It is also assumed that the ratios between ion species are known. This is a common practice in ISR fitting, as allowing the ratios to be free parameters can allow for non-unique solutions depending on the ion species that are present. If the fixed, apriori assumed composition ratios between the different ion species are incorrect, this can lead to errors in the final parameter estimates. For the lower F region ionosphere, this generally leads to errors between 150-250 km where the ionosphere changes from NO$^+$ dominated to O$^+$ dominated \citep{Zettergren:2011ej, Blelly:2010gf}. Another aspect from this specific case as the field aligned current passes through this creates an influx of  NO$^+$ in the crossover region for this simulation \citet{Perry:2015jf}.
 % JOHN:  I can't figure out what the above sentence fragment is supposed to be.
+% Josh: I fixed the first sentance of the previous paragraph
 
 The output of the STISRS from the parameters can be seen in Figure \ref{fig:fplparamst60} and in Movie S8. The integration is started at $t=960$ s into the simulation with the plasma parameters shown in seen in Figure \ref{fig:plparamst60}. The full set of plasma parameters over time can be seen in Movie S7. For this case, a 60 second integration time is used, which for the 27 beam radar experiment set up gives 255 pulses per position. Lastly the expected errors from the fit can be seen Figure \ref{fig:fplparamst60err}.
 
 We highlight several features in the fitted results. First, the predicted enhancements in electron and ion temperature are clearly observable and well above the expected error. Second, we examine whether the predicted density cavity in the downward field-aligned current region is  detectable.  A deepening and broadening region of plasma evacuation is predicted as a self-consistent response to a confined up-down current pair \citep[e.g.,][]{Wright:2003ch}.  But it has been unclear whether this prediction can be validated with ISR, since it involves detecting coherent channels of reduced backscatter power embedded within a higher density background.
-% Replaced \citep{write:alfven} with current version
+%Josh: You didn't have the right citation so I found the best one i could Replaced \citep{write:alfven} with current version
 
 The images shown in \ref{fig:fplparamst60} represent the best case scenario for identifying the presence of this cavity since, at this time, the cavity is nearly co-aligned with one of the beams. 
 %For the other cases where the beams are not well aligned with the cavity it becomes much more difficult to observe it due to the range ambiguity being larger than the beam width, making the "filling in" of the evacuated electrons more pronounced. 
@@ -614,6 +616,7 @@ Using density measurements alone (panel a) the presence of the cavity is visible
 \includegraphics[width=6in]{0960_60_int}
 \caption{Fitted Plasma Parameters at $t=960$ s with 60 second integration.}
 %JOHN:  need to label these A,  B, C
+%Josh: I have the parameter type in the title so that should be enough.
 \label{fig:fplparamst60}
 \end{figure}
 
