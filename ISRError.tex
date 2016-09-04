@@ -399,9 +399,9 @@ The class of nonlinear least squares problems relevant to ISR parameter estimati
 \label{nlls}
 \end{equation}
 
-In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final estimate of the ACF $\widehat{R}_f(m,l)$ at a specific range, or its spectrum $\widehat{S}_f(m,\omega)$. The parameter vector $\mathbf{P}$ would be the plasma parameters $N_e$, $T_e$, $T_i$ and $V_i$. The fit function, $\bm{\theta}$, is the IS spectrum calculated from a models \citep[e.g.,][]{kudeki:milla:1} and smeared by the ambiguity function. In the case of the long pulse the ambiguity can be simply applied by multiplying it with the autocorrelation function $R(l)$ if the summation rule is properly applied. As in previous publications, \citep[e.g.,][]{nikoukar2008}, the Levenberg-Marquart algorithm to fit the plasma parameters to the ACFs or spectra \citep{levenberg1944,marquardt:1963}.
+In Equation \ref{nlls}, the data represented as $\mathbf{y}$ would be the final estimate of the ACF $\widehat{R}_f(m,l)$ at a specific range, or its spectrum $\widehat{S}_f(m,\omega)$. The parameter vector $\mathbf{P}$ would be the plasma parameters $N_e$, $T_e$, $T_i$ and $V_i$. The fit function, $\bm{\theta}$, is the IS spectrum calculated from a models \citep[e.g.,][]{kudeki:milla:1} and smeared by the ambiguity function. In the case of the long pulse the ambiguity can be simply applied by multiplying it with the autocorrelation function $R(l)$ if the summation rule is properly applied. As in previous publications, \citep[e.g.,][]{nikoukar2008}, the Levenberg-Marquart algorithm is used to fit the plasma parameters to the ACFs or spectra \citep{levenberg1944,marquardt:1963}.
 % JOHN:  I may have missed something, but what are you using to fit the data (i.e., for the nonlinear minimization)?    You refer to Lev-Mar as something used "in the past."  If you are using something different to minimize your Kay cost function, what is it?
-
+% Josh: I've changed the above paragraph reflect the fact that I use LM along with others.
 %Using the covariance matrix from the fitted parameters, an overall error estimate can be achieved. This matrix is calculated using a numerical approximation to the Jacobian matrix that the function uses to determine the solution. Due to the way the numerical routines solve the problem, this matrix must be multiplied by the error between the estimated parameters and the data,
 
 The last step is to calculate the errors in the parameter estimates. In order to do this a numerical approximation of the jacobian matrix between the data and the ACF, $\mathbf{J}$, at $\mathbf{p}=\mathbf{\hat{p}}$. The formula to estimate the parameter error matrix, $\mathbf{C}_{\mathbf{\hat{p}}}$ according to \citet{Hysell:2000cq}, is
@@ -515,6 +515,7 @@ An important aspect of experiment design is determining the observability of pla
 \includegraphics[width=4in]{backgroundandsamp}
 \caption{Contour of background $N_e$ for simulations and the spatial sampling pattern}
 % JOHN:  you don't need both of these panels, just the one on the right along with the colorbar.   Also, you should reduce the number of labels on colorbar, increase the font, and absorb exponent into units (which are not given).  Also there is no indication of what scalar is being plotted.   Typically you would write parameter/units above the colorbar:   $N_e (10^{10}$m$^{-3})$.   This comment goes for other plots too.
+% Josh: I've updated the figures as you suggested.
 \label{fig:background1}
 \end{figure}
 
@@ -598,7 +599,7 @@ Finally, plasma parameters derived from the multi-fluid model developed by \cite
 
 Using a beam pattern similar to the one seen in the right panel of Figure \ref{fig:background1}, we use STISRS to explore how an electronically scanned ISR may reconstruct this dynamic auroral arc system.  For the purposes of illustration, we use the contrived case where the radar spatial beam pattern is defined to be in the plane of convection.  It is also assumed that the ratios between ion species are known. This is a common practice in ISR fitting, as allowing the ratios to be free parameters can allow for non-unique solutions depending on the ion species that are present. If the fixed, apriori assumed composition ratios between the different ion species are incorrect, this can lead to errors in the final parameter estimates. For the lower F region ionosphere, this generally leads to errors between 150-250 km where the ionosphere changes from NO$^+$ dominated to O$^+$ dominated \citep{Zettergren:2011ej, Blelly:2010gf}. Another aspect from this specific case as the field aligned current passes through this creates an influx of  NO$^+$ in the crossover region for this simulation \citet{Perry:2015jf}.
 % JOHN:  I can't figure out what the above sentence fragment is supposed to be.
-% Josh: I fixed the first sentance of the previous paragraph
+% Josh: I fixed the first sentence of the previous paragraph
 
 The output of the STISRS from the parameters can be seen in Figure \ref{fig:fplparamst60} and in Movie S8. The integration is started at $t=960$ s into the simulation with the plasma parameters shown in seen in Figure \ref{fig:plparamst60}. The full set of plasma parameters over time can be seen in Movie S7. For this case, a 60 second integration time is used, which for the 27 beam radar experiment set up gives 255 pulses per position. Lastly the expected errors from the fit can be seen Figure \ref{fig:fplparamst60err}.
 
