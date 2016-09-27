@@ -223,6 +223,7 @@ Once the spectra have been created, the simulator transforms the resulting value
 
 Once the theoretical spectrum for a given scattering volume has been calculated, an appropriate spectral shaping filter is created. The method to create the filter given a desired spectrum or ACF can be done in a number of ways \citep{Kasdin:1995wi}. The implementation in SimISR creates an infinite impulse response filter. 
 %% PJE: Why does SimISR pick an IIR filter, which is not guaranteed to have a linear phase response across the passband (i.e. constant delay)?  Might be worth a comment here.
+%% JPS: This creates a causal, minimum phase filter. It may not be linear phase but its not necessarily need in this application as we are not worried about dispersion of the input signal. The filters just need to be stable and the causality allows one to use the minimum phase assumption to justify stability.
 The coefficients are determined using the ACF by solving the following set of equations,
 
 \begin{equation}
@@ -243,7 +244,7 @@ H_m(z) = \frac{G}{1-\displaystyle \sum_{l=1}^{L} a_l z^{-l}}.
 G=\sqrt{\displaystyle \sum_{l=0}^L -a_l R_m(l)},
 \end{equation}
 
-\noindent where $a_0=-1$.  This method has been used in similar ways in other contexts--e.g., the creation of vocoders for speech processing applications \citep{rabinerdigitalspeech}.
+\noindent where $a_0=-1$. This method has been used in similar ways in other contexts--e.g., the creation of vocoders for speech processing applications, as it creates causal and stable filters \citep{rabinerdigitalspeech}.
 %\noindent The term $ \bm{\theta}$ refers to the plasma parameters needed to make the spectrum. This filter then is used to create the synthetic IQ data.
 
 \subsection{Simulated Complex Voltage Creation}
@@ -461,9 +462,9 @@ It is often necessary to obtain a large number of sensor measurements for a stat
 % JOHN: you still need to work on this comment by Phil, no?   :
 %\pcom{Very awkward and verbose; rewrite}{It is necessary to understand the statistics from the sensors used in scientific studies. In order to do this a large number of measurements must be taken with the sensor. There are issues with this approach in that the inputs can not be controlled so along with any random variation that may be found in the sensor the random variation of the measured process will be included and must be taken into account during the analysis of the data. With the simulator the statistical fluctuations from only the measurement mechanism only can be studied and thus reducing the uncertainty of the measurements.}
 % Josh I updated the above paragraph to take care of Phil's comment. The point of the paragraph is I can make a training set instead of working through a data base to collect and classify data. Perhaps I can add a reference to pattern recognition book that talks about training sets.
-For this example we show how distributions of plasma parameter measurements change as more pulses are averaged. To do this we created a field of constant plasma parameters typical of the high latitude ionosphere at around 250 km, and performed a Monte Carlo-type simulated statistical experiment using a number of independent realizations. We use the parameters for the Poker Flat AMISR system for this simulation along with the plasma parameter listed in Table \ref{tb:param1}. For a number of independent radar pulse counts, $J$, we used 4,600 realizations of the statistical ISR measurement process in each case to create statistical distributions of measured parameter values. The distributions can be seen in Figure \ref{fig:statshistall} which show distributions where 200, 500 and 1000 pulses are used respectively. For a given pulse count $J$, the plasma parameters have a Gaussian-like distribution. As expected the distribution narrows as the number of pulses $J$ is increased.  
+For this example we show how distributions of plasma parameter measurements change as more pulses are averaged. To do this we created a field of constant plasma parameters typical of the high latitude ionosphere at around 250 km, and performed a Monte Carlo-type simulated statistical experiment using a number of independent realizations. We use the parameters for the Poker Flat AMISR system for this simulation along with the plasma parameter listed in Table \ref{tb:param1}. For a number of independent radar pulse counts, $J$, we used 4,600 realizations of the statistical ISR measurement process in each case to create statistical distributions of measured parameter values. To calculate distributions histograms are created using each of these relations, although some come from the same beam and thus there can be some statistical correlation. The distributions can be seen in Figure \ref{fig:statshistall} which show distributions where 200, 500 and 1000 pulses are used respectively. For a given pulse count $J$, the plasma parameters have a Gaussian-like distribution. As expected the distribution narrows as the number of pulses $J$ is increased. Another observation is that as the number of pulses increases the bias in the measurement is reduced, which could be due to the way that the histograms were calculated.
 %% PJE:  However, Figure 5 clearly shows a biased measurement for the 200 pulse case slowly resolving to zero bias in the 500 and 1000 sample cases.  You need to address this behavior here, as a sharp reviewer is going to notice and call it out.  I don't offhand know why that is happening.
-
+%% JPS: Didn't have a great answer, I have a feeling that it might be related to how I calculated the histograms. I took data from all of the beams together so there correlations between some samples. The  
 \begin{table}[!t]
 \centering
 \caption{Simulation parameters.}
@@ -484,8 +485,9 @@ $V_i$      & $0$ m/s
 \label{fig:statshistall}
 \end{figure}
 
-ISR error analysis also benefits from SimISR's ability to generate a large number of samples of fitted parameters. In particiular, ISR measurements need to have estimates of the errors, and accuracy of the estimates of these errors can be explored using SimISR. Using the 1000 pulse case seen in Figure \ref{fig:statshistall}, we can compare simulated output distributions with the actual distribution of parameter values. Figure \ref{fig:statshistsingle} shows gives a comparison of these two different models using, one using the sample variance calculated from each parameter and the average estimate of the error, as the variance and average value for the mean. 
+ISR error analysis also benefits from SimISR's ability to generate a large number of samples of fitted parameters. In particiular, ISR measurements need to have estimates of the errors, and accuracy of the estimates of these errors can be explored using SimISR. Using the 1000 pulse case seen in Figure \ref{fig:statshistall}, we can compare simulated output distributions with the actual distribution of parameter values. Figure \ref{fig:statshistsingle} shows a comparison of these two different models using. The first method, represented by the blue line, uses the sample mean and variance calculated from each as the variance and mean for a Normal distribution. The other method, which generated the green line, calculates an average squared error from the true value for each parameter for the variance in a Normal distribution and uses the true value for the mean. 
 %% PJE: I'm confused by the logic of this sentence above (also "shows gives" etc?) - please reword.
+%% JPS: Just changed 
 This example shows that the parameter distributions are well represented by a Gaussian function but that the error estimated from the fit may not give a completely accurate representation of variance of these parameters. 
 
 \begin{figure}[!t]
@@ -517,9 +519,9 @@ We first explore how a thin stationary density enhancement is resolved with the 
 are seen in Figure \ref{fig:stationaryall}b and c using 15 and 60 second integration times, corresponding to 60 and 240 pulses per position, respectively. The different integration times show that, although the enhancement is blurred, the variance of the measurement impacts the quality of the reconstruction because of the inherent noise-like nature of of the signal. The expected errors for both of the reconstructions are shown in Figure \ref{fig:errorstationaryall}. As expected, the estimated errors show that uncertainties are larger for the case with fewer pulses (i.e. smaller ensemble average size). 
 %JOHN:  I've tried to fix figure referencing in the above since it didn't mesh with what you had.   Also, how are you deriving density, is it just range corrected power here, or full spectrum fitting?  
 %Josh: Fitted density, I mention it in the previous paragraph
-Because we know the input parameters, we can do a quick comparison using the root mean squared error (RMSE) for each case. By comparing the RMSE between the 15 and 60 second integration cases, we find that the ratio between the two cases is approximately 5.4 in the simulation output.  However, the expected RMSE ratio between the two should be approximately 2 since the variance of the ACFs scales as $1/\sqrt{J}$, where $J$ is the number of pulses. If we instead use a median (L1 norm) instead of a mean operator in the error calculation, this ratio becomes 1.55, more in line with the expected statistical error scaling.
+Because we know the input parameters, we can do a quick comparison using the root mean squared error (RMSE) for each case. By comparing the RMSE between the 15 and 60 second integration cases, we find that the ratio between the two cases is approximately 5.4 in the simulation output.  However, the expected RMSE ratio between the two should be approximately 2 since the variance of the ACFs scales as $1/\sqrt{J}$, where $J$ is the number of pulses. If we instead use a median instead of a mean operator in the error calculation, this ratio becomes 1.55, more in line with the expected statistical error scaling, largely due the large outliers being disregarded. In order to determine if the expected errors are correct a larger study comparing the actual and expected errors may be necessary, but we see using a median estimator, which can get ride of large outliers, the ratios between the errors and expected errors are relatively close.
 %% PJE: You've left me hanging here though - what does this result mean?  It deserves at least one sentence worth of comment.
-
+%% JPS: Commented further, the behavior of the expected errors and actual errors are relatively close
 \begin{figure}[!t]
 \centering
 \includegraphics[width=6in]{stationary}
@@ -534,13 +536,15 @@ Because we know the input parameters, we can do a quick comparison using the roo
 \label{fig:errorstationaryall}
 \end{figure}
 
-The blurring effect seen in this case study is not constant throughout the simulated space due to the way the radar samples the space. This is illustrated in Figures \ref{fig:moving10mins} and \ref{fig:moving14mins}, where as the enhancement moves through the scene, its apparent size is affected by the orientation of the radar beams. 
+The blurring effect seen in this case study is not constant throughout the simulated space due to the way the radar samples the space. This is illustrated in Figures \ref{fig:moving10mins} and \ref{fig:moving14mins}, where as the enhancement moves through the scene at 500 m/s, its apparent size is affected by the orientation of the radar beams. 
 %% PJE: please state the motion speed used
-As the enhancement becomes parallel to the radar beams
+%% JPS: Done
+As the enhancement becomes parallel to the radar beams, close to 0 km in the X plane,
 %% PJE: where does it become parallel?  I cannot see the effect you are talking about here without some circles or arrows or something on the plot.
-its morphology in the reconstruction becomes smaller along the x-axis, as the range ambiguity is much larger than the cross range ambiguity. (To see the input and output electron density change with time, the reader is referred to Movies S1 and S2.)
+%% JPS: Done
+its morphology in the reconstruction becomes smaller along the x-axis, as the range ambiguity is much larger than the cross range ambiguity. (To see the input and output electron density change with time, the reader is referred to Movies S1 and S2.) In both cases the expected errors, shown in panel c in both Figures \ref{fig:moving10mins} and \ref{fig:moving14mins}, give us confidence in these results as they are much lower value than the enhancements and background.
 %% PJE: the electron density error plots here have the wrong scaling - everything is very dark color and I can't see any structure in any of them.  Please rescale the color bars.
-
+%% JPS: added statement about errors
 \begin{figure}[!t]
 \centering
 \includegraphics[width=6in]{moving6mins}
@@ -562,6 +566,7 @@ Lastly, for this type of simulation, we show an example to demonstrate the situa
 
 The input electron density, the fitted electron density and the expected error for the 10 km enhancement can be seen in Figure \ref{fig:moving10all}. The same images for the 18 km wide case can be seen in Figure \ref{fig:moving18all}. Both cases show that electron density enhancements are well above the expected errors.
 %% PJE: once again, I cannot see the error morphology here - it just looks like a bunch of pixels at the lowest color level.  Rescale.
+%% JPS: I think showing the errors in the same color scale gives the reader an easier time of determining if the results should be trusted. 
 The fitted electron density for both the 10 km enhancement and 18 km enhancement cases show nearly identical results. This simple example demonstrates the possibility to create a non-unique solution in ISR experiments. The results further demonstrate that SimISR can provide useful information in this case, in that it can provide information during the design phase of an experiment that highlight possibilities for ambiguous observational results between two different sets of phenomena. (For the full input electron density changing with time for the 10 km example, see Movie S3 and for the fitted data S4. The 18 km case can be seen in Movies S5 and S6 for input and fitted parameters respectively.)
 
 \begin{figure}[!t]
@@ -600,12 +605,12 @@ Using a beam pattern similar to the one seen in the right panel of Figure \ref{f
 % JOHN:  I can't figure out what the above sentence fragment is supposed to be.
 % Josh: I fixed the first sentence of the previous paragraph
 
-The output of SimISR in the auroral arc case can be seen in Figure \ref{fig:fplparamst60} and in Movie S8. The integration is started at $t=960$ s into the multi-fluid simulation with the plasma parameters shown in Figure \ref{fig:plparamst60}. The full set of plasma parameters over time can be seen in Movie S7. For this case, a 60 second integration time is used, which for the 27 beam radar experiment set up gives 255 pulses per position. These plasma parameters are linearly interpolated to a Cartesian grid and plotted using the GeoData API \citep{john_swoboda_2016_154533}.Lastly, the expected errors from the fit can be seen in Figure \ref{fig:fplparamst60err}.
+The output of SimISR in the auroral arc case can be seen in Figure \ref{fig:fplparamst60} and in Movie S8. The integration is started at $t=960$ s into the multi-fluid simulation with the plasma parameters shown in Figure \ref{fig:plparamst60}. The full set of plasma parameters over time can be seen in Movie S7. For this case, a 60 second integration time is used, which for the 27 beam radar experiment set up gives 255 pulses per position. These plasma parameters are linearly interpolated to a Cartesian grid and plotted using the GeoData API \citep{john_swoboda_2016_154533}. Lastly, the expected errors from the fit can be seen in Figure \ref{fig:fplparamst60err}, which are of much lower value that the fitted parameters.
 %% PJE: same complaint about expected errors - I can't see anything with the color scale chosen.  Rescale.
-
-We highlight several features in the fitted results. First, the predicted enhancements in electron and ion temperature are clearly observable and well above the expected error. Second, we examine whether the predicted density cavity in the downward field-aligned current region is  detectable. A deepening and broadening region of plasma evacuation is predicted as a self-consistent response to a confined up-down current pair \citep[e.g.,][]{cran;cavity}.  But it has been unclear whether this prediction can be validated with ISR, since it involves detecting coherent channels of reduced backscatter power embedded within a higher density background.
+%% JPS: See other comments.
+We highlight several features in the fitted results. First, the predicted enhancements in electron and ion temperature are clearly observable and well above the expected error. Second, we examine whether the predicted density cavity in the downward field-aligned current region is  detectable. A deepening and broadening region of plasma evacuation is predicted as a self-consistent response to a confined up-down current pair \citep[e.g.,][]{cran;cavity}.  But it has been unclear whether this prediction can be validated with ISR, since it involves detecting organized channels of reduced backscatter power embedded within a higher density background.
 %% PJE: I really don't like the word "coherent" here since it will lead the reader to think of scattering off coherent plasma waves.  I think you should use maybe "organized channels".
-%
+%% JPS: Done
 %Josh: You didn't have the right citation so I found the best one i could Replaced \citep{write:alfven} with current version
 % JOHN:  The Cran-McGreehan paper cited above is the right one, just check that it compiles.
 % Josh: It seems to work on my end.
@@ -635,10 +640,12 @@ Using density measurements alone (panel a) the presence of the cavity is visible
 
 In a final use case, SimISR is driven again using plasma parameters derived from the multi-fluid model developed by \cite{semeter:plasmatransport2012}. This case though will use plasma parameters along all three spatial dimensions. The resulting parameter distributions are due to a 0.65 $\mu$A/m$^2$ field aligned current (FAC) that is turned on at multi-fluid model time $t=0$ and remains stationary in time. The Region 1-like FAC creates large enhancements in ion temperature due to frictional heating, and also causes smaller amplitude enhancements (and depletions, as before) in electron density.
 
-The spatial domain is sampled using the beam pattern and sampling lattice seen in Figure \ref{fig:3dsampling}. This is a 121 beam pattern similar to the one used in \cite{Semeter:2008hs}. For this simulation the data is integrated over 315 seconds, which with a 8.7 ms IPP and the current beam position yields XXX pulses per position.
+The spatial domain is sampled using the beam pattern and sampling lattice seen in Figure \ref{fig:3dsampling}. This is a 121 beam pattern similar to the one used in \cite{Semeter:2008hs}. For this simulation the data is integrated over 315 seconds, which with a 8.7 ms IPP and the current beam position yields 300 pulses per position.
 %% PJE: fill in the XXX
+%% JPS: Filled in
 After the data was fitted it was interpolated using natural neighbors
 %% PJE: natural neighbors? Do you mean nearest neighbors?
+%% JPS: Natural neighbors is another interpolation scheme and we've used it in the past for interpolating 3-D reconstructions.
 and plotted using the GeoData API \citep{john_swoboda_2016_154536}.
 
 \begin{figure}[!t]
@@ -648,11 +655,12 @@ and plotted using the GeoData API \citep{john_swoboda_2016_154536}.
 \label{fig:3dsampling}
 \end{figure}
 
-The input plasma parameters and the results of SimISR simulation can be seen in Figure \ref{fig:3dparams}. The enhancements in ion temperature can clearly be seen in the reconstruction, although they do look wider than the input. 
+The input plasma parameters and the results of SimISR simulation can be seen in Figure \ref{fig:3dparams}. The enhancements in ion temperature can clearly be seen in the reconstruction, although they do look wider than the input which is likely due to the spatial ambiguity funciton. 
 %% PJE: vague - reword or omit.  If you say e.g. "appear wider" someone is going to ask "why?"
-The electron temperature enhancement is also visible but less pronounced compared to the input spatial variations. There does seem to be some large electron temperature enhancements near 200 km altitude, although this could be due to improper fits brought on by changes in ion composition at low altitudes. Lastly the depletions in electron density are visible as well in the same pattern as seen on the input parameters.
+%% JPS: Added statement about ambiguity.
+The electron temperature enhancement is also visible but less pronounced compared to the input spatial variations. There does seem to be some large electron temperature enhancements near 200 km altitude, although this could be due to improper fits brought on by changes in ion composition at low altitudes. Lastly the depletions in electron density are visible as well in the same pattern as seen on the input parameters. In the end this qualitatively that SimISR can reconstruct a 3-D field of plasma state parameters.
 %% PJE: all of this leave the impression of "we did this, we saw that" qualitative statements without any real insight that results.  I would think carefully about the real message you want to get across in this use case (and simplify + reword accordingly), because I have a hard time as a reader figuring it out.
-
+%% JPS: I wanted to add this example to show the reader of the ability to reconstruction a 3-D field of plasma parameters.
 \begin{figure}[!t]
 \centering
 \includegraphics[width=6in]{60_60}
@@ -660,8 +668,9 @@ The electron temperature enhancement is also visible but less pronounced compare
 \label{fig:3dparams}
 \end{figure}
 
-The sampling pattern picked for this simulation was chosen to get as dense a set of beams possible. 
+The sampling pattern picked for this simulation was chosen to get as dense a set of beams possible so as to mirror past experiments. 
 %% PJE: is this the main point? Or not?
+%% JPS: This mode was designed off of a previous experiment although it is a very dense pattern.
 The overall phenomena varies over a much larger area, so there is an obvious trade off between sampling density and the support region. These sorts of simulations can help experiment planners to understand these trade offs and possibly yield to innovative sampling stratagems for specific phenomena. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion}
@@ -669,8 +678,9 @@ We have constructed SimISR, a simulation tool encapsulating the full ISR measure
 
 In the future, SimISR development will continue by adding new radar waveform modes, as currently only Barker code and uncoded single pulse modulations are available at this time. The simulator can also be used to create synthetic data for traditional single antenna based system design applications. Other possible expansions of the simulator include capability to calculate returns from each receiver element in a ESA based ISR system, such as the planned architecture of EISCAT-3D, along with multi-static radar capabilities. These future additions will increase the simulator's value to designers who wish to more optimally exploit the capabilities of new systems. 
 
-A more immediate application of the SimISR tool can aid researchers in experiment planning. There are a number of phenomena that change on very small spatio-temporal scales, e.g. at high latitudes, and capturing observations of them would greatly benefit from optimization of the experiment set up. Researchers can use SimISR to iterate through different set ups for their experiments, as opposed to a heuristic selection of a single observational approach where prior use is the sole design factor. The ability of SimISR to directly create complex receiver voltage data provides a significant and novel capability, as some geophysical phenomena, such as those that occur at time scales on the order of an interpulse period, can only be fully explored at this data level. 
+A more immediate application of the SimISR tool can aid researchers in experiment planning. There are a number of phenomena that change on very small spatio-temporal scales, e.g. at high latitudes, and capturing observations of them would greatly benefit from optimization of the experiment set up. Researchers can use SimISR to iterate through different set ups for their experiments, as opposed to a heuristic selection of a single observational approach where prior use is the sole design factor. The ability of SimISR to directly create complex receiver voltage data provides a significant and novel capability, as some geophysical phenomena, such as those that occur at time scales on the order of an interpulse period, can only be fully explored at this data level. This could lead to researchers coming up with new ways to analyze data, such as novel integration schemes to resolve phenomena at small spatio-temporal scales.
 %% PJE: I don't buy this last sentence.  ISR is a statistical process.  One realization does not mean anything - you said it yourself in an earlier section.  How can you 'fully explore' a process that you cannot statistically resolve, no matter how clever the design?  I think this sentence needs rewording/refocusing - or you could be simple and just eliminate it completely.
+%% JPS: Added a statement about novel integration schemes.
 By releasing this simulation to the community, we hope that other researchers can find utility in it as they plan experiments or analyze observed radar data post-experiment.
 
 SimISR is written as a Python module which can be accessed at https://github.com/jswoboda/SimISR. This website contains code and instructions on how to install the software along with reference use case examples.
