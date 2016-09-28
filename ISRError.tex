@@ -107,8 +107,11 @@ Boston University, Boston, Massachusetts, USA.}
 
 \begin{abstract}
 
+%MZ - "this data" --> "these data" in the abstract and elsewhere?
+
 The sources of error from electronically steerable array (ESA) incoherent scatter radar (ISR) systems are investigated both theoretically and with use of an open source ISR simulator, developed by the authors, called Simulator for ISR (SimISR). The main sources of error incorporated in the simulator include statistical uncertainty, which arises due to nature of the measurement mechanism, and the inherent space-time ambiguity from the sensor. SimISR can take a field of plasma parameters, parameterized by time and space, and create simulated ISR data at the scattered electric field (i.e. complex receiver voltage) level, subsequently processing this data to show possible reconstructions of the original parameter field. To demonstrate general utility, we show a number of simulation examples, with one case using data from a self-consistent multi-fluid transport model. Results highlight the significant influence of the forward model of the ISR process and the resulting statistical uncertainty on plasma parameter measurements, and the core experiment design trade offs that must be made when planning observations. These conclusions further underscore the utility of this class of measurement simulator as a design tool for more optimal experiment design efforts using flexible ESA class ISR systems.
 
+%MZ - We're in the process of revising our first paper with a new Bi-Maxwellian model.  Just curious - could you include temperature anisotropy effects on the spectra and fitting process?
 
 \end{abstract}
 
@@ -126,6 +129,9 @@ The sources of error from electronically steerable array (ESA) incoherent scatte
 \begin{article}
 
 \section{Introduction}
+
+% MZ - Not sure about the use of the word "direct" in the first sentence
+
 Incoherent scatter radar (ISR) is a critical technology for ionospheric research since it yields direct measurements of intrinsic plasma parameters  \citep{dougherty:farley1960, farleydougherty:ISR2, doughteryfarley:ISR3, hagfors1961}. As with all diagnostic tools it has unavoidable measurement uncertainties, including temporal and spatial ambiguities \citep{farley1969,farleycomppower1969,Woodman:1991is,hysell2008,RDS:RDS20236}.  ISR uses the inherent random fluctuations of the plasma as a remote sensing diagnostic. These fluctuations are processed for information extraction by computing second order statistics, specifically an autocorrelation function (ACF), from the scattered signal \citep{farley1969}. The stochastic nature of the target itself yields the requirement of averaging multiple realizations of the ACF to compute a statistical ensemble average, with more averages reducing the variance of the estimate. This forces the assumption of wide-sense stationarity for a space-time cell, which may not always be valid. In the context of experiment design, this creates a trade-off between space-time resolution and the variance of the measurements.
 
 Application of electronically steerable array (ESA) technology to ISR has been a recent community advancement \citep{kelly:pfisr2009}. ESA capable ISRs, such as the Advanced Modular Incoherent Scatter (AMISR) systems, have already been deployed in Poker Flat Alaska and Resolute Bay Canada \citep{Nicolls:2007ie, dahlgren2012di}. ESA based systems are seen as the future of the ISR sensor modality due to the flexibility in beam steering and processing over single antenna based systems. The next step in the evolution of these systems is the EISCAT-3D project, which is expected to have a number of enhancements such as multi-static processing capability \citep{turunen:eiscat3d2009}
@@ -136,7 +142,13 @@ With the continued interest in ISR as an imaging sensor, a rigorous mathematical
 
 This paper describes a method to simulate the entire ISR process with consideration of all three spatial sampling dimensions for a monostatic radar. This method has been implemented in a software package called SimISR (Simulator for ISR).  
 % JOHN:  The acronym is unpronounceable, and the sequence of letters hard to say.  Are you sure you want to stick with this?  Could do something simpler, like ISRSim, or SimISR (pronounced "simizer", sort of like "amizer")
-The remainder of paper is organized as follows. Section 2 will list possible sources of ISR error as included in our simulation method. The simulation methodology behind SimISR will be described in Section 3. Section 4 will show a number of plasma parameter use cases conducted with the simulator, ranging from a stationary column of enhanced electron density to the output of a self-consistent multi-fluid ionospheric model \citep{semeter:plasmatransport2012}. These examples point the way towards development of best practices for systematic ESA class ISR experiment designs that are intended to conduct measurements best reflecting the plasma parameter state actually present in the ionosphere.
+% MZ - Call it a "new" software package?
+The remainder of paper is organized as follows. Section 2 will list possible sources of ISR error as included in our simulation method. The simulation methodology behind SimISR will be described in Section 3. Section 4 will show a number of plasma parameter use cases conducted with the simulator, ranging from a stationary column of enhanced electron density to the output of a self-consistent multi-fluid ionospheric model \citep{semeter:plasmatransport2012}. 
+% MZ - The 3D results actually come from a totally different codebase.  We've only published one other paper with this code:
+%Zettergren, M. D., J. L. Semeter, and Hanna Dahlgren. "Dynamics of density cavities generated by frictional heating: %Formation, distortion, and instability." Geophysical Research Letters 42, no. 23 (2015).
+%Harvard	
+These examples point the way towards development of best practices for systematic ESA class ISR experiment designs that are intended to conduct measurements best reflecting the plasma parameter state actually present in the ionosphere.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{ISR Errors}
 
@@ -144,7 +156,7 @@ In this section two sources of ISR error will be discussed. The first part of th
 
 \subsection{Statistical Errors}
 
-The electron density fluctuations observed by ISR techniques are associated primarily with two longitudinal wave modes in the plasma: the ion-acoustic mode and the Langmuir mode \citep{evans;isr}.  Most ISR experiments involve the use of multiple independent samples, created by measuring ionospheric scatter from repeated individual radar pulses, to create an estimate of the ion acoustic spectrum (i.e., the Fourier transform of the autocorrelation function, or ACF). This experimental observation is then fit to a theoretical plasma physics based model in order to estimate ionospheric state parameters (typically plasma density, electron temperature, ion temperature, and bulk line-of-sight plasma motion). The theory of how the plasma parameters impact the statistics of density fluctuations has developed in a series of studies \citep{gordon58,dougherty:farley1960, farleydougherty:ISR2, doughteryfarley:ISR3, hagfors1961}, with reformulations of the theory occurring even recently  \citep{kudeki:milla:1,kudeki:milla:2}. 
+The electron density fluctuations observed by ISR techniques are associated primarily with two longitudinal wave modes in the plasma: the ion-acoustic mode and the Langmuir mode \citep{evans;isr}.  Most ISR experiments involve the use of multiple independent samples, created by measuring ionospheric scatter from repeated individual radar pulses, to create an estimate of the ion acoustic spectrum (i.e., the Fourier transform of the autocorrelation function, or ACF). This experimental observation is then fit to a theoretical plasma physics based model in order to estimate ionospheric state parameters (typically plasma density, electron temperature, ion temperature, and bulk line-of-sight plasma motion). The theory of how the plasma parameters impact the statistics of density fluctuations has been developed in a series of studies \citep{gordon58,dougherty:farley1960, farleydougherty:ISR2, doughteryfarley:ISR3, hagfors1961}, with reformulations of the theory occurring even recently  \citep{kudeki:milla:1,kudeki:milla:2}. 
 
 The two main sources of statistical uncertainty in the received voltages measured at the antenna terminals are described here as (1) random fluctuations from the electron density, and (2) noise from astronomical sources and from  the sensor itself. There are other sources of increased uncertainty, including coherent scatter from other targets, but these will be assumed negligible in this study.  The received voltages comprising the incoherent scatter signal also have the properties of a random process. As such, it is necessary to average samples of an estimator for the ACF or power spectrum \citep{Diaz:2008co}.  For the ACF case, a covariance matrix between each lag estimate can be formed using the formulation in Equation 2 of \citet{hysell2008}, rewritten here as
 
@@ -466,6 +478,7 @@ For this example we show how distributions of plasma parameter measurements chan
 %% PJE:  However, Figure 5 clearly shows a biased measurement for the 200 pulse case slowly resolving to zero bias in the 500 and 1000 sample cases.  You need to address this behavior here, as a sharp reviewer is going to notice and call it out.  I don't offhand know why that is happening.
 %% JPS: Didn't have a great answer, I have a feeling that it might be related to how I calculated the histograms. I took data from all of the beams together so there correlations between some samples. The  
 %% PJE: I guess then you need to leave it alone, but I would be prepared for questions.
+%% JLS:  So it doesn’t actually resolve to 0, at least in the density histogram.  For large number of pulses there seems to be a second bump at 0.7e11.   Would it be worth looking at some ACF fits for those cases to try and see if there is some obvious explanation?  Are you adding receiver/sky noise for these runs?   Could incorrect noise subtraction, or maybe some coloring in the noise generation, be a cause?  I’m confident that a reviewer will raise this issue, so best to just get our response together now!
 \begin{table}[!t]
 \centering
 \caption{Simulation parameters.}
@@ -543,9 +556,11 @@ The blurring effect seen in this case study is not constant throughout the simul
 As the enhancement becomes parallel to the radar beams, close to 0 km in the X plane,
 %% PJE: where does it become parallel?  I cannot see the effect you are talking about here without some circles or arrows or something on the plot.
 %% JPS: Done
+%% JLS:  Actually the effect is more nuanced than just becoming thinner.   The density column is bifurcated below 200 km (two columns with gap in between).   DO you know why this is?  Is it a consequence of the shape of the ambiguity function, such that the target "fades" as it moves across beams?
 its morphology in the reconstruction becomes smaller along the X-axis, as the range ambiguity is much larger than the cross range ambiguity. (To see the input and output electron density change with time, the reader is referred to Movies S1 and S2.) In both cases the expected errors, shown in panel c in both Figures \ref{fig:moving10mins} and \ref{fig:moving14mins}, give us confidence in these results as they are much lower value than the enhancements and background.
 %% PJE: the electron density error plots here have the wrong scaling - everything is very dark color and I can't see any structure in any of them.  Please rescale the color bars.
 %% JPS: added statement about errors
+%% JLS: Hard to read the scales, but looks like you are using the same range for data and error.  The saturated error pixels don't matter, so why not compress the range so reader can visualize error in vicinity of the features we are trying to reconstruct?
 \begin{figure}[!t]
 \centering
 \includegraphics[width=6in]{moving6mins}
@@ -568,6 +583,7 @@ Lastly, for this type of simulation, we show an example to demonstrate the situa
 The input electron density, the fitted electron density and the expected error for the 10 km enhancement can be seen in Figure \ref{fig:moving10all}. The same images for the 18 km wide case can be seen in Figure \ref{fig:moving18all}. Both cases show that electron density enhancements are well above the expected errors.
 %% PJE: once again, I cannot see the error morphology here - it just looks like a bunch of pixels at the lowest color level.  Rescale.
 %% JPS: I think showing the errors in the same color scale gives the reader an easier time of determining if the results should be trusted. 
+%% JLS:  Fine, but all the reader can say from these plots is that the error seems to be below ~12, or ~30%.   DIfficult to discern any color differences below that.
 The fitted electron density for both the 10 km enhancement and 18 km enhancement cases show nearly identical results. This simple example demonstrates the possibility to create a non-unique solution in ISR experiments. The results further demonstrate that SimISR can provide useful information in this case, in that it can provide information during the design phase of an experiment that highlight possibilities for ambiguous observational results between two different sets of phenomena. (For the full input electron density changing with time for the 10 km example, see Movie S3 and for the fitted data S4. The 18 km case can be seen in Movies S5 and S6 for input and fitted parameters respectively.)
 
 \begin{figure}[!t]
@@ -639,15 +655,19 @@ Using density measurements alone (panel a) the presence of the cavity is visible
 
 \subsection{Full 3-D Reconstruction}
 
-In a final use case, SimISR is driven again using plasma parameters derived from the multi-fluid model developed by \cite{semeter:plasmatransport2012}. This case though will use plasma parameters along all three spatial dimensions. The resulting parameter distributions are due to a 0.65 $\mu$A/m$^2$ field aligned current (FAC) that is turned on at multi-fluid model time $t=0$ and remains stationary in time. The Region 1-like FAC creates large enhancements in ion temperature due to frictional heating, and also causes smaller amplitude enhancements (and depletions, as before) in electron density.
+%JLS:  Rewrote this section
+A common application of ESA-based ISR's (PFISR and RISR) is to create three-dimensional time-dependent visualizations of  dynamically evolving parameter fields \citep[e.g.,][]{Nicolls:2007ie,Semeter2009738,semeter:jgr2010,dahlgren2012di}.   Such results are visually compelling but, as yet, there has been no framework advanced to evaluate uncertainties and potential artifacts in these interpolated views, or to apply these results in a quantitative comparisons with predictions from physical models.  The state of modeling of the coupled magnetosphere-ionosphere system has progressed considerably in recent years. In particular, hybrid fluid-kinetic models are able to make detailed  predictions of small- and meso-scale processes underlying global-scale system behavior \citep[e.g.,][]{damiano;jgr2005,semeter:plasmatransport2012,akbari:2016}.  Simulation will enable us to do formal hypothesis testing on these predictions, which often involves the detection of subtle space-time variations in a parameter field.
 
-The spatial domain is sampled using the beam pattern and sampling lattice seen in Figure \ref{fig:3dsampling}. This is a 121 beam pattern similar to the one used in \cite{Semeter:2008hs}. For this simulation the data is integrated over 315 seconds, which with a 8.7 ms IPP and the current beam position yields 300 pulses per position.
+As an example, SimISR was driven using plasma parameters computed from the multi-fluid model developed by \cite{semeter:plasmatransport2012}. The parameter distributions represent the self-consistent ionospheric response to \a 0.65-$\mu$A/m$^2$ field-aligned current (FAC) that is turned on at model time $t=0$, and remains constant in time.  The Region 1-like FAC creates large enhancements in ion temperature due to frictional heating, and also causes smaller amplitude enhancements (and depletions, as before) in electron density.
+
+The spatial domain is sampled using the beam pattern and sampling lattice shown in Figure \ref{fig:3dsampling}. This is a 121 beam pattern similar to the one used by \cite{Semeter:2008hs}. For this simulation the data are integrated over 315 seconds which, with a 8.7 ms IPP and the current beam position, yields 300 pulses per position.
 %% PJE: fill in the XXX
 %% JPS: Filled in
-After the data was fitted it was interpolated using a natural neighbors scheme
+After the data were fitted, a three-dimensional natural neighbor interpolation was performed \citep{Sukumar:nn2001} and the results
 %% PJE: natural neighbors? Do you mean nearest neighbors?
 %% JPS: Natural neighbors is another interpolation scheme and we've used it in the past for interpolating 3-D reconstructions.
-and plotted using the GeoData API \citep{john_swoboda_2016_154536}.
+%% JLS: Added natural neighbor citation
+plotted using the GeoData API \citep{john_swoboda_2016_154536}.
 
 \begin{figure}[!t]
 \centering
@@ -656,10 +676,13 @@ and plotted using the GeoData API \citep{john_swoboda_2016_154536}.
 \label{fig:3dsampling}
 \end{figure}
 
-The input plasma parameters and the results of SimISR simulation can be seen in Figure \ref{fig:3dparams}. The enhancements in ion temperature can clearly be seen in the reconstruction, although they do look wider than the input which is likely due to the spatial radar ambiguity function. 
+The input plasma parameters and the results of SimISR simulation are summarized in Figure \ref{fig:3dparams}.  For the selected configuration, the reconstructed density and ion temperature fields capture the predicted spatial variations reasonably well, providing confidence that this experimental configuration would result yield a positive detection of the spatial variations predicted by the applied FAC.  Reconstruction of the electron temperature enhancement (which is derived from a higher-order moment of the ISR spectrum) is less conclusive.   This highlights the important point that variance is parameter dependent. In this case, SimISR informs us that, for this FAC and this experimental configuration, a negative result for $T_e$ comparison is not sufficient grounds to discount the model prediction.  A further refinement of the experiment might yield a positive result.
+
+
+%enhancements in ion temperature is captured in the reconstruction, although  do look wider than the input which is likely due to the spatial radar ambiguity function. 
 %% PJE: vague - reword or omit.  If you say e.g. "appear wider" someone is going to ask "why?"
 %% JPS: Added statement about ambiguity.
-The electron temperature enhancement is also visible but less pronounced compared to the input spatial variations. Large electron temperature enhancements also exist near 200 km altitude, although this could be due to improper fit result induced by changes in ion composition at low altitudes. Lastly the depletions in electron density are visible as well with the same pattern as seen in the input parameters.  Within the scope of this study, we can therefore qualitatively conclude that SimISR can successfully reconstruct a 3-D field of plasma state parameters.
+%The electron temperature enhancement is also visible but less pronounced compared to the input spatial variations. Large electron temperature enhancements also exist near 200 km altitude, although this could be due to improper fit result induced by changes in ion composition at low altitudes. Lastly the depletions in electron density are visible as well with the same pattern as seen in the input parameters.  Within the scope of this study, we can therefore qualitatively conclude that SimISR can successfully reconstruct a 3-D field of plasma state parameters.
 %% PJE: all of this leave the impression of "we did this, we saw that" qualitative statements without any real insight that results.  I would think carefully about the real message you want to get across in this use case (and simplify + reword accordingly), because I have a hard time as a reader figuring it out.
 %% JPS: I wanted to add this example to show the reader of the ability to reconstruction a 3-D field of plasma parameters.
 \begin{figure}[!t]
@@ -669,11 +692,12 @@ The electron temperature enhancement is also visible but less pronounced compare
 \label{fig:3dparams}
 \end{figure}
 
-The sampling pattern picked for this simulation was chosen to get as dense a set of beams possible so as to mirror past experiments. 
+The sampling pattern picked for this simulation was chosen to get as dense a set of non-overlapping beams as possible.  This has been the general objective for several previous volumetric imaging experiments.
 %% PJE: is this the main point? Or not?
 %% JPS: This mode was designed off of a previous experiment although it is a very dense pattern.
 The overall phenomena varies over a much larger area, so there is an obvious trade off between sampling density and the support region. These sorts of simulations can help experiment planners to understand these trade offs and possibly yield to innovative sampling stratagems for specific phenomena. 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Conclusion}
 We have constructed SimISR, a simulation tool encapsulating the full ISR measurement process, incorporating ESA radar capabilities and the full radar space-time ambiguity along with inherent ISR error sources. Possible uses for SimISR in the research community have also been discussed and examples have been shown. These examples show how one can use the simulator to create large statistical data sets and also to more optimally design ionospheric radar experiments in the ISR space within the inherently large number of free parameters afforded by the radar control parameters. 
 
