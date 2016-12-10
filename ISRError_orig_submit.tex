@@ -217,28 +217,7 @@ In what follows we begin with a description of construction of spectral filters 
 
 The simulator takes as input a discretized set of ionosphere state parameters in Cartesian coordinates which can vary in time.  This corresponds to the true field we seek to reconstruct. The first step in the simulator is to create theoretical ISR spectra at each point from the prescribed parameters. For details on calculating these spectra from the intrinsic plasma parameters see, e.g., \citet{kudeki:milla:1} and \citet{kudeki:milla:2}. 
 
-Once the spectra have been created, the simulator transforms the resulting values to a radar-centered spherical coordinate system. This coordinate change acts as a linear operator in spatial dimensions, and the spectra are accordingly weighted and averaged. The weighting in azimuth and elevation is determined by the antenna beam pattern, while the weighting in range (i.e. along beam) is simply a binary test of whether the spectra are within the range gate. If there are no spectra within the range gate, a nearest neighbor rule is used which selects the closest point in Cartesian space. 
-
-The beam shapes needed for the antennas are creating using standard theory for phased arrays and dish antennas. For the circular dish antennas the term $F(\theta_s,\phi_s,\theta,\phi)$ will be shown in a rotated frame system where the pointing positions $\theta_s$ and $\phi_s$ will be both zero 0 degrees in azimuth and elevation respectively and $\theta_r$ and $\phi_r$ will be $\theta$ and $\phi$ in this frame. This then leads to the following formulation from \citet{Blahut:2004wd}:
-
-\begin{equation}
-\label{eqn:circantenna}
-F(\theta_r,\phi_r)=\frac{4r^2}{\lambda^2}\text{jinc}\left(\frac{2r}{\lambda}\sin{\phi_r}\right),
-\end{equation}
-where $r$ is the radius of the antenna in meters (m), $\lambda$ is the wavelength of the radar in meters (m). The jinc function is defined as the following,
-\begin{equation}
-\label{eqn:jinc}
-\text{jinc}(x)=\frac{J_1(\pi x)}{2x},
-\end{equation}
-where $J_1$ is the first order Bessel function of the first kind. The systems using phased array antennas use the basic formulation is the following:
-\begin{equation}
-\label{eqn:phasdarr}
-F(\theta_s,\phi_s,\theta,\phi)= E_e^2(\theta,\phi)E_a^2(\theta_s,\phi_s,\theta,\phi)
-\end{equation}
-where $E_e$ is the antenna pattern of each element and $E_a$ is the array factor for pointing the beam \citep{Balanis:2005:ATA:1208379}. The full derivation of the theoretical beam pattern for the AMISR systems can be found in an appendix in \citet{RDS:RDS20236}.
-
-
-The method to create the spectra for each point is an acceptable approximation because spatial correlations between the electron density fluctuations will be on the order of the Debye length \citep{farley1969} which is, in nearly all practical cases, significantly smaller than the beam width or range gate size. This is same as making the assumption of wide-sense stationarity with uncorrelated scattering (WSSUS)\citep{Kailath:1962jx}. The algorithm implementing spatial sampling is shown in the simplified diagram in Figure \ref{fig:beamdia}.
+Once the spectra have been created, the simulator transforms the resulting values to a radar-centered spherical coordinate system. This coordinate change acts as a linear operator in spatial dimensions, and the spectra are accordingly weighted and averaged. The weighting in azimuth and elevation is determined by the antenna beam pattern, while the weighting in range (i.e. along beam) is simply a binary test of whether the spectra are within the range gate. If there are no spectra within the range gate, a nearest neighbor rule is used which selects the closest point in Cartesian space. This method to create the spectra for each point is an acceptable approximation because spatial correlations between the electron density fluctuations will be on the order of the Debye length \citep{farley1969} which is, in nearly all practical cases, significantly smaller than the beam width or range gate size. This is same as making the assumption of wide-sense stationarity with uncorrelated scattering (WSSUS)\citep{Kailath:1962jx}. The algorithm implementing spatial sampling is shown in the simplified diagram in Figure \ref{fig:beamdia}.
 
 \begin{figure}[!t]
 \centering
@@ -316,7 +295,7 @@ After the data for each range gate $y_m(k)$ is created, the received signal's po
 P_r = \frac{\left(c\Delta T\right) G \lambda^2}{2(4\pi)^2}\frac{P_t }{R^2}\frac{\sigma_e N_e}{(1+k^2\lambda_D^2),(1+k^2\lambda_D^2 + T_r)},
 \end{equation}
  
- \noindent where $P_r$ is the power received in Watts (W), $k$ is the wavenumber of the radar in radians per meters (rad/m), $c$ is the speed of light in m/s, $\Delta T$ is the along-range gate extent in seconds, $G$ is the gain of the antenna, $P_t$ is the power of the transmitter in W, $\sigma_e$ is the electron radar cross section in $m^2$,  $\lambda_D$ is the Debye length in m, $N_e$ is the electron density in m$^{-3}$, and $T_r$ is the electron to ion temperature ratio.
+ \noindent where $P_r$ is the power received in Watts (W), $k$ is the wavenumber of the radar in meters (m), $c$ is the speed of light in m/s, $\Delta T$ is the along-range gate extent in seconds, $G$ is the gain of the antenna, $P_t$ is the power of the transmitter in W, $\sigma_e$ is the electron radar cross section in $m^2$,  $\lambda_D$ is the Debye length in m, $N_e$ is the electron density in m$^{-3}$, and $T_r$ is the electron to ion temperature ratio.
   
 The received signal power calculated at each range gate using Equation~\ref{eq3} is used as a scaling constant for each $y_m(k)$ series.  A delayed and summed operator yields a model of the received radar scatter signal:
  
