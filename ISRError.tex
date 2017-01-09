@@ -405,33 +405,12 @@ However, the final result of this summation rule will still lead to a statistica
 \caption{The window function that is applied to the ACF as seen in Equation~\ref{eq:sumruleest} in the left pane for $L=15$ and its 128 point length Fast Fourier Transform (FFT) in the right panel. }
 \label{fig:isrwindow}
 \end{figure}
-%An example summation rule for a central product is shown in Figure \ref{fig:sumrule}. In the figure the image on the left is a basic representation of an ambiguity function of a long pulse.  Its mirrored on the right with red bars which would show the integration area under it so the ambiguity function for each lag will be of equal size in range. There are a number of different summing rule each with their own trade offs \citep{nygren1996}.
 
-%In the processing this is basically a summing of lags from different ranges. The amount of summing is similar to what is shown in Figure \ref{fig:sumrule}.   
-
-
-
-%\begin{equation}
-%\label{eq:lagpronoise}
-%\hat{R}_w(m,l) = \displaystyle\sum\limits_{j=0}^{J-1} w(m_w-\lfloor l/2\rfloor,j)w^*(m_w+\lceil l/2 \rceil,j),
-%\end{equation}
 
 Finally, noise effects are included by subtracting an estimate of the noise correlation from $\widehat{R}_s(m,l)$.  We represent the noise correlation function as $\widehat{R}_w(m,l)$, the ACF estimate of the background noise process of the radar $w(n_w)$ using the steps in Equation \ref{eq:lagpro} and Equation \ref{eq:sumrule}. In a real radar system the noise process is typically sampled either during a calibration period for the radar when nothing is being emitted, or at ranges sufficiently distant that scattered ionospheric signal is assumed to be negligible. If there are localized but large returns, for example coherent reflections from satellites, this impact can be reduced by applying estimators that use order statistics \citep{ordstatcfar}. For our simulated estimate, we simply use a noise process with the same correlation structure and power as the noise that was added. The final estimate of the autocorrelation function after the noise subtraction and summation rule is represented by $\widehat{R}_f(m,l)$. 
 
-%\begin{figure}[!t]
-%\centering
-%\includegraphics[width=3in]{sumrule}
-%% where an .eps filename suffix will be assumed under latex, 
-%% and a .pdf suffix will be assumed for pdflatex; or what has been declared
-%% via \DeclareGraphicsExtensions.
-%\caption{Summation Rule Diagram}
-%\label{fig:sumrule}
-%\end{figure}
 
-After the final estimation of the spectrum is complete, nonlinear least squares fitting takes place to determine plasma parameters.  
-%\pcom{This entire section can be collapsed to one reference and saved for the thesis chapter.}%
-%{
-The class of nonlinear least squares problems relevant to ISR parameter estimation can be represented as the minimization of a cost function of the form \citep{kayvol1},
+After the final estimation of the spectrum is complete, nonlinear least squares fitting takes place to determine plasma parameters. The class of nonlinear least squares problems relevant to ISR parameter estimation can be represented as the minimization of a cost function of the form \citep{kayvol1},
 
 \begin{equation}
 	\mathbf{\hat{p}}= \underset{\mathbf{p}}{\text{argmin}} (\mathbf{y}-\bm{\theta}(\mathbf{p}))^*\mathbf{C}_{\mathbf{y}}^{-1}(\mathbf{y}-\bm{\theta}(\mathbf{p})).
